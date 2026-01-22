@@ -91,6 +91,7 @@
             <a class="menu-btn" onclick="showPage('graph')">🕸️ Ch6: Graph</a>
             <a class="menu-btn" onclick="showPage('dp')">📈 Ch7: DP</a>
             <a class="menu-btn" onclick="showPage('fft')">〰️ Ch8: FFT</a>
+            <a class="menu-btn" onclick="showPage('visual')">🎨 Ch9: Visual</a>
             <a class="menu-btn quick" onclick="showPage('quick')">⚡ Quick Ref</a>
             <a class="menu-btn quick" onclick="showPage('iso')">📊 Isoefficiency</a>
             <a class="menu-btn quick" onclick="showPage('memory')">💾 Memory</a>
@@ -488,15 +489,16 @@
             <div class="note">Each proc multiplies one (n/√p)×(n/√p) pair & accumulates</div>
             <div class="row"><span class="label">Block size</span><span class="value">n/√p × n/√p</span></div>
             <div class="row"><span class="label">Local mult/stage</span><span class="value">(n/√p)^ω using Strassen</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">√p·(n/√p)^ω = n^ω/p^(ω-1)/2</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">√p·(n/√p)^ω = n^ω / p^{(ω-1)/2}</span></div>
             <div class="row"><span class="label">Comm volume</span><span class="value">Θ(n²/√p) words/proc</span></div>
             <div class="row"><span class="label">Tcomm</span><span class="value comm">2√p·tₛ + 2n²/√p·tᵥ</span></div>
-            <div class="formula">Tₚ = n^ω/p^0.9 + 2√p·tₛ + 2n²/√p·tᵥ</div>
-            <div class="section-title" style="margin-top:10px;">Cost-Optimality</div>
-            <div class="note">vs naive W=Θ(n³): cost-opt up to p=O(n²)</div>
+            <div class="formula">Tₚ = n^ω / p^{(ω-1)/2} + 2√p·tₛ + 2n²/√p·tᵥ</div>
+            <div class="section-title" style="margin-top:10px;">Cost-Optimality (vs naive W=n³)</div>
+            <div class="note">Comm term dominates: p·(n²/√p) = n²√p</div>
+            <div class="note">Cost-opt: n²√p = O(n³) → √p = O(n)</div>
+            <div class="formula highlight">Cost-opt p = O(n²) vs naive W=n³</div>
             <div class="note">vs Strassen W=Θ(n^ω): NOT cost-opt</div>
-            <div class="note">(total work grows by p^(3-ω)/2)</div>
-            <div class="formula highlight">Cost-opt p = O(n^1.62) vs naive</div>
+            <div class="note">(parallel work > seq Strassen work)</div>
         </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
@@ -644,7 +646,8 @@
             <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
             <div class="row"><span class="label">Tcomm</span><span class="value comm">n·logp·(tₛ+tᵥ)</span></div>
             <div class="formula">Tₚ = n²/p + n·logp·(tₛ+tᵥ)</div>
-            <div class="formula">E = 1/(1 + p log p/n)</div>
+            <div class="formula">E = 1/(1 + p·logp·(tₛ+tᵥ)/n)</div>
+            <div class="note">If (tₛ+tᵥ)=1: E = 1/(1 + p logp/n)</div>
             <div class="row"><span class="label">Cost-opt</span><span class="value highlight">p = O(n/log n)</span></div>
             <div class="row"><span class="label">Memory/proc</span><span class="value">n²/p + n</span></div>
             <div class="section-title" style="margin-top:10px;">Prim's MST (√p×√p Mesh)</div>
@@ -718,7 +721,9 @@
             <div class="row"><span class="label">W (seq DFS)</span><span class="value">Θ(n²) for adj matrix</span></div>
             <div class="row"><span class="label">Tcomp</span><span class="value comp">(n²/p)·logn</span></div>
             <div class="row"><span class="label">Tcomm</span><span class="value comm">logn·(tₛlogp + n/p·tᵥ)</span></div>
-            <div class="formula">Tₚ = (n²·logn)/p + logn·logp·tₛ</div>
+            <div class="formula">Tₚ = (n²logn)/p + logn·(tₛlogp + n/p·tᵥ)</div>
+            <div class="note">Simplified (if tᵥ term dominates):</div>
+            <div class="formula">Tₚ ≈ (n²logn)/p + (nlogn)/p·tᵥ</div>
             <div class="section-title" style="margin-top:10px;">Speedup</div>
             <div class="formula">vs DFS (W=n²): S = Θ(p/logn)</div>
             <div class="formula">vs seq SV (W=n²logn): S = Θ(p)</div>
@@ -937,7 +942,246 @@
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
-    <script>
+    
+
+    <!-- VISUAL CHAPTER -->
+    <div id="visual" class="page">
+        <div class="page-title purple">Ch9: VISUAL RECIPES (NO DRAWINGS)</div>
+
+        <div class="sub-nav">
+            <button class="sub-btn" onclick="showSection('v_taskgraphs')">Task Graphs</button>
+            <button class="sub-btn" onclick="showSection('v_matmul')">Cannon / DNS</button>
+            <button class="sub-btn" onclick="showSection('v_sort')">Sorting Networks</button>
+            <button class="sub-btn" onclick="showSection('v_term')">Termination</button>
+            <button class="sub-btn" onclick="showSection('v_luby')">Luby MIS</button>
+            <button class="sub-btn" onclick="showSection('v_fft')">FFT Maps</button>
+            <button class="sub-btn" onclick="showSection('v_dp')">DP Graphs</button>
+        </div>
+
+        <!-- TASK GRAPHS -->
+        <div id="v_taskgraphs" class="section">
+            <div class="section-title">Task-Dependency Graphs (DAG) — Fast Recipe</div>
+            <div class="note">Goal: draw a DAG + compute metrics (concurrency, critical path, max speedup).</div>
+
+            <div class="section-title" style="margin-top:10px;">How to Draw</div>
+            <div class="note">1) Vertex = one <span class="highlight">task</span> (given by the decomposition).</div>
+            <div class="note">2) Edge u → v if v needs data produced by u (<span class="highlight">true dependence</span>).</div>
+            <div class="note">3) Put tasks of the same “superstep / loop-iteration” on the same level (if synchronous).</div>
+
+            <div class="section-title" style="margin-top:10px;">How to Compute Metrics</div>
+            <div class="formula">Work W = (#tasks) × (cost per task)</div>
+            <div class="formula">Max concurrency = max #tasks that can run in parallel (max level width)</div>
+            <div class="formula">Critical path L = length of the longest path in the DAG</div>
+            <div class="formula">Max speedup (∞ procs): Smax = W / L</div>
+            <div class="formula">Min #procs to reach Smax ≈ max concurrency</div>
+            <div class="note">Useful lower bound: Tp ≥ max(W/p, L).</div>
+
+            <div class="section-title" style="margin-top:10px;">BITONIC_SORT code task graph (n=8)</div>
+            <div class="note">Given: nested loops i=0..d-1, j=i..0 (d=log2 n). Task = one execution of comp_exchange.</div>
+            <div class="row"><span class="label">n</span><span class="value">8 ⇒ d = 3</span></div>
+            <div class="row"><span class="label">#Supersteps</span><span class="value highlight">d(d+1)/2 = 6</span></div>
+            <div class="note">Each superstep (i,j) is one global compare-exchange phase (all processors act once).</div>
+            <div class="note highlight">DAG shape: 6 levels in a chain (level s depends on level s-1).</div>
+            <div class="row"><span class="label">Concurrency</span><span class="value">n tasks per level</span></div>
+            <div class="row"><span class="label">Critical path</span><span class="value">6 (if 1 unit / superstep)</span></div>
+            <div class="row"><span class="label">Total tasks</span><span class="value">6n</span></div>
+
+            <div class="section-title" style="margin-top:10px;">FFT_like_pattern code task graph (n=4)</div>
+            <div class="note">Task = each execution of line 6 (label node as (i,j)). Initialization line 3 is one task “I”.</div>
+            <div class="row"><span class="label">n</span><span class="value">4 ⇒ m=log2 n = 2 stages (j=0,1)</span></div>
+            <div class="note highlight">Edges:</div>
+            <div class="note">• I → (i,0) for all i.</div>
+            <div class="note">• For j ≥ 1: (i,j−1) → (i,j) AND (i XOR 2^j, j−1) → (i,j).</div>
+            <div class="note">This creates a butterfly pattern (stage-by-stage dependence).</div>
+            <div class="row"><span class="label">Concurrency</span><span class="value">n tasks per stage</span></div>
+            <div class="row"><span class="label">Critical path</span><span class="value">m (+1 if counting I)</span></div>
+        </div>
+
+        <!-- MATMUL VISUAL -->
+        <div id="v_matmul" class="section" style="display:none;">
+            <div class="section-title">Cannon (p=16) — “How to draw the pictures”</div>
+            <div class="note">Exam-style: show mapping + communication steps on 16 procs (4×4).</div>
+
+            <div class="row"><span class="label">Grid</span><span class="value">√p×√p = 4×4, processors P(r,c)</span></div>
+            <div class="row"><span class="label">Blocks</span><span class="value">A[r,c], B[r,c], C[r,c] (block size n/4)</span></div>
+
+            <div class="section-title" style="margin-top:10px;">Step 0: Initial Skew (alignment)</div>
+            <div class="note">• Shift A left by <span class="highlight">row index r</span> (wrap-around).</div>
+            <div class="note">• Shift B up by <span class="highlight">col index c</span> (wrap-around).</div>
+
+            <div class="section-title" style="margin-top:10px;">Steps 1..4: Multiply + Shift</div>
+            <div class="note">Repeat for s = 0..3:</div>
+            <div class="note">1) Local multiply: C[r,c] += A_local × B_local</div>
+            <div class="note">2) Shift A left by 1, shift B up by 1 (circular).</div>
+
+            <div class="section-title" style="margin-top:10px;">Drawing Trick (avoid re-drawing shifts)</div>
+            <div class="note">After initial skew + s shifts (q=4):</div>
+            <div class="formula">A at P(r,c): A[r, (c + r + s) mod q]</div>
+            <div class="formula">B at P(r,c): B[(r + c + s) mod q, c]</div>
+            <div class="note">Write these indices inside each grid cell for each picture.</div>
+
+            <div class="section-title" style="margin-top:12px;">DNS for 3×3 matrices — “How to draw the pictures”</div>
+            <div class="note">Goal: show 3D layout + broadcasts + reduction. For n=3, use q=3 ⇒ p=q³=27 procs.</div>
+            <div class="row"><span class="label">Topology</span><span class="value">3×3×3 (i,j,k) 3D mesh/torus</span></div>
+
+            <div class="section-title" style="margin-top:10px;">Mapping</div>
+            <div class="note">Processor P(i,j,k) computes partial for C[i,j] with k as “summation index”.</div>
+            <div class="formula">Hold A(i,k) and B(k,j) (block size 1×1 when n=q=3)</div>
+
+            <div class="section-title" style="margin-top:10px;">Communication / Compute Steps</div>
+            <div class="note">1) Broadcast A(i,k) along the <span class="highlight">j</span>-dimension: (i,*,k).</div>
+            <div class="note">2) Broadcast B(k,j) along the <span class="highlight">i</span>-dimension: (*,j,k).</div>
+            <div class="note">3) Local multiply: partial = A(i,k)·B(k,j).</div>
+            <div class="note">4) Reduce partials along <span class="highlight">k</span> to sum into C(i,j).</div>
+
+            <div class="note">Drawing trick: draw 3 layers (k=0,1,2), each a 3×3 grid; show broadcasts inside each layer and reduction across layers.</div>
+        </div>
+
+        <!-- SORTING VISUAL -->
+        <div id="v_sort" class="section" style="display:none;">
+            <div class="section-title">Bitonic Sort on 4 numbers — network as comparator list</div>
+            <div class="note">If asked to “draw network + write outputs”, you can redraw from this list.</div>
+
+            <div class="section-title" style="margin-top:10px;">Comparator Notation</div>
+            <div class="note">Comparator (a,b) ↑ : output min→a, max→b</div>
+            <div class="note">Comparator (a,b) ↓ : output max→a, min→b</div>
+
+            <div class="section-title" style="margin-top:10px;">n=4 Bitonic Network (ascending sort)</div>
+            <div class="note">Stage 1 (make bitonic): (0,1) ↑ and (2,3) ↓</div>
+            <div class="note">Stage 2 (merge distance 2): (0,2) ↑ and (1,3) ↑</div>
+            <div class="note">Stage 3 (merge distance 1): (0,1) ↑ and (2,3) ↑</div>
+            <div class="note">Processors usable: p = n (one item/proc). For p=n: Tp ≈ log²n·(tᶜ+tₛ+tᵥ).</div>
+
+            <div class="section-title" style="margin-top:12px;">Enumeration Sort on 4 numbers — “how to illustrate”</div>
+            <div class="note">Recipe (works for any n):</div>
+            <div class="note">1) All-to-all share values (each proc learns all numbers).</div>
+            <div class="note">2) Each element computes rank = #{values smaller} (+ tie-break by index).</div>
+            <div class="note">3) Place element into output position = rank (send to owner via all-to-all personalized).</div>
+
+            <div class="section-title" style="margin-top:10px;">Rank formula</div>
+            <div class="formula">rank(x_i) = |{j: x_j &lt; x_i}| + |{j&lt;i: x_j = x_i}|</div>
+            <div class="note">For distinct values: rank(x_i) = #{j: x_j &lt; x_i}.</div>
+            <div class="note">Max processors (simple version): p = n (one element per proc).</div>
+        </div>
+
+        <!-- TERMINATION VISUAL -->
+        <div id="v_term" class="section" style="display:none;">
+            <div class="section-title">Dijkstra Token Termination — how to “draw steps” fast</div>
+            <div class="note">What to draw each picture: ring P0→P1→…→P(p−1)→P0, token position+color, proc colors (WHITE/BLACK), idle/busy.</div>
+
+            <div class="section-title" style="margin-top:10px;">Simulation Checklist</div>
+            <div class="note">1) Init: token WHITE at P0, all procs WHITE, all busy.</div>
+            <div class="note">2) When a proc sends work to LOWER ID → proc becomes BLACK.</div>
+            <div class="note">3) Token becomes BLACK if it passes any BLACK proc.</div>
+            <div class="note">4) When a BLACK proc forwards token → proc turns WHITE.</div>
+            <div class="note highlight">DONE when token returns to P0 WHITE and P0 is idle.</div>
+
+            <div class="section-title" style="margin-top:12px;">Tree-Based Weights — rules + worked scenario</div>
+            <div class="note">Rule: a processor with weight w splits work → keeps w/2 and sends w/2 with the work.</div>
+            <div class="note">When child finishes → returns its remaining weight to parent.</div>
+            <div class="note highlight">DONE when P0 idle and weight(P0)=1.</div>
+
+            <div class="section-title" style="margin-top:10px;">Worked Example (P0→P1, P0→P2, P1→P3, then finish)</div>
+            <table>
+                <tr><th>Step</th><th>Action</th><th>Weights (P0,P1,P2,P3)</th></tr>
+                <tr><td>0</td><td>Start</td><td>(1, 0, 0, 0)</td></tr>
+                <tr><td>1</td><td>P0 gives to P1</td><td>(1/2, 1/2, 0, 0)</td></tr>
+                <tr><td>2</td><td>P0 gives to P2</td><td>(1/4, 1/2, 1/4, 0)</td></tr>
+                <tr><td>3</td><td>P1 gives to P3</td><td>(1/4, 1/4, 1/4, 1/4)</td></tr>
+                <tr><td>4</td><td>P2 finishes → return to P0</td><td>(1/2, 1/4, 0, 1/4)</td></tr>
+                <tr><td>5</td><td>P3 finishes → return to P1</td><td>(1/2, 1/2, 0, 0)</td></tr>
+                <tr><td>6</td><td>P1 finishes → return to P0</td><td class="highlight">(1, 0, 0, 0)</td></tr>
+            </table>
+            <div class="note">If P0 is idle at step 6 and token/weights confirm → termination.</div>
+        </div>
+
+        <!-- LUBY -->
+        <div id="v_luby" class="section" style="display:none;">
+            <div class="section-title">Luby’s Algorithm (MIS) — how to illustrate iterations</div>
+            <div class="note">Each iteration: assign random numbers → choose candidates → add to MIS → delete candidates+neighbors → repeat.</div>
+
+            <div class="section-title" style="margin-top:10px;">Per-Iteration Rules</div>
+            <div class="note">1) Each active vertex v draws random r(v).</div>
+            <div class="note highlight">2) Candidate if r(v) is strictly larger than all neighbor r(u) (tie-break by ID if needed).</div>
+            <div class="note">3) Add all candidates to MIS.</div>
+            <div class="note">4) Remove candidates and all their neighbors from the graph.</div>
+
+            <div class="section-title" style="margin-top:10px;">If “random generator returns vertex ID”</div>
+            <div class="note highlight">r(v) = ID(v) ⇒ candidates = local maxima by ID.</div>
+            <div class="note">Then just pick vertices whose ID is larger than every neighbor ID.</div>
+
+            <div class="section-title" style="margin-top:10px;">Fast “picture” template (what to show)</div>
+            <div class="note">• Circle/highlight candidate set</div>
+            <div class="note">• Mark MIS so far</div>
+            <div class="note">• Cross out removed vertices (candidates + neighbors)</div>
+            <div class="note">Stop when no vertices remain. #iterations = #rounds drawn.</div>
+
+            <div class="section-title" style="margin-top:10px;">How to force exactly 2 iterations (if allowed to choose randoms)</div>
+            <div class="note">Choose round-1 randoms so that:</div>
+            <div class="note">• Selected candidates form an independent set.</div>
+            <div class="note">• After removing candidates+neighbors, remaining graph is non-empty.</div>
+            <div class="note">In round 2, give remaining vertices highest randoms so they get picked.</div>
+        </div>
+
+        <!-- FFT -->
+        <div id="v_fft" class="section" style="display:none;">
+            <div class="section-title">Binary-Exchange FFT (n=8,p=8) — interaction pattern</div>
+            <div class="note">Label processors by 3-bit IDs 0..7. Stage j pairs i with i XOR 2^j.</div>
+
+            <div class="section-title" style="margin-top:10px;">Pairs per stage</div>
+            <div class="note">j=0 (flip bit 0): (0,1)(2,3)(4,5)(6,7)</div>
+            <div class="note">j=1 (flip bit 1): (0,2)(1,3)(4,6)(5,7)</div>
+            <div class="note">j=2 (flip bit 2): (0,4)(1,5)(2,6)(3,7)</div>
+            <div class="note">Draw as a 3D cube: each stage uses one cube dimension.</div>
+
+            <div class="section-title" style="margin-top:12px;">2D Transpose FFT (n=16)</div>
+            <div class="note">Classic view: arrange data as a √p×√p matrix, do FFTs on rows, transpose, FFTs on rows again (former columns).</div>
+
+            <div class="section-title" style="margin-top:10px;">Case A: p=16 (4×4 grid)</div>
+            <div class="note">Map index k to grid (r,c): k = 4r + c. Proc P(r,c) holds x[r,c].</div>
+            <div class="note">Step 1: Each row r computes 4-point FFT on its 4 values.</div>
+            <div class="note">Step 2: Transpose: send x[r,c] → P(c,r) (all-to-all personalized).</div>
+            <div class="note">Step 3: Each row (former column) computes 4-point FFT.</div>
+
+            <div class="section-title" style="margin-top:10px;">Case B: p=4 (2×2 grid)</div>
+            <div class="note">Each proc holds a block of 4 values. Do 4-point FFTs locally, then transpose blocks between the 2×2 procs, then finish FFTs.</div>
+            <div class="note">When asked “how many processors”: state which mapping you use (p=16 or p=4) as specified by the question.</div>
+        </div>
+
+        <!-- DP VISUAL -->
+        <div id="v_dp" class="section" style="display:none;">
+            <div class="section-title">0/1 Knapsack DP — task graph recipe</div>
+            <div class="note">Standard DP table: DP[i,w] for i=0..n (items) and w=0..c (capacity).</div>
+            <div class="note highlight">Each DP[i,w] depends only on previous row i−1:</div>
+            <div class="note">• DP[i,w] ← DP[i−1,w]</div>
+            <div class="note">• If w ≥ w_i: DP[i,w] ← DP[i−1,w−w_i] + p_i</div>
+
+            <div class="section-title" style="margin-top:10px;">For the specific instance (n=3, c=8, w=[2,3,4])</div>
+            <div class="note">To draw: make a grid with rows i=0..3 and columns w=0..8; draw 1 or 2 edges from row i−1 into each node (i,w) based on w_i.</div>
+
+            <div class="section-title" style="margin-top:12px;">Matrix Parenthesization DP — task graph recipe (A,B,C,D)</div>
+            <div class="note">Tasks are ranges: AA,BB,CC,DD, AB,BC,CD, AC,BD, AD.</div>
+            <div class="note">Edge: “bigger range depends on its split subranges”.</div>
+            <div class="note highlight">Dependencies (for 4 matrices):</div>
+            <div class="note">AB ← AA,BB</div>
+            <div class="note">BC ← BB,CC</div>
+            <div class="note">CD ← CC,DD</div>
+            <div class="note">AC ← (AA,BC) and (AB,CC)</div>
+            <div class="note">BD ← (BB,CD) and (BC,DD)</div>
+            <div class="note">AD ← (AA,BD) and (AB,CD) and (AC,DD)</div>
+
+            <div class="section-title" style="margin-top:12px;">1D Knapsack on CREW PRAM — what to say/draw</div>
+            <div class="note">Use 2 arrays prev[w], curr[w] so each row update is parallel-safe.</div>
+            <div class="note">Processors: p = c+1 (one per capacity w).</div>
+            <div class="note">For each item i (n iterations): all processors compute curr[w] in O(1) from prev[w] and prev[w−w_i].</div>
+            <div class="formula">Tp = Θ(n) with p=Θ(c) processors</div>
+            <div class="formula">Work W = Θ(nc) ⇒ cost pTp = Θ(nc) ⇒ cost-optimal</div>
+        </div>
+
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+    </div>
+
+<script>
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
