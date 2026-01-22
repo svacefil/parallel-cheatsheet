@@ -786,40 +786,209 @@ n log n = K·p log n log p
 <div class="page" id="search">
 <div class="page-title">Ch5: SEARCH/DOP</div>
 <div class="section">
-<div class="section-title">Dynamic Mapping</div>
-<div class="note">Best: Tasks even across procs</div>
-<div class="note">Worst: Largest tasks same proc</div>
+<div class="section-title">Dynamic Mapping (Centralized) [4+3 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [4 pts] 7 tasks: 1,2,3,4,5,5,10. Centralized dynamic mapping, 2 procs. Compute best/worst-case speedup.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [3 pts] 7 tasks: 2,4,6,8,10,10,20. Centralized dynamic mapping, 2 procs. Compute best/worst-case speedup. Explain.</div>
+
+<div class="note"><b>Method:</b> Central queue, procs take tasks when idle</div>
 <div class="formula">S = T_seq / T_parallel</div>
-<div class="note">Best S: Total / ceil(Total/p)</div>
-<div class="note">Worst S: Total / (largest tasks on 1 proc)</div>
+<div class="note"><b>Best:</b> Work balanced across procs</div>
+<div class="note"><b>Worst:</b> Largest tasks on same proc</div>
+
+<div class="section-title" style="margin-top:10px;">Worked Example 1: tasks [1,2,3,4,5,5,10]</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+T_seq = 1+2+3+4+5+5+10 = 30
+
+BEST CASE (balance load):
+  P0: 10+5 = 15
+  P1: 1+2+3+4+5 = 15
+  T_par = 15
+  S_best = 30/15 = 2.0
+
+WORST CASE (largest on same proc):
+  P0: 10+5+5 = 20
+  P1: 1+2+3+4 = 10
+  T_par = 20
+  S_worst = 30/20 = 1.5
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Worked Example 2: tasks [2,4,6,8,10,10,20]</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+T_seq = 2+4+6+8+10+10+20 = 60
+
+BEST CASE:
+  P0: 20+10 = 30
+  P1: 2+4+6+8+10 = 30
+  T_par = 30
+  S_best = 60/30 = 2.0
+
+WORST CASE:
+  P0: 20+10+10 = 40
+  P1: 2+4+6+8 = 20
+  T_par = 40
+  S_worst = 60/40 = 1.5
+</pre></div>
+<div class="note highlight">Pattern: Best=2.0 (perfect balance), Worst=1.5 (3 largest on 1 proc)</div>
 </div>
 <div class="section">
-<div class="section-title">Parallel Best-First Search</div>
-<div class="formula">S ≤ p(texp+tacc)/(texp+p·tacc)</div>
-<div class="row"><span class="label">texp</span><span class="value">expand node (parallel)</span></div>
-<div class="row"><span class="label">tacc</span><span class="value">access open list (serial!)</span></div>
-<div class="note">Bottleneck: open list is sequential!</div>
+<div class="section-title">Parallel Best-First Search (Global Open List) [7 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [7 pts] For Parallel Best-First Search with one global open list, derive upper bound on speedup. Let t_exp = avg time to expand node, t_access = avg time to access open list. Assume seq and par expand same #nodes.</div>
+
+<div class="row"><span class="label">t_exp</span><span class="value">time to expand one node (parallel)</span></div>
+<div class="row"><span class="label">t_acc</span><span class="value">time to access open list (sequential!)</span></div>
+<div class="note"><b>Bottleneck:</b> Open list access is serialized!</div>
+
+<div class="section-title" style="margin-top:10px;">Derivation</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Sequential time for N nodes:
+  T_seq = N(t_exp + t_acc)
+
+Parallel with p processors:
+  - Each proc expands N/p nodes → (N/p)·t_exp in parallel
+  - BUT: all N accesses to open list are SERIAL
+  - Open list access: N·t_acc (cannot parallelize!)
+
+  T_par = (N/p)·t_exp + N·t_acc
+
+Speedup:
+  S = T_seq / T_par
+    = N(t_exp + t_acc) / [(N/p)·t_exp + N·t_acc]
+    = (t_exp + t_acc) / [t_exp/p + t_acc]
+    = p(t_exp + t_acc) / [t_exp + p·t_acc]
+</pre></div>
+
+<div class="formula highlight">S ≤ p(t_exp + t_acc) / (t_exp + p·t_acc)</div>
+
+<div class="section-title" style="margin-top:10px;">Meaning of Terms</div>
+<div class="note">• <b>p(t_exp + t_acc)</b>: Ideal speedup if everything parallel</div>
+<div class="note">• <b>t_exp + p·t_acc</b>: Denominator shows serial bottleneck</div>
+<div class="note">• As p→∞: S → (t_exp + t_acc)/t_acc (limited by serial access!)</div>
+<div class="note highlight">Key insight: Open list serialization limits scalability</div>
 </div>
 <div class="section">
-<div class="section-title">Dijkstra Token Termination</div>
-<div class="row"><span class="label">Topo</span><span class="value">Ring</span></div>
+<div class="section-title">Dijkstra Token Termination [9 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [9 pts] Parallel DFS with load-balancing on 4 procs (P0-P3). P0 idle at t=1, P1 idle at t=2. P3 transfers work to P1 at t=3. P2,P3 idle at t=4. P1 idle at t=5. Illustrate all steps of Dijkstra's Token algorithm. Show token position and color.</div>
+
+<div class="row"><span class="label">Topo</span><span class="value">Ring (P0→P1→P2→P3→P0)</span></div>
 <div class="row"><span class="label">Token</span><span class="value">WHITE or BLACK</span></div>
 <div class="row"><span class="label">Processor</span><span class="value">WHITE or BLACK</span></div>
 <div class="note highlight">Rules:</div>
 <div class="note">• All start WHITE</div>
-<div class="note">• Proc→BLACK if send to LOWER ID</div>
-<div class="note">• Token→BLACK if pass BLACK proc</div>
+<div class="note">• Proc→BLACK if send work to LOWER ID</div>
+<div class="note">• Token→BLACK if passes through BLACK proc</div>
 <div class="note">• BLACK proc passes token, turns WHITE</div>
 <div class="note highlight">DONE: WHITE token arrives at WHITE P0</div>
+
+<div class="section-title" style="margin-top:10px;">Worked Example (4 processors)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Initial: All procs BUSY, all WHITE
+Token starts at P0 (WHITE)
+
+t=1: P0 becomes IDLE
+     P0 (idle,W) sends WHITE token → P1
+
+t=2: P1 becomes IDLE
+     P1 (idle,W) passes WHITE token → P2
+
+t=3: P3 transfers work to P1
+     P3 → BLACK (sent to lower ID!)
+     P1 now BUSY again
+     P2 still has WHITE token
+
+t=4: P2,P3 become IDLE
+     P2 (idle,W) passes WHITE token → P3
+     P3 is BLACK!
+
+t=5: P1 becomes IDLE
+     P3 (idle,BLACK) passes token
+     Token becomes BLACK (passed BLACK proc)
+     P3 turns WHITE after passing
+     BLACK token → P0
+
+t=6: P0 receives BLACK token
+     BLACK token = NOT terminated!
+     P0 (idle,W) restarts: sends WHITE token → P1
+
+t=7: P1 (idle,W) passes WHITE token → P2
+t=8: P2 (idle,W) passes WHITE token → P3
+t=9: P3 (idle,W) passes WHITE token → P0
+
+t=10: WHITE token arrives at WHITE P0
+      ✓ TERMINATED!
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Diagram</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Ring topology:
+    P0 ←──── P3
+    │         ↑
+    ↓         │
+    P1 ────→ P2
+
+Token flow: P0→P1→P2→P3→P0
+
+Key insight: P3 sent work to P1 (lower ID)
+→ P3 turns BLACK
+→ Token must complete another round
+→ 2 full rounds needed for termination
+</pre></div>
 </div>
 <div class="section">
-<div class="section-title">Tree-Based (Weights)</div>
+<div class="section-title">Tree-Based Termination (Weights) [4+7 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [4 pts] Describe Tree-based termination detection. Illustrate on ≥5 procs. Describe drawback and solution.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [7 pts] 4 procs (P0-P3). Show all steps with weights (1 step = 1 picture):
+Step 1: P0 gives work to P1 | Step 2: P0 gives work to P2 | Step 3: P1 gives work to P3 | Step 4: P2 finishes | Step 5: P3 finishes | Step 6: P1 finishes | Step 7: P0 finishes</div>
+
 <div class="row"><span class="label">Start</span><span class="value">P0 weight=1</span></div>
-<div class="row"><span class="label">Give work</span><span class="value">Split weight ½</span></div>
+<div class="row"><span class="label">Give work</span><span class="value">Split weight ½ to receiver</span></div>
 <div class="row"><span class="label">Finish</span><span class="value">Return weight to giver</span></div>
 <div class="row"><span class="label highlight">DONE</span><span class="value highlight">P0 weight=1 again</span></div>
-<div class="note">Drawback: Weights get tiny (precision)</div>
-<div class="note">Fix: Use fractions or integers</div>
+
+<div class="section-title" style="margin-top:10px;">Worked Example (P0,P1,P2,P3)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+STEP 0 (Initial):
+  P0: w=1 (working)
+  P1,P2,P3: idle
+
+STEP 1: P0 → P1 (give work)
+  P0: w=1/2    P1: w=1/2
+  P2,P3: idle
+
+STEP 2: P0 → P2 (give work)
+  P0: w=1/4    P1: w=1/2    P2: w=1/4
+  P3: idle
+
+STEP 3: P1 → P3 (give work)
+  P0: w=1/4    P1: w=1/4    P2: w=1/4    P3: w=1/4
+
+STEP 4: P2 finishes → returns w to P0
+  P0: w=1/4+1/4=1/2    P1: w=1/4    P3: w=1/4
+  P2: done
+
+STEP 5: P3 finishes → returns w to P1
+  P0: w=1/2    P1: w=1/4+1/4=1/2
+  P2,P3: done
+
+STEP 6: P1 finishes → returns w to P0
+  P0: w=1/2+1/2=1
+  P1,P2,P3: done
+
+STEP 7: P0 finishes, w=1 ✓ TERMINATED!
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Tree Structure</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+        P0 (root)
+       /   \
+      P1    P2
+      |
+      P3
+
+Work flows DOWN, weights return UP
+</pre></div>
+
+<div class="note"><b>Drawback:</b> Weights become very small (1/2ᵏ) → floating point precision loss</div>
+<div class="note"><b>Solution:</b> Use fractions (numerator/denominator) or scale to integers</div>
 </div>
 <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
 </div>
