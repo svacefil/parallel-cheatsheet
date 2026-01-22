@@ -25,6 +25,7 @@
         .menu-btn:active { background: #1e3a6e; }
         .menu-btn.formula { background: linear-gradient(135deg, #2E7D32, #1b5e20); }
         .menu-btn.quick { background: linear-gradient(135deg, #E65100, #bf360c); }
+        .menu-btn.topo { background: linear-gradient(135deg, #7B1FA2, #4A148C); }
         .page { display: none; padding: 6px; min-height: 100vh; }
         .page.active { display: block; }
         .back-btn {
@@ -37,6 +38,7 @@
             background: #2F5496; color: #fff; padding: 10px; border-radius: 8px;
             font-size: 15px; font-weight: bold; text-align: center; margin-bottom: 8px;
         }
+        .page-title.purple { background: #7B1FA2; }
         .section {
             background: #1a1a1a; border-radius: 8px; padding: 10px; margin-bottom: 8px;
         }
@@ -69,6 +71,7 @@
         .sub-btn:active { background: #666; }
         .comp { color: #81C784; }
         .comm { color: #FFB74D; }
+        .purple { color: #CE93D8; }
     </style>
 </head>
 <body>
@@ -77,6 +80,8 @@
         <div class="menu">
             <a class="menu-btn formula" onclick="showPage('master')">📐 Master Formula</a>
             <a class="menu-btn formula" onclick="showPage('recipe')">🍳 Universal Recipe</a>
+            <a class="menu-btn topo" onclick="showPage('topology')">🔷 Ch1: Topology</a>
+            <a class="menu-btn topo" onclick="showPage('basics')">📚 Ch1: Basics</a>
             <a class="menu-btn" onclick="showPage('comm')">📡 Ch2: Comm</a>
             <a class="menu-btn" onclick="showPage('custom')">🔧 Ch2: Custom</a>
             <a class="menu-btn" onclick="showPage('matrix')">🔢 Ch3: Matrix</a>
@@ -88,6 +93,96 @@
             <a class="menu-btn quick" onclick="showPage('quick')">⚡ Quick Ref</a>
             <a class="menu-btn quick" onclick="showPage('iso')">📊 Isoefficiency</a>
         </div>
+    </div>
+
+    <!-- TOPOLOGY METRICS -->
+    <div id="topology" class="page">
+        <div class="page-title purple">Ch1: TOPOLOGY METRICS</div>
+        <div class="section">
+            <div class="section-title">2D Mesh (no wraparound)</div>
+            <div class="row"><span class="label">Nodes</span><span class="value">√p × √p</span></div>
+            <div class="row"><span class="label">Diameter</span><span class="value highlight">2(√p - 1)</span></div>
+            <div class="row"><span class="label">Bisection</span><span class="value highlight">√p</span></div>
+            <div class="row"><span class="label">Links</span><span class="value">2(√p)(√p-1) = 2p-2√p</span></div>
+            <div class="row"><span class="label">Cost</span><span class="value highlight">2p - 2√p ≈ 2p</span></div>
+        </div>
+        <div class="section">
+            <div class="section-title">2D Torus (wraparound)</div>
+            <div class="row"><span class="label">Nodes</span><span class="value">√p × √p</span></div>
+            <div class="row"><span class="label">Diameter</span><span class="value highlight">2⌊√p/2⌋ ≈ √p</span></div>
+            <div class="row"><span class="label">Bisection</span><span class="value highlight">2√p</span></div>
+            <div class="row"><span class="label">Links</span><span class="value">2p</span></div>
+            <div class="row"><span class="label">Cost</span><span class="value highlight">4p</span></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Hypercube</div>
+            <div class="row"><span class="label">Nodes</span><span class="value">p = 2^d</span></div>
+            <div class="row"><span class="label">Diameter</span><span class="value highlight">log p</span></div>
+            <div class="row"><span class="label">Bisection</span><span class="value highlight">p/2</span></div>
+            <div class="row"><span class="label">Links</span><span class="value">(p log p)/2</span></div>
+            <div class="row"><span class="label">Cost</span><span class="value highlight">p log p</span></div>
+            <div class="row"><span class="label">Avg distance</span><span class="value">(log p)/2</span></div>
+        </div>
+        <div class="section">
+            <div class="section-title">3D Mesh/Torus</div>
+            <div class="row"><span class="label">Nodes</span><span class="value">p^⅓ × p^⅓ × p^⅓</span></div>
+            <div class="row"><span class="label">Diameter</span><span class="value highlight">3(p^⅓ - 1)</span></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Ring</div>
+            <div class="row"><span class="label">Diameter</span><span class="value highlight">⌊p/2⌋</span></div>
+            <div class="row"><span class="label">Bisection</span><span class="value highlight">2</span></div>
+            <div class="row"><span class="label">Cost</span><span class="value">2p</span></div>
+        </div>
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+    </div>
+
+    <!-- BASICS Ch1 -->
+    <div id="basics" class="page">
+        <div class="page-title purple">Ch1: BASICS & PROOFS</div>
+        <div class="section">
+            <div class="section-title">Amdahl's Law</div>
+            <div class="note">If W has serial part Ws:</div>
+            <div class="formula">S ≤ W / Ws</div>
+            <div class="note">Proof: Tp ≥ Ws (serial part can't parallelize)</div>
+            <div class="note">S = W/Tp ≤ W/Ws</div>
+        </div>
+        <div class="section">
+            <div class="section-title">Core Definitions</div>
+            <div class="row"><span class="label">Speedup</span><span class="value">S = Ts / Tp = W / Tp</span></div>
+            <div class="row"><span class="label">Efficiency</span><span class="value">E = S / p</span></div>
+            <div class="row"><span class="label">Cost</span><span class="value">C = p · Tp</span></div>
+            <div class="row"><span class="label">Overhead</span><span class="value">To = p·Tp - W</span></div>
+            <div class="note">E range: 0 < E ≤ 1</div>
+        </div>
+        <div class="section">
+            <div class="section-title">Cost Optimal</div>
+            <div class="formula">p · Tp = O(W)</div>
+            <div class="note">Parallel cost = sequential work</div>
+            <div class="note">Equivalently: E = Θ(1)</div>
+        </div>
+        <div class="section">
+            <div class="section-title">Isoefficiency</div>
+            <div class="formula">W = K · To</div>
+            <div class="note">How W must grow with p to maintain E</div>
+            <div class="note">Lower isoeff = better scalability</div>
+        </div>
+        <div class="section">
+            <div class="section-title">To vs Tp Relationship</div>
+            <div class="note">If To ≤ Θ(p):</div>
+            <div class="note">→ Tp keeps decreasing, approaches constant</div>
+            <div class="note">If To > Θ(p):</div>
+            <div class="note">→ Tp has a MINIMUM (first ↓ then ↑)</div>
+            <div class="formula">Find min: dTp/dp = 0</div>
+        </div>
+        <div class="section">
+            <div class="section-title">Task Graph Analysis</div>
+            <div class="row"><span class="label">Max concurrency</span><span class="value">Max parallel tasks</span></div>
+            <div class="row"><span class="label">Critical path</span><span class="value">Longest dependency chain</span></div>
+            <div class="row"><span class="label">Max speedup</span><span class="value">Total work / Critical path</span></div>
+            <div class="row"><span class="label">Min procs</span><span class="value">= Max concurrency</span></div>
+        </div>
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- MASTER FORMULA -->
@@ -152,7 +247,7 @@
             <div class="note">Take DOMINANT term in p</div>
         </div>
         <div class="section">
-            <div class="section-title">Step 5: Cost-Optimal</div>
+            <div class="section-title">Step 5: Cost-Optimal p</div>
             <div class="formula">p·Tₚ = O(W) → solve for p</div>
         </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
@@ -207,6 +302,12 @@
             <div class="row"><span class="label">Phase 2</span><span class="value">Parallel: logp·(tₛ+tₐdd)</span></div>
             <div class="row"><span class="label">Phase 3</span><span class="value">Update: (n/p)·tₐdd</span></div>
             <div class="formula">Total: (2n/p-1)tₐdd + logp(tₛ+tₐdd)</div>
+        </div>
+        <div class="section">
+            <div class="section-title">Prefix Sum (p=n)</div>
+            <div class="formula">Tp = logn·(tₛ + tₐdd)</div>
+            <div class="formula">S = n / (logn·(tₛ+tₐdd))</div>
+            <div class="note">Cost = n·logn → NOT cost-optimal (W=n)</div>
         </div>
         <div class="section">
             <div class="section-title">Scatter Optimality (tₛ=0)</div>
@@ -327,6 +428,7 @@
             <div class="row"><span class="label">Tcomm</span><span class="value comm">logp(tₛ + n/p·tᵥ)</span></div>
             <div class="formula">Tₚ = nlog²n/p + logp(tₛ + n/p·tᵥ)</div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log²p)</span></div>
+            <div class="note">n=p case: Tp = log²n(tc+ts+tw)</div>
         </div>
 
         <div id="oddeven" class="section" style="display:none;">
@@ -367,6 +469,8 @@
             <div class="note">Best: Tasks even across procs</div>
             <div class="note">Worst: Largest tasks same proc</div>
             <div class="formula">S = T_seq / T_parallel</div>
+            <div class="note">Best S: Total / ceil(Total/p)</div>
+            <div class="note">Worst S: Total / (largest tasks on 1 proc)</div>
         </div>
         <div class="section">
             <div class="section-title">Parallel Best-First Search</div>
@@ -378,18 +482,23 @@
         <div class="section">
             <div class="section-title">Dijkstra Token Termination</div>
             <div class="row"><span class="label">Topo</span><span class="value">Ring</span></div>
-            <div class="row"><span class="label">Token</span><span class="value">WHITE/BLACK</span></div>
-            <div class="row"><span class="label">Processor</span><span class="value">WHITE/BLACK</span></div>
-            <div class="note">Proc→BLACK if send to lower ID</div>
-            <div class="note">Token→BLACK if pass BLACK proc</div>
-            <div class="note highlight">Done: WHITE token → WHITE P0</div>
+            <div class="row"><span class="label">Token</span><span class="value">WHITE or BLACK</span></div>
+            <div class="row"><span class="label">Processor</span><span class="value">WHITE or BLACK</span></div>
+            <div class="note highlight">Rules:</div>
+            <div class="note">• All start WHITE</div>
+            <div class="note">• Proc→BLACK if send to LOWER ID</div>
+            <div class="note">• Token→BLACK if pass BLACK proc</div>
+            <div class="note">• BLACK proc passes token, turns WHITE</div>
+            <div class="note highlight">DONE: WHITE token arrives at WHITE P0</div>
         </div>
         <div class="section">
             <div class="section-title">Tree-Based (Weights)</div>
             <div class="row"><span class="label">Start</span><span class="value">P0 weight=1</span></div>
             <div class="row"><span class="label">Give work</span><span class="value">Split weight ½</span></div>
-            <div class="row"><span class="label">Done</span><span class="value">Return weight to parent</span></div>
-            <div class="row"><span class="label highlight">End</span><span class="value highlight">P0 weight=1 again</span></div>
+            <div class="row"><span class="label">Finish</span><span class="value">Return weight to giver</span></div>
+            <div class="row"><span class="label highlight">DONE</span><span class="value highlight">P0 weight=1 again</span></div>
+            <div class="note">Drawback: Weights get tiny (precision)</div>
+            <div class="note">Fix: Use fractions or integers</div>
         </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
@@ -401,6 +510,7 @@
             <button class="sub-btn" onclick="showSection('prim')">Prim's</button>
             <button class="sub-btn" onclick="showSection('floyd')">Floyd's</button>
             <button class="sub-btn" onclick="showSection('dijksp')">Dijkstra S-P</button>
+            <button class="sub-btn" onclick="showSection('conn')">Connected</button>
         </div>
 
         <div id="prim" class="section">
@@ -417,6 +527,7 @@
             <div class="formula">Tₚ = n²/p + n log p</div>
             <div class="formula">E = 1/(1 + p log p/n)</div>
             <div class="row"><span class="label">Cost-opt</span><span class="value highlight">p = O(n/log n)</span></div>
+            <div class="note">Cost-opt when: plogp = O(n)</div>
         </div>
 
         <div id="floyd" class="section" style="display:none;">
@@ -444,7 +555,14 @@
             <div class="formula">Tₚ = n³/p</div>
             <div class="row"><span class="label">Speedup</span><span class="value highlight">p (perfect!)</span></div>
             <div class="row"><span class="label">Efficiency</span><span class="value highlight">1 (perfect!)</span></div>
-            <div class="row"><span class="label">Isoeff</span><span class="value">O(p³) by concurrency</span></div>
+            <div class="row"><span class="label">Constraint</span><span class="value">p ≤ n</span></div>
+        </div>
+
+        <div id="conn" class="section" style="display:none;">
+            <div class="section-title">Connected Components</div>
+            <div class="row"><span class="label">W</span><span class="value">n²</span></div>
+            <div class="row"><span class="label">Method</span><span class="value">Parallel search</span></div>
+            <div class="formula">Tₚ ≈ n²/p + comm overhead</div>
         </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
@@ -471,6 +589,7 @@
             <div class="row"><span class="label">W</span><span class="value">O(nc)</span></div>
             <div class="row"><span class="label">Op</span><span class="value">Circular shift</span></div>
             <div class="formula">Tₚ = nc/p + n(tₛ + c/p·tᵥ)</div>
+            <div class="note">E bounded by comm overhead</div>
         </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
@@ -498,8 +617,9 @@
             <div class="section-title">Find Minimum Tₚ</div>
             <div class="row"><span class="label">Given</span><span class="value">Tₚ=(n/p)logn + tᵥ(n/p)logp</span></div>
             <div class="row"><span class="label">Step 1</span><span class="value">dTₚ/dp = 0</span></div>
-            <div class="row"><span class="label">Step 2</span><span class="value">Solve for p</span></div>
-            <div class="formula">Result: log p = 1 - logn/tᵥ</div>
+            <div class="row"><span class="label">Derivative</span><span class="value">-nlogn/p² + tᵥn(1-logp)/p²</span></div>
+            <div class="row"><span class="label">Set = 0</span><span class="value">logn = tᵥ(1-logp)</span></div>
+            <div class="formula">logp = 1 - logn/tᵥ</div>
             <div class="formula">For tᵥ=10: logp = 1 - logn/10</div>
         </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
@@ -541,7 +661,6 @@
                 <tr><td>Odd-Even</td><td class="highlight">O(p²)</td></tr>
                 <tr><td>Enum Sort</td><td class="highlight">O(p^1.5)</td></tr>
                 <tr><td>Floyd</td><td class="highlight">O(p^1.5)</td></tr>
-                <tr><td>Dijkstra S-P</td><td class="highlight">O(p³)</td></tr>
             </table>
         </div>
         <div class="section">
@@ -556,6 +675,12 @@
                 <tr><td>Floyd</td><td>O(n)</td></tr>
                 <tr><td>Dijkstra S-P</td><td>p ≤ n</td></tr>
             </table>
+        </div>
+        <div class="section">
+            <div class="section-title">Scalability Ranking</div>
+            <div class="note">Best → Worst:</div>
+            <div class="note">O(p) > O(p^1.5) > O(p log²p) > O(p²)</div>
+            <div class="note">Lower isoeff = better scalability</div>
         </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
