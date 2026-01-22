@@ -1159,6 +1159,10 @@ P0:[7,6]  P1:[5,4]  P2:[3,2]  P3:[1,0]
 <div class="note"><b>Pipelined scatter time:</b></div>
 <div class="formula">T = (p-1)·(tₛ + m·tᵥ)</div>
 <div class="note"><b>Case tₛ=0:</b> T = (p-1)·m·tᵥ (matches exam form t_w·m·(p-1) if tᵥ≡t_w)</div>
+<div class="section-title" style="margin-top:10px;">Meaning of each term</div>
+<div class="note">• <b>tᵥ (or t_w)</b> = per-word transfer time (bandwidth cost)</div>
+<div class="note">• <b>m</b> = message size (words per processor)</div>
+<div class="note">• <b>(p-1)</b> = number of messages sent (one to each non-root processor)</div>
 <div class="section-title" style="margin-top:10px;">Why this is asymptotically optimal (tₛ=0)</div>
 <div class="note">
 Lower bound: consider the first link out of the root. All other processors need their m words, so at least <span class="highlight">(p-1)m</span> words must cross that link.<br/>
