@@ -989,7 +989,10 @@ If p &gt; n, some processors idle ⇒ E drops ≈ n/p.
 <div class="page" id="dp">
 <div class="page-title">Ch7: DP</div>
 <div class="section">
-<div class="section-title">LCS - WHY E ≤ 0.5</div>
+<div class="section-title">LCS - WHY E ≤ 0.5 [8+5+5 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [8 pts] Given E = n²tᶜ / [n(2n-1)(tₛ+tᵥ+tᶜ)], show efficiency is upper bounded by 0.5.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] LCS, two sequences length n. Derive Tₚ, S, E. Use tₛ, tᵥ, tᶜ.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] Show LCS efficiency cannot exceed a certain value (assume comm=0).</div>
 <div class="row"><span class="label">W</span><span class="value">n²</span></div>
 <div class="row"><span class="label">Method</span><span class="value">Anti-diagonal wavefront</span></div>
 <div class="row"><span class="label">#Processors</span><span class="value">n (max per diag)</span></div>
@@ -1017,7 +1020,10 @@ but inside each D_k run all tasks concurrently.
 <div class="note"><b>For n=4:</b> k=2..8 gives 7 parallel steps with sizes 1,2,3,4,3,2,1.</div>
 </div>
 <div class="section">
-<div class="section-title">0/1 Knapsack</div>
+<div class="section-title">0/1 Knapsack [5+8+4 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] 0/1 Knapsack, n items, capacity c, p procs. Show E cannot increase beyond a certain value by increasing (n,c). Give upper bound as function of t₂ and tᶜ. Hint: Tshift(m) = 2tₛ + tᵥm.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [8 pts] CREW PRAM formulation. Illustrate, describe #procs, derive Tₚ. Is it cost optimal?</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [4 pts] Draw task-dependency graph for 0/1 Knapsack with 3 objects w=[2,3,4], p=[2,8,11], c=8.</div>
 <div class="row"><span class="label">W</span><span class="value">nc·tᶜ</span></div>
 <div class="row"><span class="label">n</span><span class="value"># items</span></div>
 <div class="row"><span class="label">c</span><span class="value">capacity</span></div>
@@ -1045,6 +1051,38 @@ but inside each D_k run all tasks concurrently.
 <div class="note">• If W &gt;&gt; p·comm: E → 1</div>
 <div class="note">• If startup dominates: E → W/(p·f·tₛ)</div>
 <div class="note">• If bandwidth dominates: E → W/(p·g·tᵥ)</div>
+</div>
+<div class="section">
+<div class="section-title">Optimal Matrix Parenthesization [7 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Draw task-dependency graph for optimal matrix parenthesization. Chain of 4 matrices A,B,C,D. Denote vertex by range (e.g., AC for A,B,C). Include length-1 ranges (AA, BB, etc.).</div>
+<div class="note"><b>Tasks:</b> Each vertex = subproblem for range [i..j]</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Level 0 (len=1): AA, BB, CC, DD  (base cases, no deps)
+Level 1 (len=2): AB, BC, CD
+Level 2 (len=3): AC, BD
+Level 3 (len=4): AD (final answer)
+</pre></div>
+<div class="section-title" style="margin-top:10px;">Dependencies</div>
+<div class="note">Range [i..j] depends on all pairs [i..k] and [k+1..j] for i≤k&lt;j</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+AB depends on: AA, BB
+BC depends on: BB, CC
+CD depends on: CC, DD
+AC depends on: AA+BC, AB+CC
+BD depends on: BB+CD, BC+DD
+AD depends on: AA+BD, AB+CD, AC+DD
+</pre></div>
+<div class="section-title" style="margin-top:10px;">Task Graph (draw this)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Level 0:   AA    BB    CC    DD
+            \   /\   /\   /
+Level 1:     AB    BC    CD
+              \   /\   /
+Level 2:       AC    BD
+                \   /
+Level 3:         AD
+</pre></div>
+<div class="note"><b>Concurrency:</b> All tasks at same level can run in parallel.</div>
 </div>
 <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
 </div>
