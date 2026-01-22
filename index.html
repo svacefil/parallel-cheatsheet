@@ -288,9 +288,30 @@ Total:          2(√p-1)tₛ + (p-1)m·tᵥ
 Asymptotic:     Θ(√p·tₛ + p·m·tᵥ)
 </pre></div>
 <div class="note">
-          Interpretation: 2(√p-1)tₛ = two phases × (√p-1) steps.  
+          Interpretation: 2(√p-1)tₛ = two phases × (√p-1) steps.
           (p-1)m·tᵥ = each processor receives (p-1) messages of size m in total.
         </div>
+
+<div class="section-title" style="margin-top:10px;">Derivation on 3D mesh (p^⅓×p^⅓×p^⅓)</div>
+<div class="note">
+          Use 3 phases: allgather in x-dim, then y-dim, then z-dim.
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Phase 1 (x): (p^⅓-1)(tₛ + m·tᵥ)           msg size m
+Phase 2 (y): (p^⅓-1)(tₛ + p^⅓·m·tᵥ)       msg size p^⅓·m
+Phase 3 (z): (p^⅓-1)(tₛ + p^⅔·m·tᵥ)       msg size p^⅔·m
+Total:       3(p^⅓-1)tₛ + (p-1)m·tᵥ
+</pre></div>
+<div class="note">
+          Bandwidth: (p^⅓-1)m + (p^⅓-1)p^⅓m + (p^⅓-1)p^⅔m = (p^⅓-1)m(1+p^⅓+p^⅔) = (p-1)m
+        </div>
+
+<div class="section-title" style="margin-top:10px;">3D Mesh vs Hypercube comparison</div>
+<div class="note"><b>3D Mesh:</b> 3(p^⅓-1)tₛ + (p-1)m·tᵥ</div>
+<div class="note"><b>Hypercube:</b> (log p)tₛ + (p-1)m·tᵥ</div>
+<div class="note"><b>Bandwidth term:</b> SAME — (p-1)m·tᵥ</div>
+<div class="note"><b>Startup term:</b> 3(p^⅓-1) vs log p</div>
+<div class="note highlight"><b>Which is faster?</b> Hypercube has fewer phases (log p < 3p^⅓ for large p), so hypercube is faster due to lower startup overhead.</div>
 </div>
 <div class="section">
 <div class="section-title">One-to-All Broadcast</div>
