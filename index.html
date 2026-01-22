@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Parallel Algo</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Parallel Algo</title>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
@@ -75,1112 +76,1219 @@
     </style>
 </head>
 <body>
-    <!-- MAIN MENU -->
-    <div id="menu" class="page active">
-        <div class="menu">
-            <a class="menu-btn formula" onclick="showPage('master')">📐 Master Formula</a>
-            <a class="menu-btn formula" onclick="showPage('recipe')">🍳 Universal Recipe</a>
-            <a class="menu-btn topo" onclick="showPage('topology')">🔷 Ch1: Topology</a>
-            <a class="menu-btn topo" onclick="showPage('basics')">📚 Ch1: Basics</a>
-            <a class="menu-btn" onclick="showPage('comm')">📡 Ch2: Comm</a>
-            <a class="menu-btn" onclick="showPage('custom')">🔧 Ch2: Custom</a>
-            <a class="menu-btn" onclick="showPage('stencil')">🖼️ Ch3: Stencil</a>
-            <a class="menu-btn" onclick="showPage('matrix')">🔢 Ch3: Matrix</a>
-            <a class="menu-btn" onclick="showPage('sort')">📊 Ch4: Sort</a>
-            <a class="menu-btn" onclick="showPage('search')">🔍 Ch5: Search</a>
-            <a class="menu-btn" onclick="showPage('graph')">🕸️ Ch6: Graph</a>
-            <a class="menu-btn" onclick="showPage('dp')">📈 Ch7: DP</a>
-            <a class="menu-btn" onclick="showPage('fft')">〰️ Ch8: FFT</a>
-            <a class="menu-btn" onclick="showPage('visual')">🎨 Ch9: Visual</a>
-            <a class="menu-btn quick" onclick="showPage('quick')">⚡ Quick Ref</a>
-            <a class="menu-btn quick" onclick="showPage('iso')">📊 Isoefficiency</a>
-            <a class="menu-btn quick" onclick="showPage('memory')">💾 Memory</a>
+<!-- MAIN MENU -->
+<div class="page active" id="menu">
+<div class="menu">
+<a class="menu-btn formula" onclick="showPage('master')">📐 Master Formula</a>
+<a class="menu-btn formula" onclick="showPage('recipe')">🍳 Universal Recipe</a>
+<a class="menu-btn topo" onclick="showPage('topology')">🔷 Ch1: Topology</a>
+<a class="menu-btn topo" onclick="showPage('basics')">📚 Ch1: Basics</a>
+<a class="menu-btn" onclick="showPage('comm')">📡 Ch2: Comm</a>
+<a class="menu-btn" onclick="showPage('custom')">🔧 Ch2: Custom</a>
+<a class="menu-btn" onclick="showPage('stencil')">🖼️ Ch3: Stencil</a>
+<a class="menu-btn" onclick="showPage('matrix')">🔢 Ch3: Matrix</a>
+<a class="menu-btn" onclick="showPage('sort')">📊 Ch4: Sort</a>
+<a class="menu-btn" onclick="showPage('search')">🔍 Ch5: Search</a>
+<a class="menu-btn" onclick="showPage('graph')">🕸️ Ch6: Graph</a>
+<a class="menu-btn" onclick="showPage('dp')">📈 Ch7: DP</a>
+<a class="menu-btn" onclick="showPage('fft')">〰️ Ch8: FFT</a>
+<a class="menu-btn" onclick="showPage('visual')">🎨 Visual &amp; Worked</a><a class="menu-btn quick" onclick="showPage('quick')">⚡ Quick Ref</a>
+<a class="menu-btn quick" onclick="showPage('iso')">📊 Isoefficiency</a>
+<a class="menu-btn quick" onclick="showPage('memory')">💾 Memory</a>
+</div>
+</div>
+<!-- TOPOLOGY METRICS -->
+<div class="page" id="topology">
+<div class="page-title purple">Ch1: TOPOLOGY METRICS</div>
+<div class="section">
+<div class="section-title">2D Mesh (no wraparound)</div>
+<div class="row"><span class="label">Nodes</span><span class="value">√p × √p</span></div>
+<div class="row"><span class="label">Diameter</span><span class="value highlight">2(√p - 1)</span></div>
+<div class="row"><span class="label">Bisection</span><span class="value highlight">√p</span></div>
+<div class="row"><span class="label">Links</span><span class="value">2(√p)(√p-1) = 2p-2√p</span></div>
+<div class="row"><span class="label">Cost (Σdeg)</span><span class="value highlight">4p - 4√p ≈ 4p</span></div>
+</div>
+<div class="section">
+<div class="section-title">2D Torus (wraparound)</div>
+<div class="row"><span class="label">Nodes</span><span class="value">√p × √p</span></div>
+<div class="row"><span class="label">Diameter</span><span class="value highlight">2⌊√p/2⌋ ≈ √p</span></div>
+<div class="row"><span class="label">Bisection</span><span class="value highlight">2√p</span></div>
+<div class="row"><span class="label">Links</span><span class="value">2p</span></div>
+<div class="row"><span class="label">Cost</span><span class="value highlight">4p</span></div>
+</div>
+<div class="section">
+<div class="section-title">Hypercube</div>
+<div class="row"><span class="label">Nodes</span><span class="value">p = 2^d</span></div>
+<div class="row"><span class="label">Diameter</span><span class="value highlight">log p</span></div>
+<div class="row"><span class="label">Bisection</span><span class="value highlight">p/2</span></div>
+<div class="row"><span class="label">Links</span><span class="value">(p log p)/2</span></div>
+<div class="row"><span class="label">Cost</span><span class="value highlight">p log p</span></div>
+<div class="row"><span class="label">Avg distance</span><span class="value">(log p)/2</span></div>
+</div>
+<div class="section">
+<div class="section-title">3D Mesh/Torus</div>
+<div class="row"><span class="label">Nodes</span><span class="value">p^⅓ × p^⅓ × p^⅓</span></div>
+<div class="row"><span class="label">Diameter</span><span class="value highlight">3(p^⅓ - 1)</span></div>
+</div>
+<div class="section">
+<div class="section-title">Ring</div>
+<div class="row"><span class="label">Diameter</span><span class="value highlight">⌊p/2⌋</span></div>
+<div class="row"><span class="label">Bisection</span><span class="value highlight">2</span></div>
+<div class="row"><span class="label">Cost</span><span class="value">2p</span></div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- BASICS Ch1 -->
+<div class="page" id="basics">
+<div class="page-title purple">Ch1: BASICS &amp; PROOFS</div>
+<div class="section">
+<div class="section-title">Amdahl's Law</div>
+<div class="note">If W has serial part Ws:</div>
+<div class="formula">S ≤ W / Ws</div>
+<div class="note">Proof: Tp ≥ Ws (serial part can't parallelize)</div>
+<div class="note">S = W/Tp ≤ W/Ws</div>
+</div>
+<div class="section">
+<div class="section-title">Core Definitions</div>
+<div class="row"><span class="label">Speedup</span><span class="value">S = Ts / Tp = W / Tp</span></div>
+<div class="row"><span class="label">Efficiency</span><span class="value">E = S / p</span></div>
+<div class="row"><span class="label">Cost</span><span class="value">C = p · Tp</span></div>
+<div class="row"><span class="label">Overhead</span><span class="value">To = p·Tp - W</span></div>
+<div class="note">E range: 0 &lt; E ≤ 1</div>
+</div>
+<div class="section">
+<div class="section-title">Cost Optimal</div>
+<div class="formula">p · Tp = O(W)</div>
+<div class="note">Parallel cost = sequential work</div>
+<div class="note">Equivalently: E = Θ(1)</div>
+</div>
+<div class="section">
+<div class="section-title">Isoefficiency</div>
+<div class="formula">W = K · To</div>
+<div class="note">How W must grow with p to maintain E</div>
+<div class="note">Lower isoeff = better scalability</div>
+</div>
+<div class="section">
+<div class="section-title">To vs Tp Relationship</div>
+<div class="note">If To ≤ Θ(p):</div>
+<div class="note">→ Tp keeps decreasing, approaches constant</div>
+<div class="note">If To &gt; Θ(p):</div>
+<div class="note">→ Tp has a MINIMUM (first ↓ then ↑)</div>
+<div class="formula">Find min: dTp/dp = 0</div>
+</div>
+<div class="section">
+<div class="section-title">Task Graph Analysis</div>
+<div class="row"><span class="label">Max concurrency</span><span class="value">Max parallel tasks</span></div>
+<div class="row"><span class="label">Critical path</span><span class="value">Longest dependency chain</span></div>
+<div class="row"><span class="label">Max speedup</span><span class="value">Total work / Critical path</span></div>
+<div class="row"><span class="label">Min procs</span><span class="value">= Max concurrency</span></div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- MASTER FORMULA -->
+<div class="page" id="master">
+<div class="page-title">MASTER FORMULA</div>
+<div class="section">
+<div class="section-title">Core Equations</div>
+<div class="formula">Tₚ = W/p + Tcomm</div>
+<div class="formula">Tₒ = p·Tₚ - W</div>
+<div class="formula">S = W / Tₚ</div>
+<div class="formula">E = S / p</div>
+<div class="formula">Isoeff: W = K·Tₒ</div>
+<div class="formula">Cost-opt: p·Tₚ = O(W)</div>
+</div>
+<div class="section">
+<div class="section-title">Find Tcomm (5 Questions)</div>
+<div class="row"><span class="label">1.</span><span class="value">Operation?</span></div>
+<div class="row"><span class="label">2.</span><span class="value">Topology?</span></div>
+<div class="row"><span class="label">3.</span><span class="value"># Processors?</span></div>
+<div class="row"><span class="label">4.</span><span class="value">Message size?</span></div>
+<div class="row"><span class="label">5.</span><span class="value">How many times?</span></div>
+</div>
+<div class="section">
+<div class="section-title">Phases by Topology</div>
+<div class="row"><span class="label">Ring</span><span class="value">p - 1</span></div>
+<div class="row"><span class="label">2D Mesh</span><span class="value">2(√p - 1)</span></div>
+<div class="row"><span class="label">3D Mesh</span><span class="value">3(p^⅓ - 1)</span></div>
+<div class="row"><span class="label">Hypercube</span><span class="value">log p</span></div>
+</div>
+<div class="section">
+<div class="section-title">Key Insight</div>
+<div class="row"><span class="label">All-to-All</span><span class="value highlight">msg GROWS → (p-1)m</span></div>
+<div class="row"><span class="label">One-to-All</span><span class="value">msg SAME → phases×m</span></div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- UNIVERSAL RECIPE -->
+<div class="page" id="recipe">
+<div class="page-title">🍳 UNIVERSAL RECIPE</div>
+<div class="section">
+<div class="section-title">Step 1: Identify</div>
+<div class="row"><span class="label">W</span><span class="value">Sequential work</span></div>
+<div class="row"><span class="label">Op?</span><span class="value">bcast/reduce/all2all</span></div>
+<div class="row"><span class="label">Topo?</span><span class="value">ring/mesh/hyper</span></div>
+<div class="row"><span class="label">#Proc</span><span class="value">per operation</span></div>
+<div class="row"><span class="label">m?</span><span class="value">message size</span></div>
+<div class="row"><span class="label">×?</span><span class="value">how many times</span></div>
+
+<div class="section-title" style="margin-top:10px;">Time model cheats (so you can derive, not memorize)</div>
+<div class="note">
+<b>Point-to-point (Hockney):</b> T_msg(m) = tₛ + m·tᵥ (startup + bandwidth).  
+          If the exam says “t_s to send a unit message”, then for unit messages just use <span class="highlight">t_s</span>.
         </div>
+<div class="note">
+<b>Multi-hop networks:</b><br/>
+          • store-and-forward: hops·(tₛ + m·tᵥ)<br/>
+          • wormhole (pipelined): hops·tₛ + m·tᵥ
+        </div>
+<div class="note">
+<b>Collectives:</b> derive by counting (1) how many steps, and (2) how large the message is in each step (constant vs growing).
+        </div>
+</div>
+<div class="section">
+<div class="section-title">Step 2: Build Tₚ</div>
+<div class="formula">Tₚ = W/p + Tcomm</div>
+<div class="formula">Tcomm = phases×tₛ + data×tᵥ</div>
+</div>
+<div class="section">
+<div class="section-title">Step 3: Build Tₒ</div>
+<div class="formula">Tₒ = p·Tₚ - W</div>
+</div>
+<div class="section">
+<div class="section-title">Step 4: Isoefficiency</div>
+<div class="formula">W = K·Tₒ → solve for W</div>
+<div class="note">Take DOMINANT term in p</div>
+</div>
+<div class="section">
+<div class="section-title">Step 5: Cost-Optimal p</div>
+<div class="formula">p·Tₚ = O(W) → solve for p</div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- COMMUNICATION -->
+<div class="page" id="comm">
+<div class="page-title">Ch2: COMMUNICATION</div>
+<div class="section">
+<div class="section-title">All-to-All Broadcast</div>
+<div class="note">Message GROWS: (p-1)×m total</div>
+<div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)m·tᵥ</span></div>
+<div class="row"><span class="label">2D Mesh</span><span class="value">2(√p-1)tₛ + (p-1)m·tᵥ</span></div>
+<div class="row"><span class="label">3D Mesh</span><span class="value">3(p^⅓-1)tₛ + (p-1)m·tᵥ</span></div>
+<div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)m·tᵥ</span></div>
+
+<div class="section-title" style="margin-top:10px;">Derivation on 2D mesh (√p×√p)</div>
+<div class="note">
+          Use 2 phases: allgather in rows then allgather in columns.
+          Phase 1 message size is <span class="highlight">m</span>; Phase 2 message size becomes <span class="highlight">√p·m</span>.
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Row allgather:  (√p-1)(tₛ + m·tᵥ)
+Col allgather:  (√p-1)(tₛ + √p·m·tᵥ)
+Total:          2(√p-1)tₛ + (p-1)m·tᵥ
+Asymptotic:     Θ(√p·tₛ + p·m·tᵥ)
+</pre></div>
+<div class="note">
+          Interpretation: 2(√p-1)tₛ = two phases × (√p-1) steps.  
+          (p-1)m·tᵥ = each processor receives (p-1) messages of size m in total.
+        </div>
+</div>
+<div class="section">
+<div class="section-title">One-to-All Broadcast</div>
+<div class="note">Message SAME: phases×m total</div>
+<div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)m·tᵥ</span></div>
+<div class="row"><span class="label">2D Mesh</span><span class="value">2(√p-1)tₛ + 2(√p-1)m·tᵥ</span></div>
+<div class="row"><span class="label">3D Mesh</span><span class="value">3(p^⅓-1)tₛ + 3(p^⅓-1)m·tᵥ</span></div>
+<div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (logp)m·tᵥ</span></div>
+</div>
+<div class="section">
+<div class="section-title">All-to-One Reduction</div>
+<div class="note">Same as One-to-All (reverse)</div>
+</div>
+<div class="section">
+<div class="section-title">All-Reduce</div>
+<div class="note">Same as One-to-All formulas</div>
+</div>
+<div class="section">
+<div class="section-title">All-to-All Personalized</div>
+<div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + p(p-1)/2·m·tᵥ</span></div>
+<div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p/2)logp·m·tᵥ</span></div>
+</div>
+<div class="section">
+<div class="section-title">Scatter/Gather</div>
+<div class="note">Convention: M = total data at root</div>
+<div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)M/p·tᵥ</span></div>
+<div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)M/p·tᵥ</span></div>
+
+<div class="note" style="margin-top:8px;">
+<b>Linear array / pipeline scatter (common exam model):</b> T = (p-1)(tₛ + m·tᵥ).  
+          If tₛ=0 ⇒ T=(p-1)m·tᵥ and this matches the bandwidth lower bound (optimal).
+        </div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- CUSTOM Ch2 -->
+<div class="page" id="custom">
+<div class="page-title">Ch2: CUSTOM DERIVATIONS</div>
+<div class="section">
+<div class="section-title">Prefix Sum (n/p &gt; 1)</div>
+<div class="row"><span class="label">Phase 1</span><span class="value">Local prefix: (n/p-1)·tₐdd</span></div>
+<div class="row"><span class="label">Phase 2</span><span class="value">Parallel: logp·(tₛ+tₐdd)</span></div>
+<div class="row"><span class="label">Phase 3</span><span class="value">Update: (n/p)·tₐdd</span></div>
+<div class="formula">Total: (2n/p-1)tₐdd + logp(tₛ+tₐdd)</div>
+
+<div class="section-title" style="margin-top:10px;">Exact time breakdown (matches exam wording)</div>
+<div class="note">
+          Assumptions: p=2^d hypercube, each processor holds <span class="highlight">n/p</span> numbers (n/p integer &gt; 1).  
+          Communication per step is a <span class="highlight">unit-length</span> message (one number).  
+          Notation mapping: exam uses t_add (add), t_s (send 1 number).
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Phase A (local prefix):      (n/p - 1) · t_add
+Phase B (cube scan of sums): log2(p) · ( t_s + t_add )
+Phase C (offset add):        (n/p) · t_add
+TOTAL: (2n/p - 1)·t_add + log2(p)·(t_s + t_add)
+</pre></div>
+<div class="note">
+          Meaning: Phase B does <span class="highlight">log2(p)</span> neighbor exchanges (dimension by dimension).  
+          Each step sends one partial sum and adds it (hence t_s + t_add).
+        </div>
+</div>
+<div class="section">
+<div class="section-title">Prefix Sum (p=n)</div>
+<div class="formula">Tp = logn·(tₛ + tₐdd)</div>
+<div class="formula">S = n / (logn·(tₛ+tₐdd))</div>
+<div class="note">Cost = n·logn → NOT cost-optimal (W=n)</div>
+</div>
+<div class="section"><div class="section-title">Scatter Optimality on Linear Array (tₛ=0)</div>
+<div class="note"><b>Setup:</b> scatter from root to p-1 other processors on a 1D linear array (pipeline).  
+        Each destination receives a message of size <span class="highlight">m</span> (words). Total data M = p·m.</div>
+<div class="formula">T_pipe = (p-1)(tₛ + m·tᵥ)</div>
+<div class="note"><b>If tₛ=0:</b> T_pipe = (p-1)m·tᵥ = tᵥ·M·(p-1)/p</div>
+<div class="section-title" style="margin-top:10px;">Lower bound (bandwidth)</div>
+<div class="note">
+          All p-1 messages must cross the first link out of the root ⇒ at least (p-1)m words cross that link.  
+          With tₛ=0, time per word is tᵥ ⇒ any algorithm needs time ≥ (p-1)m·tᵥ.
+        </div>
+<div class="note"><b>Conclusion:</b> pipeline achieves the lower bound ⇒ asymptotically optimal.</div>
+</div>
+<div class="section">
+<div class="section-title">All2All Personal Lower Bound</div>
+<div class="row"><span class="label">Avg dist</span><span class="value">(log p)/2 hops</span></div>
+<div class="row"><span class="label">Total links</span><span class="value">(p log p)/2</span></div>
+<div class="row"><span class="label">Traffic</span><span class="value">p²·m·(log p)/2</span></div>
+<div class="formula">T ≥ tᵥ·m·(p-1)</div>
+</div>
+<div class="section">
+<div class="section-title">Embarrassingly Parallel</div>
+<div class="note">No communication!</div>
+<div class="formula">Tₚ = W/p</div>
+<div class="formula">S = p (perfect!)</div>
+<div class="formula">E = 1 (perfect!)</div>
+<div class="note">Limited by concurrency: p ≤ tasks</div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- STENCIL / EDGE DETECTION -->
+<div class="page" id="stencil">
+<div class="page-title">Ch3: STENCIL / EDGE DETECTION</div>
+<div class="section">
+<div class="section-title">1D Decomposition (Row Strips)</div>
+<div class="note">n×n image, 3×3 kernel, p processors</div>
+<div class="row"><span class="label">Partition</span><span class="value">n/p rows per proc</span></div>
+<div class="row"><span class="label">W</span><span class="value">n² (one op/pixel)</span></div>
+<div class="row"><span class="label">Ghost rows</span><span class="value">2 per proc (top+bottom)</span></div>
+<div class="row"><span class="label">m</span><span class="value">n (one row)</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">2(tₛ + n·tᵥ)</span></div>
+<div class="formula">Tₚ = n²/p + 2tₛ + 2n·tᵥ</div>
+<div class="formula">Tₒ = p·Tₚ - W = 2p·tₛ + 2pn·tᵥ</div>
+<div class="note">Isoeff: n² = Θ(p·n) → n = Θ(p)</div>
+<div class="formula highlight">Isoeff: W = Θ(p²)</div>
+</div>
+<div class="section">
+<div class="section-title">2D Decomposition (√p×√p Blocks)</div>
+<div class="note">n×n image, 3×3 kernel, p processors</div>
+<div class="row"><span class="label">Partition</span><span class="value">(n/√p)×(n/√p) block</span></div>
+<div class="row"><span class="label">W</span><span class="value">n²</span></div>
+<div class="row"><span class="label">Ghost edges</span><span class="value">4 per proc (N/S/E/W)</span></div>
+<div class="row"><span class="label">m</span><span class="value">n/√p (one edge)</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">4(tₛ + n/√p·tᵥ)</span></div>
+<div class="formula">Tₚ = n²/p + 4tₛ + 4n/√p·tᵥ</div>
+<div class="formula">Tₒ = 4p·tₛ + 4√p·n·tᵥ</div>
+<div class="note">Isoeff: n² = Θ(√p·n) → n = Θ(√p)</div>
+<div class="formula highlight">Isoeff: W = Θ(p)</div>
+</div>
+<div class="section">
+<div class="section-title">2D vs 1D Comparison</div>
+<div class="row"><span class="label">1D isoeff</span><span class="value">O(p²) — worse</span></div>
+<div class="row"><span class="label">2D isoeff</span><span class="value highlight">O(p) — better!</span></div>
+<div class="note">2D has lower surface-to-volume ratio</div>
+<div class="note">→ Less comm per computation</div>
+</div>
+<div class="section">
+<div class="section-title">Tₚᵐⁱⁿ (Minimum Parallel Time)</div>
+<div class="note">As p→∞ for fixed n:</div>
+<div class="row"><span class="label">1D</span><span class="value highlight">Tₚᵐⁱⁿ → 2(tₛ + n·tᵥ)</span></div>
+<div class="row"><span class="label">2D</span><span class="value highlight">Tₚᵐⁱⁿ → 4tₛ</span></div>
+<div class="note">1D: comm stays O(n) per proc</div>
+<div class="note">2D: n/√p→0, only startup remains</div>
+</div>
+<div class="section">
+<div class="section-title">General Stencil Formula</div>
+<div class="note">For k-point stencil on d-dimensional grid:</div>
+<div class="formula">Comm ∝ surface area of partition</div>
+<div class="formula">Comp ∝ volume of partition</div>
+<div class="note">Higher dimension → better surface/volume</div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- MATRIX -->
+<div class="page" id="matrix">
+<div class="page-title">Ch3: MATRIX</div>
+<div class="sub-nav">
+<button class="sub-btn" onclick="showSection('mv1d')">Mat-Vec 1D</button>
+<button class="sub-btn" onclick="showSection('mv2d')">Mat-Vec 2D</button>
+<button class="sub-btn" onclick="showSection('cannon')">Cannon</button>
+<button class="sub-btn" onclick="showSection('dns')">DNS</button>
+<button class="sub-btn" onclick="showSection('strassen')">Strassen</button>
+</div>
+<div class="section" id="mv1d">
+<div class="section-title">Matrix-Vector 1D (Row Part.)</div>
+<div class="row"><span class="label">W</span><span class="value">n²</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
+<div class="row"><span class="label">Op</span><span class="value">All-to-all broadcast</span></div>
+<div class="row"><span class="label">Why?</span><span class="value">Each needs FULL vector</span></div>
+<div class="row"><span class="label">m</span><span class="value">n/p</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+<div class="row"><span class="label">Tcomm startup</span><span class="value comm">tₛ log p</span></div>
+<div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n·tᵥ (≈(p-1)·n/p)</span></div>
+<div class="formula">Tₚ = n²/p + tₛlogp + n·tᵥ</div>
+<div class="row"><span class="label">Tₒ</span><span class="value">p·tₛlogp + pn·tᵥ</span></div>
+<div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p²)</span></div>
+<div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n/logn)</span></div>
+</div>
+<div class="section" id="mv2d" style="display:none;">
+<div class="section-title">Matrix-Vector 2D (Baseline)</div>
+<div class="row"><span class="label">W</span><span class="value">n²</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
+<div class="row"><span class="label">Op 1</span><span class="value">One-to-all bcast (cols)</span></div>
+<div class="row"><span class="label">Op 2</span><span class="value">All-to-one reduce (rows)</span></div>
+<div class="row"><span class="label">m</span><span class="value">n/√p</span></div>
+<div class="row"><span class="label">#Proc/op</span><span class="value">√p</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+<div class="row"><span class="label">Tcomm startup</span><span class="value comm">tₛ log p</span></div>
+<div class="row"><span class="label">Tcomm transfer</span><span class="value comm">(nlogp)/√p·tᵥ</span></div>
+<div class="formula">Tₚ = n²/p + tₛlogp + (nlogp)/√p·tᵥ</div>
+<div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log²p)</span></div>
+<div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n²/log²n)</span></div>
+<div class="section-title" style="margin-top:10px;">Vector in Last Column Variant</div>
+<div class="note">x starts only in column √p-1</div>
+<div class="note highlight">Extra redistribution step needed!</div>
+<div class="row"><span class="label">Step 0</span><span class="value">Redistribute x blocks</span></div>
+<div class="note">Row i: send xᵢ from (i,√p-1) → (i,i)</div>
+<div class="row"><span class="label">Redist cost</span><span class="value comm">tₛ + n/√p·tᵥ</span></div>
+<div class="row"><span class="label">Step 1</span><span class="value">Column broadcast (baseline)</span></div>
+<div class="row"><span class="label">Step 2</span><span class="value">Row reduce (baseline)</span></div>
+<div class="formula highlight">Tₚ = n²/p + tₛlogp + (nlogp)/√p·tᵥ + (tₛ + n/√p·tᵥ)</div>
+<div class="note">Msg sizes: redist=n/√p, bcast=n/√p, reduce=n/√p</div>
+
+<div class="section-title" style="margin-top:10px;">What to write in an exam (full steps)</div>
+<div class="note"><b>Data layout:</b> √p×√p processor grid, each proc holds A-block of size (n/√p)×(n/√p) ⇒ n²/p entries.</div>
+<div class="note"><b>Compute:</b> each proc does (n/√p)×(n/√p) dot-products ⇒ Θ(n²/p) ops.</div>
+<div class="note"><b>Communication (per mat-vec):</b><br/>
+          1) <span class="highlight">Column broadcast</span> of x-blocks, message size m = n/√p.<br/>
+          2) <span class="highlight">Row reduction</span> of partial y, message size m = n/√p.
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+T_comp = Θ(n²/p)
+
+Let q = √p processors participate in each row/col collective.
+Use the right collective cost for your topology:
+- If row/col behaves like a tree:  Θ(log q · (tₛ + m·tᵥ))
+- If row/col is a 1D line:        Θ((q-1) · (tₛ + m·tᵥ))
+
+Then:
+T_p = T_comp + T_bcast(q,m) + T_reduce(q,m)
+</pre></div>
+<div class="section-title" style="margin-top:10px;">Vector initially only in the last column</div>
+<div class="note">
+          Extra step 0: each row r sends its vector block from processor (r, last) to the diagonal (r,r).  
+          Message size is still m=n/√p; distance is O(√p) hops on a mesh.
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Extra redistribution:
+- optimistic (direct send):        T_redist = (tₛ + m·tᵥ)
+- mesh row routing (worst-case):   T_redist = (√p-1)(tₛ + m·tᵥ)
+
+Total:
+T_p,lastcol = T_p + T_redist
+</pre></div>
+<div class="note">
+<b>Isoeff (bandwidth-dominated):</b> T_comm has a term (n·log p / √p)·tᵥ, so
+          To ≈ p·T_comm ≈ n·√p·log p·tᵥ.  
+          Set W = Θ(n²) = K·To ⇒ n = Θ(√p·log p) ⇒ W = Θ(p·log² p).
+        </div>
+</div>
+<div class="section" id="cannon" style="display:none;">
+<div class="section-title">Cannon's Algorithm</div>
+<div class="row"><span class="label">W</span><span class="value">n³</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
+<div class="row"><span class="label">Op</span><span class="value">Circular shift</span></div>
+<div class="row"><span class="label">Why?</span><span class="value">Shift A left, B up</span></div>
+<div class="row"><span class="label">m</span><span class="value">n²/p (submatrix)</span></div>
+<div class="row"><span class="label">#Shifts</span><span class="value">√p times</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">2√p(tₛ + n²/p·tᵥ)</span></div>
+<div class="formula">Tₚ = n³/p + 2√p(tₛ + n²/p·tᵥ)</div>
+<div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
+<div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n²)</span></div>
+<div class="row"><span class="label">Memory</span><span class="value">3n²/p</span></div>
+</div>
+<div class="section" id="dns" style="display:none;">
+<div class="section-title">DNS Algorithm</div>
+<div class="row"><span class="label">W</span><span class="value">n³</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">3D Mesh p^⅓×p^⅓×p^⅓</span></div>
+<div class="row"><span class="label">Op</span><span class="value">Broadcast + Reduce</span></div>
+<div class="row"><span class="label">m</span><span class="value">n²/p^⅔</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
+<div class="row"><span class="label">Tcomm startup</span><span class="value comm">tₛ log p</span></div>
+<div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n²/p^⅔·tᵥ</span></div>
+<div class="formula">Tₚ = n³/p + tₛlogp + n²/p^⅔·tᵥ</div>
+<div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log³p)</span></div>
+<div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n³/log³n)</span></div>
+<div class="row"><span class="label">Memory/proc</span><span class="value">3n²/p^(2/3)</span></div>
+</div>
+<div class="section" id="strassen" style="display:none;">
+<div class="section-title">Simple 2D MatMul + Strassen Locally</div>
+<div class="row"><span class="label">Strassen exp</span><span class="value highlight">ω = log₂7 ≈ 2.807</span></div>
+<div class="row"><span class="label">W (naive)</span><span class="value">n³</span></div>
+<div class="row"><span class="label">W (Strassen)</span><span class="value">n^ω ≈ n^2.807</span></div>
+<div class="section-title" style="margin-top:10px;">Simple 2D Algorithm</div>
+<div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
+<div class="row"><span class="label">#Stages</span><span class="value highlight">√p</span></div>
+<div class="note">Each stage: bcast A-block along row, B-block along col</div>
+<div class="note">Each proc multiplies one (n/√p)×(n/√p) pair &amp; accumulates</div>
+<div class="row"><span class="label">Block size</span><span class="value">n/√p × n/√p</span></div>
+<div class="row"><span class="label">Local mult/stage</span><span class="value">(n/√p)^ω using Strassen</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">√p·(n/√p)^ω = n^ω / p^{(ω-1)/2}</span></div>
+<div class="row"><span class="label">Comm volume</span><span class="value">Θ(n²/√p) words/proc</span></div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">2√p·tₛ + 2n²/√p·tᵥ</span></div>
+<div class="formula">Tₚ = n^ω / p^{(ω-1)/2} + 2√p·tₛ + 2n²/√p·tᵥ</div>
+<div class="section-title" style="margin-top:10px;">Cost-Optimality (vs naive W=n³)</div>
+<div class="note">Comm term dominates: p·(n²/√p) = n²√p</div>
+<div class="note">Cost-opt: n²√p = O(n³) → √p = O(n)</div>
+<div class="formula highlight">Cost-opt p = O(n²) vs naive W=n³</div>
+<div class="note">vs Strassen W=Θ(n^ω): NOT cost-opt</div>
+<div class="note">(parallel work &gt; seq Strassen work)</div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- SORTING -->
+<div class="page" id="sort">
+<div class="page-title">Ch4: SORTING</div>
+<div class="sub-nav">
+<button class="sub-btn" onclick="showSection('bitonic')">Bitonic</button>
+<button class="sub-btn" onclick="showSection('oddeven')">Odd-Even</button>
+<button class="sub-btn" onclick="showSection('enum')">Enumeration</button>
+<button class="sub-btn" onclick="showSection('quicksort')">Quicksort</button></div>
+<div class="section" id="bitonic">
+<div class="section-title">Bitonic Sort</div>
+<div class="row"><span class="label">W</span><span class="value">n log²n</span></div>
+<div class="row"><span class="label">Why?</span><span class="value">log n stages × log n steps</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
+<div class="row"><span class="label">Op</span><span class="value">Compare-exchange</span></div>
+<div class="row"><span class="label">m</span><span class="value">n/p</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n log²n / p</span></div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">logp(tₛ + n/p·tᵥ)</span></div>
+<div class="formula">Tₚ = nlog²n/p + logp(tₛ + n/p·tᵥ)</div>
+<div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log²p)</span></div>
+<div class="note">n=p case: Tp = log²n(tc+ts+tw)</div>
+<div class="section-title" style="margin-top:10px;">Why k-dim Hypercube for 2^k Merge</div>
+<div class="note">• Bitonic merge of 2^k needs k compare steps</div>
+<div class="note">• Step i: compare at distance 2^(k-i)</div>
+<div class="note">• Distance 2^j in sequence = dim j in hypercube</div>
+<div class="note">• k-cube: exactly k dimensions available</div>
+<div class="note highlight">• Each merge step uses one dimension</div>
+<div class="section-title" style="margin-top:10px;">XOR Partner &amp; Subcube Proof</div>
+<div class="note highlight">Stage j: partner = label XOR 2ʲ</div>
+<div class="note">• XOR 2ʲ flips bit j → hypercube dim j</div>
+<div class="note">• For merge(2ᵏ): only bits 0..k-1 vary</div>
+<div class="note">• Higher bits FIXED → k-dim subcube!</div>
+<div class="formula">Subcube = nodes with same high (d-k) bits</div>
+<div class="section-title" style="margin-top:10px;">Subcube Mapping</div>
+<div class="note">• Element i → node binary(i)</div>
+<div class="note">• 2^k elements → k-dim subcube</div>
+<div class="note">• Subcube = nodes sharing (d-k) fixed bits</div>
+<div class="section-title" style="margin-top:10px;">p = n/2 Variant</div>
+<div class="note highlight">Each proc holds 2 elements</div>
+<div class="note">• First: local sort the 2-item pair</div>
+<div class="note">• Then: run same stages with m=2</div>
+<div class="note">• After exchange: local sort 2 elements</div>
+<div class="note">• Message size = 2 (block size)</div>
+<div class="formula">Tₚ = 2log²n + log(n/2)·(tₛ + 2tᵥ) + O(1)</div>
+<div class="note">General p=n/2ᵏ: local sort 2ᵏ, msg size 2ᵏ</div>
+
+<div class="section-title" style="margin-top:10px;">Worked exam example: n=8, p=4, decreasing</div>
+<div class="note">
+          Use compare-split between processors (block size m=n/p=2).  
+          Mark comparators: <span class="highlight">+</span> increasing, <span class="highlight">−</span> decreasing.
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Step 1:  P0--(−)--P1     P2--(+)--P3
+Step 2:  P0--(−)--P2     P1--(−)--P3
+Step 3:  P0--(−)--P1     P2--(−)--P3
+
+Start:   P0[0,1]  P1[2,3]  P2[4,5]  P3[6,7]
+After1:  P0[3,2]  P1[1,0]  P2[4,5]  P3[6,7]
+After2:  P0[5,4]  P1[7,6]  P2[3,2]  P3[1,0]
+After3:  P0[7,6]  P1[5,4]  P2[3,2]  P3[1,0]
+</pre></div>
+</div>
+<div class="section" id="oddeven" style="display:none;">
+<div class="section-title">Odd-Even Transposition</div>
+<div class="row"><span class="label">W</span><span class="value">n² (seq alg)</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">Ring</span></div>
+<div class="row"><span class="label">Op</span><span class="value">Neighbor exchange</span></div>
+<div class="row"><span class="label">m</span><span class="value">n/p</span></div>
+<div class="row"><span class="label">#Phases</span><span class="value">p</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n log(n/p) / p</span></div>
+<div class="row"><span class="label">Tcomm startup</span><span class="value comm">p·tₛ</span></div>
+<div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n·tᵥ</span></div>
+<div class="formula">Tₚ = nlog(n/p)/p + p·tₛ + n·tᵥ</div>
+<div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p²)</span></div>
+
+<div class="section-title" style="margin-top:10px;">Full step derivation (what each term means)</div>
+<div class="note">
+          Assume p processors in a <span class="highlight">1D neighbor</span> topology (line / ring).  
+          Each processor holds m = n/p keys.
+        </div>
+<div class="note"><b>Algorithm:</b><br/>
+          0) Local sort of m keys.<br/>
+          1) Repeat <span class="highlight">p</span> phases (odd/even): each phase, each processor exchanges its m keys with one neighbor and performs compare-split (merge 2m, keep half).
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Local sort (per proc):      Θ(m log m)
+
+One phase (per proc):
+  comm (send+recv m words): tₛ + m·tᵥ
+  compute (merge/split):    Θ(m)
+
+Total p phases:
+  T_comm  = p·tₛ + p·m·tᵥ = p·tₛ + n·tᵥ
+  T_merge = Θ(p·m) = Θ(n)
+
+So: T_p = Θ((n/p)log(n/p) + n + p·tₛ + n·tᵥ)
+</pre></div>
+<div class="section-title" style="margin-top:10px;">Isoefficiency + cost-opt (common exam answer)</div>
+<div class="note">
+          Using odd-even network work W = Θ(n²):  
+          Overhead To ≈ p(p·tₛ + n·tᵥ) = Θ(p² + pn) (ignoring constants).
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+W = K·To:
+n² = K(p² + pn)  ⇒  n = Θ(p)
+Isoeff: W = Θ(p²)
+
+Cost-opt: require p·T_p = O(n²) ⇒ p = O(n)
+</pre></div>
+<div class="note"><b>Scalability:</b> isoeff Θ(p²) ⇒ needs quadratic growth of work to keep efficiency constant.</div>
+</div>
+<div class="section" id="enum" style="display:none;">
+<div class="section-title">Enumeration Sort</div>
+<div class="row"><span class="label">W</span><span class="value">n²</span></div>
+<div class="row"><span class="label">Why?</span><span class="value">Compare all pairs</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">2D Mesh</span></div>
+<div class="row"><span class="label">Op</span><span class="value">All-to-all broadcast</span></div>
+<div class="row"><span class="label">m</span><span class="value">n/p</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+<div class="row"><span class="label">Tcomm startup</span><span class="value comm">2(√p-1)·tₛ</span></div>
+<div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n·tᵥ</span></div>
+<div class="formula">Tₚ = n²/p + 2(√p-1)tₛ + n·tᵥ</div>
+<div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
+
+<div class="section-title" style="margin-top:10px;">Speedup S and Efficiency E</div>
+<div class="note">Sequential work for enumeration sort is W = Θ(n²) comparisons.</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+T_p = Θ(n²/p + 2(√p-1)tₛ + n·tᵥ)
+
+Speedup:    S = T_s / T_p   with T_s = Θ(n²)
+Efficiency: E = S/p = T_s / (p·T_p)
+</pre></div>
+<div class="note">
+          If n is large so that n²/p dominates communication, then S≈p and E≈1.  
+          If p grows too fast, the mesh startup term 2√p·tₛ starts to dominate.
+        </div>
+</div>
+<div class="section" id="quicksort" style="display:none;"><div class="section-title">Parallel Quicksort (shared-address space)</div>
+<div class="note"><b>Goal:</b> derive Tp and isoefficiency (expected / average-case).</div>
+<div class="note"><b>Model:</b> shared memory with p processors (barriers instead of explicit message passing).</div>
+<div class="section-title" style="margin-top:10px;">Core idea (one partition level)</div>
+<div class="note">
+          1) Choose pivot (random / median-of-samples).<br/>
+          2) Each processor scans ≈ n/p elements, counts how many go left/right.<br/>
+          3) Do prefix-sum over the p counts to get write offsets (needs a barrier).<br/>
+          4) Each processor writes its elements into the correct side.
+        </div>
+<div class="section-title" style="margin-top:10px;">Per-level time</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Scan + move elements:   Θ(n/p)
+Prefix-sum on p counts: Θ(log p)
+Barrier/sync:           Θ(log p)  (often absorbed)
+So: T_level = Θ(n/p + log p)
+</pre></div>
+<div class="section-title" style="margin-top:10px;">Total parallel time (expected)</div>
+<div class="note">Expected recursion depth is Θ(log n) for good pivots.</div>
+<div class="formula">T_p = Θ((n/p)·log n + log n·log p)</div>
+<div class="section-title" style="margin-top:10px;">Isoefficiency + scalability</div>
+<div class="note">
+          Expected sequential work W = Θ(n log n).  
+          Overhead comes mainly from prefix-sums / barriers each level:
+          To = p·T_p − W = Θ(p·log n·log p).
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+W = K·To:
+n log n = K·p log n log p
+⇒ n = Θ(p log p)
+⇒ W = Θ(p log p · log(p log p)) ≈ Θ(p log² p)
+</pre></div>
+<div class="note">
+          Cost-opt upper bound (rule of thumb): p log p = O(n) ⇒ p = O(n / log n).
+        </div>
+</div><button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- SEARCH -->
+<div class="page" id="search">
+<div class="page-title">Ch5: SEARCH/DOP</div>
+<div class="section">
+<div class="section-title">Dynamic Mapping</div>
+<div class="note">Best: Tasks even across procs</div>
+<div class="note">Worst: Largest tasks same proc</div>
+<div class="formula">S = T_seq / T_parallel</div>
+<div class="note">Best S: Total / ceil(Total/p)</div>
+<div class="note">Worst S: Total / (largest tasks on 1 proc)</div>
+</div>
+<div class="section">
+<div class="section-title">Parallel Best-First Search</div>
+<div class="formula">S ≤ p(texp+tacc)/(texp+p·tacc)</div>
+<div class="row"><span class="label">texp</span><span class="value">expand node (parallel)</span></div>
+<div class="row"><span class="label">tacc</span><span class="value">access open list (serial!)</span></div>
+<div class="note">Bottleneck: open list is sequential!</div>
+</div>
+<div class="section">
+<div class="section-title">Dijkstra Token Termination</div>
+<div class="row"><span class="label">Topo</span><span class="value">Ring</span></div>
+<div class="row"><span class="label">Token</span><span class="value">WHITE or BLACK</span></div>
+<div class="row"><span class="label">Processor</span><span class="value">WHITE or BLACK</span></div>
+<div class="note highlight">Rules:</div>
+<div class="note">• All start WHITE</div>
+<div class="note">• Proc→BLACK if send to LOWER ID</div>
+<div class="note">• Token→BLACK if pass BLACK proc</div>
+<div class="note">• BLACK proc passes token, turns WHITE</div>
+<div class="note highlight">DONE: WHITE token arrives at WHITE P0</div>
+</div>
+<div class="section">
+<div class="section-title">Tree-Based (Weights)</div>
+<div class="row"><span class="label">Start</span><span class="value">P0 weight=1</span></div>
+<div class="row"><span class="label">Give work</span><span class="value">Split weight ½</span></div>
+<div class="row"><span class="label">Finish</span><span class="value">Return weight to giver</span></div>
+<div class="row"><span class="label highlight">DONE</span><span class="value highlight">P0 weight=1 again</span></div>
+<div class="note">Drawback: Weights get tiny (precision)</div>
+<div class="note">Fix: Use fractions or integers</div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- GRAPH -->
+<div class="page" id="graph">
+<div class="page-title">Ch6: GRAPH</div>
+<div class="sub-nav">
+<button class="sub-btn" onclick="showSection('prim')">Prim's</button>
+<button class="sub-btn" onclick="showSection('floyd')">Floyd's</button>
+<button class="sub-btn" onclick="showSection('dijksp')">Dijkstra S-P</button>
+<button class="sub-btn" onclick="showSection('dijkspar')">Dijkstra S-Par</button>
+<button class="sub-btn" onclick="showSection('conn')">Connected</button>
+<button class="sub-btn" onclick="showSection('apspmem')">APSP Memory</button>
+</div>
+<div class="section" id="prim">
+<div class="section-title">Prim's MST (Hypercube)</div>
+<div class="row"><span class="label">W</span><span class="value">n²</span></div>
+<div class="row"><span class="label">Why?</span><span class="value">n iter × n edge checks</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
+<div class="row"><span class="label">Op 1</span><span class="value">All-to-one reduce</span></div>
+<div class="row"><span class="label">Op 2</span><span class="value">One-to-all broadcast</span></div>
+<div class="row"><span class="label">m</span><span class="value">O(1) - just vertex</span></div>
+<div class="row"><span class="label">#Iter</span><span class="value">n</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">n·logp·(tₛ+tᵥ)</span></div>
+<div class="formula">Tₚ = n²/p + n·logp·(tₛ+tᵥ)</div>
+<div class="formula">E = 1/(1 + p·logp·(tₛ+tᵥ)/n)</div>
+<div class="note">If (tₛ+tᵥ)=1: E = 1/(1 + p logp/n)</div>
+<div class="row"><span class="label">Cost-opt</span><span class="value highlight">p = O(n/log n)</span></div>
+<div class="row"><span class="label">Memory/proc</span><span class="value">n²/p + n</span></div>
+<div class="section-title" style="margin-top:10px;">Prim's MST (√p×√p Mesh)</div>
+<div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
+<div class="row"><span class="label">Adj storage</span><span class="value">n²/p per proc</span></div>
+<div class="row"><span class="label">m</span><span class="value">O(1) - vertex id + key</span></div>
+<div class="row"><span class="label">Per-iter comm</span><span class="value comm">Θ(√p·tₛ + √p·tᵥ)</span></div>
+<div class="note">Mesh reduce+bcast: √p phases each</div>
+<div class="row"><span class="label">Total comm</span><span class="value comm">n·Θ(√p·tₛ + √p·tᵥ)</span></div>
+<div class="formula highlight">Tₚ = n²/p + n·√p·(tₛ+tᵥ)</div>
+<div class="row"><span class="label">Memory/proc</span><span class="value highlight">Θ(n²/p + n/√p)</span></div>
+<div class="note">n²/p for adj block, n/√p for distance array</div>
+<div class="row"><span class="label">Cost-opt</span><span class="value">p·n√p = O(n²) → p = O(n^(2/3))</span></div>
+
+<div class="section-title" style="margin-top:10px;">Isoefficiency + cost-opt (derivation)</div>
+<div class="note">
+          Work of Prim with adjacency matrix is W = Θ(n²).  
+          Tp = n²/p + n√p(tₛ+tᵥ) ⇒ overhead To = p·(n√p(tₛ+tᵥ)) = Θ(n·p^{3/2}).
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+W = K·To:
+n² = K·n·p^{3/2}
+⇒ n = Θ(p^{3/2})
+Isoeff: W = Θ(n²) = Θ(p³)
+
+Cost-opt:
+p·T_p = n² + n·p^{3/2}(tₛ+tᵥ)
+Require p·T_p = O(n²) ⇒ p = O(n^{2/3})
+</pre></div>
+<div class="note">
+<b>Message size:</b> O(1) per iteration (min key + vertex id) for reduction and broadcast.  
+          <b>#iterations:</b> n (one vertex added per step).  
+          <b>Comm type:</b> reduce + broadcast on mesh (typically 2(√p-1) steps each).
+        </div>
+</div>
+<div class="section" id="floyd" style="display:none;">
+<div class="section-title">Floyd's APSP</div>
+<div class="row"><span class="label">W</span><span class="value">n³</span></div>
+<div class="row"><span class="label">Why?</span><span class="value">n iter × n² updates</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
+<div class="row"><span class="label">Op</span><span class="value">Broadcast row + col</span></div>
+<div class="row"><span class="label">m</span><span class="value">n/√p</span></div>
+<div class="row"><span class="label">#Iter</span><span class="value">n</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
+<div class="row"><span class="label">Tcomm/iter</span><span class="value comm">2(n/√p)·tᵥ</span></div>
+<div class="row"><span class="label">Tcomm total</span><span class="value comm">2n²/√p·tᵥ</span></div>
+<div class="formula">Tₚ = n³/p + 2n²/√p·tᵥ</div>
+<div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
+<div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n²)</span></div>
+<div class="row"><span class="label">Memory/proc</span><span class="value">n²/p + 2n/√p</span></div>
+</div>
+<div class="section" id="dijksp" style="display:none;">
+<div class="section-title">Dijkstra Source-Partitioned</div>
+<div class="row"><span class="label">W</span><span class="value">n³</span></div>
+<div class="row"><span class="label">Why?</span><span class="value">n sources × n² each</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">Any</span></div>
+<div class="row"><span class="label">Op</span><span class="value highlight">NONE!</span></div>
+<div class="note">Embarrassingly parallel!</div>
+<div class="formula">Tₚ = n³/p</div>
+<div class="row"><span class="label">Speedup</span><span class="value highlight">p (perfect!)</span></div>
+<div class="row"><span class="label">Efficiency</span><span class="value highlight">1 (perfect!)</span></div>
+<div class="row"><span class="label">Constraint</span><span class="value">p ≤ n</span></div>
+<div class="row"><span class="label">Memory/proc</span><span class="value highlight">n² + n (FULL adj!)</span></div>
+
+<div class="section-title" style="margin-top:10px;">Speedup + Isoefficiency (concurrency case)</div>
+<div class="note">
+          There is <span class="highlight">no communication</span> between processors if each one runs Dijkstra
+          for its assigned sources using a local copy of the adjacency matrix.
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+T_s (all sources, sequential) = Θ(n · n²) = Θ(n³)
+T_p = Θ(n³/p)
+
+Speedup:    S = T_s/T_p ≈ p
+Efficiency: E = S/p ≈ 1   (for p ≤ n)
+
+Concurrency limit: only n independent sources exist ⇒ p_max = n.
+If p &gt; n, some processors idle ⇒ E drops ≈ n/p.
+</pre></div>
+<div class="note"><b>Message size / comm type:</b> none (embarrassingly parallel), unless the matrix is distributed.</div>
+</div>
+<div class="section" id="dijkspar" style="display:none;">
+<div class="section-title">Dijkstra Source-Parallel</div>
+<div class="note">Parallelize WITHIN single-source Dijkstra</div>
+<div class="row"><span class="label">W</span><span class="value">n² (one source)</span></div>
+<div class="row"><span class="label">Partition</span><span class="value">n/p vertices per proc</span></div>
+<div class="row"><span class="label">Op</span><span class="value">Min-reduce + broadcast</span></div>
+<div class="row"><span class="label">#Iter</span><span class="value">n</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">n·logp (reduce+bcast)</span></div>
+<div class="formula">Tₚ = n²/p + n·logp</div>
+<div class="row"><span class="label">Max p</span><span class="value">n</span></div>
+<div class="row"><span class="label">Memory/proc</span><span class="value">n²/p + n (adj + dist)</span></div>
+</div>
+<div class="section" id="conn" style="display:none;">
+<div class="section-title">Connected Components (Shiloach-Vishkin)</div>
+<div class="note highlight">Algorithm: hook + shortcut (pointer jumping)</div>
+<div class="row"><span class="label">Input</span><span class="value">Adj matrix m=Θ(n²)</span></div>
+<div class="section-title" style="margin-top:10px;">Per Iteration</div>
+<div class="row"><span class="label">Hook</span><span class="value">Scan edges: Θ(n²/p)</span></div>
+<div class="row"><span class="label">Shortcut</span><span class="value">Update parents: Θ(n/p)</span></div>
+<div class="row"><span class="label">#Iterations</span><span class="value highlight">Θ(log n)</span></div>
+<div class="section-title" style="margin-top:10px;">Complexity</div>
+<div class="row"><span class="label">W (seq SV)</span><span class="value">Θ(n²·logn)</span></div>
+<div class="row"><span class="label">W (seq DFS)</span><span class="value">Θ(n²) for adj matrix</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">(n²/p)·logn</span></div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">logn·(tₛlogp + n/p·tᵥ)</span></div>
+<div class="formula">Tₚ = (n²logn)/p + logn·(tₛlogp + n/p·tᵥ)</div>
+<div class="note">Simplified (if tᵥ term dominates):</div>
+<div class="formula">Tₚ ≈ (n²logn)/p + (nlogn)/p·tᵥ</div>
+<div class="section-title" style="margin-top:10px;">Speedup</div>
+<div class="formula">vs DFS (W=n²): S = Θ(p/logn)</div>
+<div class="formula">vs seq SV (W=n²logn): S = Θ(p)</div>
+<div class="note highlight">State which baseline W you're using!</div>
+</div>
+<div class="section" id="apspmem" style="display:none;">
+<div class="section-title">APSP Memory Comparison (at pₘₐₓ)</div>
+<div class="note">Input: adj matrix G=Θ(n²), Output: D=Θ(n²)</div>
+<table>
+<tr><th>Variant</th><th>pₘₐₓ</th><th>Mem/proc</th><th>Total</th></tr>
+<tr><td>Dijkstra S-Part</td><td class="highlight">n</td><td>Θ(n²)</td><td class="highlight">Θ(n³)</td></tr>
+<tr><td>Dijkstra S-Par</td><td class="highlight">n</td><td>Θ(n)</td><td>Θ(n²)</td></tr>
+<tr><td>Floyd 2D</td><td class="highlight">n²</td><td>Θ(1)</td><td>Θ(n²)</td></tr>
+</table>
+<div class="section-title" style="margin-top:10px;">Why These Totals?</div>
+<div class="note highlight">Dijkstra S-Part: G REPLICATED on each!</div>
+<div class="note">• p procs × n² adj = Θ(n·n²) = Θ(n³)</div>
+<div class="note">Dijkstra S-Par: G DISTRIBUTED by rows</div>
+<div class="note">• G: Θ(n²), D: Θ(n²) → Total Θ(n²)</div>
+<div class="note highlight">Floyd 2D: everything DISTRIBUTED</div>
+<div class="note">• G,D both blocked → Total Θ(n²)</div>
+<div class="note highlight">Floyd most memory-efficient at max p!</div>
+<div class="note">(Shared memory: S-Part also Θ(n²))</div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- DP -->
+<div class="page" id="dp">
+<div class="page-title">Ch7: DP</div>
+<div class="section">
+<div class="section-title">LCS - WHY E ≤ 0.5</div>
+<div class="row"><span class="label">W</span><span class="value">n²</span></div>
+<div class="row"><span class="label">Method</span><span class="value">Anti-diagonal wavefront</span></div>
+<div class="row"><span class="label">#Processors</span><span class="value">n (max per diag)</span></div>
+<div class="row"><span class="label">#Diagonals</span><span class="value">2n-1</span></div>
+<div class="row"><span class="label">Tcomp/diag</span><span class="value">tᶜ</span></div>
+<div class="row"><span class="label">Tcomm/diag</span><span class="value">tₛ + tᵥ</span></div>
+<div class="formula">Tₚ = (2n-1)(tₛ + tᵥ + tᶜ)</div>
+<div class="formula">E = n²·tᶜ / [n(2n-1)(tₛ+tᵥ+tᶜ)]</div>
+<div class="formula highlight">If tₛ=tᵥ=0: E = n/(2n-1) &gt; 0.5 → 0.5</div>
+<div class="note">Even with ZERO comm, E approaches 50%!</div>
+<div class="note">Diagonals vary: 1,2,...n,...2,1</div>
+
+<div class="section-title" style="margin-top:10px;">Task graph + concurrency (exam-ready)</div>
+<div class="note">
+          Define a task for each DP cell <span class="highlight">f[i,j]</span>.  
+          Dependencies are from top (i-1,j), left (i,j-1), and diagonal (i-1,j-1).  
+          Therefore, cells on the same anti-diagonal (constant i+j) are independent.
+        </div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Parallel schedule (wavefront):
+D_k = {(i,j) | 1≤i≤n, 1≤j≤n, i+j=k}
+Execute D_2, D_3, ..., D_{2n} sequentially,
+but inside each D_k run all tasks concurrently.
+</pre></div>
+<div class="note"><b>For n=4:</b> k=2..8 gives 7 parallel steps with sizes 1,2,3,4,3,2,1.</div>
+</div>
+<div class="section">
+<div class="section-title">0/1 Knapsack</div>
+<div class="row"><span class="label">W</span><span class="value">nc·tᶜ</span></div>
+<div class="row"><span class="label">n</span><span class="value"># items</span></div>
+<div class="row"><span class="label">c</span><span class="value">capacity</span></div>
+<div class="row"><span class="label">Each proc</span><span class="value">c/p entries</span></div>
+<div class="row"><span class="label">Op</span><span class="value">Circular shift</span></div>
+<div class="row"><span class="label">Tshift(m)</span><span class="value highlight">2tₛ + m·tᵥ</span></div>
+<div class="row"><span class="label">m per shift</span><span class="value">c/p</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">nc/p · tᶜ</span></div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">n·(2tₛ + c/p·tᵥ)</span></div>
+<div class="formula">Tₚ = (nc/p)·tᶜ + n·(2tₛ + tᵥ·c/p)</div>
+<div class="section-title" style="margin-top:10px;">Efficiency Bound (t₂, tᶜ form)</div>
+<div class="note">Let t₂ = tᵥ (per-word comm time)</div>
+<div class="formula">E = 1 / (1 + (2p·tₛ)/(c·tᶜ) + tᵥ/tᶜ)</div>
+<div class="note">As (n,c) → ∞ with p fixed:</div>
+<div class="formula highlight">E ≤ 1/(1 + t₂/tᶜ) = tᶜ/(tᶜ + t₂)</div>
+<div class="note highlight">Bandwidth limits E even for ∞ problem!</div>
+<div class="note">• If t₂ = tᶜ: E ≤ 0.5</div>
+<div class="note">• If t₂ = 0.1·tᶜ: E ≤ 0.91</div>
+<div class="note">• If t₂ = 0: E → 1 (no bandwidth limit)</div>
+</div>
+<div class="section">
+<div class="section-title">Efficiency Bound Template</div>
+<div class="note">Given: Tₚ = W/p + f(p)·tₛ + g(p,n)·tᵥ</div>
+<div class="formula">E = W / [W + p·f·tₛ + p·g·tᵥ]</div>
+<div class="note">• If W &gt;&gt; p·comm: E → 1</div>
+<div class="note">• If startup dominates: E → W/(p·f·tₛ)</div>
+<div class="note">• If bandwidth dominates: E → W/(p·g·tᵥ)</div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- FFT -->
+<div class="page" id="fft">
+<div class="page-title">Ch8: FFT</div>
+<div class="section">
+<div class="section-title">Binary-Exchange (p=n)</div>
+<div class="row"><span class="label">W</span><span class="value">n log n</span></div>
+<div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
+<div class="row"><span class="label">Op</span><span class="value">Exchange with neighbor</span></div>
+<div class="row"><span class="label">#Phases</span><span class="value">log n</span></div>
+<div class="row"><span class="label">Tcomp</span><span class="value comp">log n · tᶜ</span></div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">log n · (tₛ + tᵥ)</span></div>
+<div class="formula">Tₚ = log n (tᶜ + tₛ + tᵥ)</div>
+<div class="formula">S = n / (1 + (tₛ+tᵥ)/tᶜ)</div>
+</div>
+<div class="section">
+<div class="section-title">2D Transpose (p &lt; n)</div>
+<div class="row"><span class="label">Op</span><span class="value">All-to-all personalized</span></div>
+<div class="formula">Tₚ = nlogn/p + tₛlogp + tᵥ(nlogp)/p</div>
+</div>
+<div class="section">
+<div class="section-title">Find Minimum Tₚ</div>
+<div class="row"><span class="label">Given</span><span class="value">Tₚ=(n/p)logn + tᵥ(n/p)logp</span></div>
+<div class="row"><span class="label">Step 1</span><span class="value">dTₚ/dp = 0</span></div>
+<div class="row"><span class="label">Derivative</span><span class="value">-nlogn/p² + tᵥn(1-logp)/p²</span></div>
+<div class="row"><span class="label">Set = 0</span><span class="value">logn = tᵥ(1-logp)</span></div>
+<div class="formula">logp = 1 - logn/tᵥ</div>
+<div class="formula">For tᵥ=10: logp = 1 - logn/10</div>
+</div>
+<div class="section"><div class="section-title">FFT_like_pattern Task Graph (n=4)</div>
+<div class="note"><b>Problem:</b> tasks are executions of line 6:<br/>
+    A[i,j+1] := A[i,j] + A[i XOR 2^j, j]</div>
+<div class="note"><b>Node label:</b> (i,j) = the task that computes A[i,j+1].  
+    There is also one init node <span class="highlight">I</span> for line 3.</div>
+<div class="section-title" style="margin-top:10px;">Dependencies (general)</div>
+<div class="note">
+      Task (i,j) reads A[i,j] and A[i XOR 2^j, j].  
+      Those values were produced in the previous stage:
     </div>
-
-    <!-- TOPOLOGY METRICS -->
-    <div id="topology" class="page">
-        <div class="page-title purple">Ch1: TOPOLOGY METRICS</div>
-        <div class="section">
-            <div class="section-title">2D Mesh (no wraparound)</div>
-            <div class="row"><span class="label">Nodes</span><span class="value">√p × √p</span></div>
-            <div class="row"><span class="label">Diameter</span><span class="value highlight">2(√p - 1)</span></div>
-            <div class="row"><span class="label">Bisection</span><span class="value highlight">√p</span></div>
-            <div class="row"><span class="label">Links</span><span class="value">2(√p)(√p-1) = 2p-2√p</span></div>
-            <div class="row"><span class="label">Cost (Σdeg)</span><span class="value highlight">4p - 4√p ≈ 4p</span></div>
-        </div>
-        <div class="section">
-            <div class="section-title">2D Torus (wraparound)</div>
-            <div class="row"><span class="label">Nodes</span><span class="value">√p × √p</span></div>
-            <div class="row"><span class="label">Diameter</span><span class="value highlight">2⌊√p/2⌋ ≈ √p</span></div>
-            <div class="row"><span class="label">Bisection</span><span class="value highlight">2√p</span></div>
-            <div class="row"><span class="label">Links</span><span class="value">2p</span></div>
-            <div class="row"><span class="label">Cost</span><span class="value highlight">4p</span></div>
-        </div>
-        <div class="section">
-            <div class="section-title">Hypercube</div>
-            <div class="row"><span class="label">Nodes</span><span class="value">p = 2^d</span></div>
-            <div class="row"><span class="label">Diameter</span><span class="value highlight">log p</span></div>
-            <div class="row"><span class="label">Bisection</span><span class="value highlight">p/2</span></div>
-            <div class="row"><span class="label">Links</span><span class="value">(p log p)/2</span></div>
-            <div class="row"><span class="label">Cost</span><span class="value highlight">p log p</span></div>
-            <div class="row"><span class="label">Avg distance</span><span class="value">(log p)/2</span></div>
-        </div>
-        <div class="section">
-            <div class="section-title">3D Mesh/Torus</div>
-            <div class="row"><span class="label">Nodes</span><span class="value">p^⅓ × p^⅓ × p^⅓</span></div>
-            <div class="row"><span class="label">Diameter</span><span class="value highlight">3(p^⅓ - 1)</span></div>
-        </div>
-        <div class="section">
-            <div class="section-title">Ring</div>
-            <div class="row"><span class="label">Diameter</span><span class="value highlight">⌊p/2⌋</span></div>
-            <div class="row"><span class="label">Bisection</span><span class="value highlight">2</span></div>
-            <div class="row"><span class="label">Cost</span><span class="value">2p</span></div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- BASICS Ch1 -->
-    <div id="basics" class="page">
-        <div class="page-title purple">Ch1: BASICS & PROOFS</div>
-        <div class="section">
-            <div class="section-title">Amdahl's Law</div>
-            <div class="note">If W has serial part Ws:</div>
-            <div class="formula">S ≤ W / Ws</div>
-            <div class="note">Proof: Tp ≥ Ws (serial part can't parallelize)</div>
-            <div class="note">S = W/Tp ≤ W/Ws</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Core Definitions</div>
-            <div class="row"><span class="label">Speedup</span><span class="value">S = Ts / Tp = W / Tp</span></div>
-            <div class="row"><span class="label">Efficiency</span><span class="value">E = S / p</span></div>
-            <div class="row"><span class="label">Cost</span><span class="value">C = p · Tp</span></div>
-            <div class="row"><span class="label">Overhead</span><span class="value">To = p·Tp - W</span></div>
-            <div class="note">E range: 0 < E ≤ 1</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Cost Optimal</div>
-            <div class="formula">p · Tp = O(W)</div>
-            <div class="note">Parallel cost = sequential work</div>
-            <div class="note">Equivalently: E = Θ(1)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Isoefficiency</div>
-            <div class="formula">W = K · To</div>
-            <div class="note">How W must grow with p to maintain E</div>
-            <div class="note">Lower isoeff = better scalability</div>
-        </div>
-        <div class="section">
-            <div class="section-title">To vs Tp Relationship</div>
-            <div class="note">If To ≤ Θ(p):</div>
-            <div class="note">→ Tp keeps decreasing, approaches constant</div>
-            <div class="note">If To > Θ(p):</div>
-            <div class="note">→ Tp has a MINIMUM (first ↓ then ↑)</div>
-            <div class="formula">Find min: dTp/dp = 0</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Task Graph Analysis</div>
-            <div class="row"><span class="label">Max concurrency</span><span class="value">Max parallel tasks</span></div>
-            <div class="row"><span class="label">Critical path</span><span class="value">Longest dependency chain</span></div>
-            <div class="row"><span class="label">Max speedup</span><span class="value">Total work / Critical path</span></div>
-            <div class="row"><span class="label">Min procs</span><span class="value">= Max concurrency</span></div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- MASTER FORMULA -->
-    <div id="master" class="page">
-        <div class="page-title">MASTER FORMULA</div>
-        <div class="section">
-            <div class="section-title">Core Equations</div>
-            <div class="formula">Tₚ = W/p + Tcomm</div>
-            <div class="formula">Tₒ = p·Tₚ - W</div>
-            <div class="formula">S = W / Tₚ</div>
-            <div class="formula">E = S / p</div>
-            <div class="formula">Isoeff: W = K·Tₒ</div>
-            <div class="formula">Cost-opt: p·Tₚ = O(W)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Find Tcomm (5 Questions)</div>
-            <div class="row"><span class="label">1.</span><span class="value">Operation?</span></div>
-            <div class="row"><span class="label">2.</span><span class="value">Topology?</span></div>
-            <div class="row"><span class="label">3.</span><span class="value"># Processors?</span></div>
-            <div class="row"><span class="label">4.</span><span class="value">Message size?</span></div>
-            <div class="row"><span class="label">5.</span><span class="value">How many times?</span></div>
-        </div>
-        <div class="section">
-            <div class="section-title">Phases by Topology</div>
-            <div class="row"><span class="label">Ring</span><span class="value">p - 1</span></div>
-            <div class="row"><span class="label">2D Mesh</span><span class="value">2(√p - 1)</span></div>
-            <div class="row"><span class="label">3D Mesh</span><span class="value">3(p^⅓ - 1)</span></div>
-            <div class="row"><span class="label">Hypercube</span><span class="value">log p</span></div>
-        </div>
-        <div class="section">
-            <div class="section-title">Key Insight</div>
-            <div class="row"><span class="label">All-to-All</span><span class="value highlight">msg GROWS → (p-1)m</span></div>
-            <div class="row"><span class="label">One-to-All</span><span class="value">msg SAME → phases×m</span></div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- UNIVERSAL RECIPE -->
-    <div id="recipe" class="page">
-        <div class="page-title">🍳 UNIVERSAL RECIPE</div>
-        <div class="section">
-            <div class="section-title">Step 1: Identify</div>
-            <div class="row"><span class="label">W</span><span class="value">Sequential work</span></div>
-            <div class="row"><span class="label">Op?</span><span class="value">bcast/reduce/all2all</span></div>
-            <div class="row"><span class="label">Topo?</span><span class="value">ring/mesh/hyper</span></div>
-            <div class="row"><span class="label">#Proc</span><span class="value">per operation</span></div>
-            <div class="row"><span class="label">m?</span><span class="value">message size</span></div>
-            <div class="row"><span class="label">×?</span><span class="value">how many times</span></div>
-        </div>
-        <div class="section">
-            <div class="section-title">Step 2: Build Tₚ</div>
-            <div class="formula">Tₚ = W/p + Tcomm</div>
-            <div class="formula">Tcomm = phases×tₛ + data×tᵥ</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Step 3: Build Tₒ</div>
-            <div class="formula">Tₒ = p·Tₚ - W</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Step 4: Isoefficiency</div>
-            <div class="formula">W = K·Tₒ → solve for W</div>
-            <div class="note">Take DOMINANT term in p</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Step 5: Cost-Optimal p</div>
-            <div class="formula">p·Tₚ = O(W) → solve for p</div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- COMMUNICATION -->
-    <div id="comm" class="page">
-        <div class="page-title">Ch2: COMMUNICATION</div>
-        <div class="section">
-            <div class="section-title">All-to-All Broadcast</div>
-            <div class="note">Message GROWS: (p-1)×m total</div>
-            <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)m·tᵥ</span></div>
-            <div class="row"><span class="label">2D Mesh</span><span class="value">2(√p-1)tₛ + (p-1)m·tᵥ</span></div>
-            <div class="row"><span class="label">3D Mesh</span><span class="value">3(p^⅓-1)tₛ + (p-1)m·tᵥ</span></div>
-            <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)m·tᵥ</span></div>
-        </div>
-        <div class="section">
-            <div class="section-title">One-to-All Broadcast</div>
-            <div class="note">Message SAME: phases×m total</div>
-            <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)m·tᵥ</span></div>
-            <div class="row"><span class="label">2D Mesh</span><span class="value">2(√p-1)tₛ + 2(√p-1)m·tᵥ</span></div>
-            <div class="row"><span class="label">3D Mesh</span><span class="value">3(p^⅓-1)tₛ + 3(p^⅓-1)m·tᵥ</span></div>
-            <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (logp)m·tᵥ</span></div>
-        </div>
-        <div class="section">
-            <div class="section-title">All-to-One Reduction</div>
-            <div class="note">Same as One-to-All (reverse)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">All-Reduce</div>
-            <div class="note">Same as One-to-All formulas</div>
-        </div>
-        <div class="section">
-            <div class="section-title">All-to-All Personalized</div>
-            <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + p(p-1)/2·m·tᵥ</span></div>
-            <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p/2)logp·m·tᵥ</span></div>
-        </div>
-        <div class="section">
-            <div class="section-title">Scatter/Gather</div>
-            <div class="note">Convention: M = total data at root</div>
-            <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)M/p·tᵥ</span></div>
-            <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)M/p·tᵥ</span></div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- CUSTOM Ch2 -->
-    <div id="custom" class="page">
-        <div class="page-title">Ch2: CUSTOM DERIVATIONS</div>
-        <div class="section">
-            <div class="section-title">Prefix Sum (n/p > 1)</div>
-            <div class="row"><span class="label">Phase 1</span><span class="value">Local prefix: (n/p-1)·tₐdd</span></div>
-            <div class="row"><span class="label">Phase 2</span><span class="value">Parallel: logp·(tₛ+tₐdd)</span></div>
-            <div class="row"><span class="label">Phase 3</span><span class="value">Update: (n/p)·tₐdd</span></div>
-            <div class="formula">Total: (2n/p-1)tₐdd + logp(tₛ+tₐdd)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Prefix Sum (p=n)</div>
-            <div class="formula">Tp = logn·(tₛ + tₐdd)</div>
-            <div class="formula">S = n / (logn·(tₛ+tₐdd))</div>
-            <div class="note">Cost = n·logn → NOT cost-optimal (W=n)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Scatter Optimality (tₛ=0)</div>
-            <div class="note">M = total data at root, each gets M/p</div>
-            <div class="formula">T = tᵥ·(p-1)·M/p ≈ tᵥ·M</div>
-            <div class="note">Lower bound Ω(tᵥ·M) → OPTIMAL</div>
-        </div>
-        <div class="section">
-            <div class="section-title">All2All Personal Lower Bound</div>
-            <div class="row"><span class="label">Avg dist</span><span class="value">(log p)/2 hops</span></div>
-            <div class="row"><span class="label">Total links</span><span class="value">(p log p)/2</span></div>
-            <div class="row"><span class="label">Traffic</span><span class="value">p²·m·(log p)/2</span></div>
-            <div class="formula">T ≥ tᵥ·m·(p-1)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Embarrassingly Parallel</div>
-            <div class="note">No communication!</div>
-            <div class="formula">Tₚ = W/p</div>
-            <div class="formula">S = p (perfect!)</div>
-            <div class="formula">E = 1 (perfect!)</div>
-            <div class="note">Limited by concurrency: p ≤ tasks</div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- STENCIL / EDGE DETECTION -->
-    <div id="stencil" class="page">
-        <div class="page-title">Ch3: STENCIL / EDGE DETECTION</div>
-        <div class="section">
-            <div class="section-title">1D Decomposition (Row Strips)</div>
-            <div class="note">n×n image, 3×3 kernel, p processors</div>
-            <div class="row"><span class="label">Partition</span><span class="value">n/p rows per proc</span></div>
-            <div class="row"><span class="label">W</span><span class="value">n² (one op/pixel)</span></div>
-            <div class="row"><span class="label">Ghost rows</span><span class="value">2 per proc (top+bottom)</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n (one row)</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
-            <div class="row"><span class="label">Tcomm</span><span class="value comm">2(tₛ + n·tᵥ)</span></div>
-            <div class="formula">Tₚ = n²/p + 2tₛ + 2n·tᵥ</div>
-            <div class="formula">Tₒ = p·Tₚ - W = 2p·tₛ + 2pn·tᵥ</div>
-            <div class="note">Isoeff: n² = Θ(p·n) → n = Θ(p)</div>
-            <div class="formula highlight">Isoeff: W = Θ(p²)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">2D Decomposition (√p×√p Blocks)</div>
-            <div class="note">n×n image, 3×3 kernel, p processors</div>
-            <div class="row"><span class="label">Partition</span><span class="value">(n/√p)×(n/√p) block</span></div>
-            <div class="row"><span class="label">W</span><span class="value">n²</span></div>
-            <div class="row"><span class="label">Ghost edges</span><span class="value">4 per proc (N/S/E/W)</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n/√p (one edge)</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
-            <div class="row"><span class="label">Tcomm</span><span class="value comm">4(tₛ + n/√p·tᵥ)</span></div>
-            <div class="formula">Tₚ = n²/p + 4tₛ + 4n/√p·tᵥ</div>
-            <div class="formula">Tₒ = 4p·tₛ + 4√p·n·tᵥ</div>
-            <div class="note">Isoeff: n² = Θ(√p·n) → n = Θ(√p)</div>
-            <div class="formula highlight">Isoeff: W = Θ(p)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">2D vs 1D Comparison</div>
-            <div class="row"><span class="label">1D isoeff</span><span class="value">O(p²) — worse</span></div>
-            <div class="row"><span class="label">2D isoeff</span><span class="value highlight">O(p) — better!</span></div>
-            <div class="note">2D has lower surface-to-volume ratio</div>
-            <div class="note">→ Less comm per computation</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Tₚᵐⁱⁿ (Minimum Parallel Time)</div>
-            <div class="note">As p→∞ for fixed n:</div>
-            <div class="row"><span class="label">1D</span><span class="value highlight">Tₚᵐⁱⁿ → 2(tₛ + n·tᵥ)</span></div>
-            <div class="row"><span class="label">2D</span><span class="value highlight">Tₚᵐⁱⁿ → 4tₛ</span></div>
-            <div class="note">1D: comm stays O(n) per proc</div>
-            <div class="note">2D: n/√p→0, only startup remains</div>
-        </div>
-        <div class="section">
-            <div class="section-title">General Stencil Formula</div>
-            <div class="note">For k-point stencil on d-dimensional grid:</div>
-            <div class="formula">Comm ∝ surface area of partition</div>
-            <div class="formula">Comp ∝ volume of partition</div>
-            <div class="note">Higher dimension → better surface/volume</div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- MATRIX -->
-    <div id="matrix" class="page">
-        <div class="page-title">Ch3: MATRIX</div>
-        <div class="sub-nav">
-            <button class="sub-btn" onclick="showSection('mv1d')">Mat-Vec 1D</button>
-            <button class="sub-btn" onclick="showSection('mv2d')">Mat-Vec 2D</button>
-            <button class="sub-btn" onclick="showSection('cannon')">Cannon</button>
-            <button class="sub-btn" onclick="showSection('dns')">DNS</button>
-            <button class="sub-btn" onclick="showSection('strassen')">Strassen</button>
-        </div>
-
-        <div id="mv1d" class="section">
-            <div class="section-title">Matrix-Vector 1D (Row Part.)</div>
-            <div class="row"><span class="label">W</span><span class="value">n²</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">All-to-all broadcast</span></div>
-            <div class="row"><span class="label">Why?</span><span class="value">Each needs FULL vector</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n/p</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
-            <div class="row"><span class="label">Tcomm startup</span><span class="value comm">tₛ log p</span></div>
-            <div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n·tᵥ (≈(p-1)·n/p)</span></div>
-            <div class="formula">Tₚ = n²/p + tₛlogp + n·tᵥ</div>
-            <div class="row"><span class="label">Tₒ</span><span class="value">p·tₛlogp + pn·tᵥ</span></div>
-            <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p²)</span></div>
-            <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n/logn)</span></div>
-        </div>
-
-        <div id="mv2d" class="section" style="display:none;">
-            <div class="section-title">Matrix-Vector 2D (Baseline)</div>
-            <div class="row"><span class="label">W</span><span class="value">n²</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
-            <div class="row"><span class="label">Op 1</span><span class="value">One-to-all bcast (cols)</span></div>
-            <div class="row"><span class="label">Op 2</span><span class="value">All-to-one reduce (rows)</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n/√p</span></div>
-            <div class="row"><span class="label">#Proc/op</span><span class="value">√p</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
-            <div class="row"><span class="label">Tcomm startup</span><span class="value comm">tₛ log p</span></div>
-            <div class="row"><span class="label">Tcomm transfer</span><span class="value comm">(nlogp)/√p·tᵥ</span></div>
-            <div class="formula">Tₚ = n²/p + tₛlogp + (nlogp)/√p·tᵥ</div>
-            <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log²p)</span></div>
-            <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n²/log²n)</span></div>
-            <div class="section-title" style="margin-top:10px;">Vector in Last Column Variant</div>
-            <div class="note">x starts only in column √p-1</div>
-            <div class="note highlight">Extra redistribution step needed!</div>
-            <div class="row"><span class="label">Step 0</span><span class="value">Redistribute x blocks</span></div>
-            <div class="note">Row i: send xᵢ from (i,√p-1) → (i,i)</div>
-            <div class="row"><span class="label">Redist cost</span><span class="value comm">tₛ + n/√p·tᵥ</span></div>
-            <div class="row"><span class="label">Step 1</span><span class="value">Column broadcast (baseline)</span></div>
-            <div class="row"><span class="label">Step 2</span><span class="value">Row reduce (baseline)</span></div>
-            <div class="formula highlight">Tₚ = n²/p + tₛlogp + (nlogp)/√p·tᵥ + (tₛ + n/√p·tᵥ)</div>
-            <div class="note">Msg sizes: redist=n/√p, bcast=n/√p, reduce=n/√p</div>
-        </div>
-
-        <div id="cannon" class="section" style="display:none;">
-            <div class="section-title">Cannon's Algorithm</div>
-            <div class="row"><span class="label">W</span><span class="value">n³</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Circular shift</span></div>
-            <div class="row"><span class="label">Why?</span><span class="value">Shift A left, B up</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n²/p (submatrix)</span></div>
-            <div class="row"><span class="label">#Shifts</span><span class="value">√p times</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
-            <div class="row"><span class="label">Tcomm</span><span class="value comm">2√p(tₛ + n²/p·tᵥ)</span></div>
-            <div class="formula">Tₚ = n³/p + 2√p(tₛ + n²/p·tᵥ)</div>
-            <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
-            <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n²)</span></div>
-            <div class="row"><span class="label">Memory</span><span class="value">3n²/p</span></div>
-        </div>
-
-        <div id="dns" class="section" style="display:none;">
-            <div class="section-title">DNS Algorithm</div>
-            <div class="row"><span class="label">W</span><span class="value">n³</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">3D Mesh p^⅓×p^⅓×p^⅓</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Broadcast + Reduce</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n²/p^⅔</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
-            <div class="row"><span class="label">Tcomm startup</span><span class="value comm">tₛ log p</span></div>
-            <div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n²/p^⅔·tᵥ</span></div>
-            <div class="formula">Tₚ = n³/p + tₛlogp + n²/p^⅔·tᵥ</div>
-            <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log³p)</span></div>
-            <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n³/log³n)</span></div>
-            <div class="row"><span class="label">Memory/proc</span><span class="value">3n²/p^(2/3)</span></div>
-        </div>
-
-        <div id="strassen" class="section" style="display:none;">
-            <div class="section-title">Simple 2D MatMul + Strassen Locally</div>
-            <div class="row"><span class="label">Strassen exp</span><span class="value highlight">ω = log₂7 ≈ 2.807</span></div>
-            <div class="row"><span class="label">W (naive)</span><span class="value">n³</span></div>
-            <div class="row"><span class="label">W (Strassen)</span><span class="value">n^ω ≈ n^2.807</span></div>
-            <div class="section-title" style="margin-top:10px;">Simple 2D Algorithm</div>
-            <div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
-            <div class="row"><span class="label">#Stages</span><span class="value highlight">√p</span></div>
-            <div class="note">Each stage: bcast A-block along row, B-block along col</div>
-            <div class="note">Each proc multiplies one (n/√p)×(n/√p) pair & accumulates</div>
-            <div class="row"><span class="label">Block size</span><span class="value">n/√p × n/√p</span></div>
-            <div class="row"><span class="label">Local mult/stage</span><span class="value">(n/√p)^ω using Strassen</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">√p·(n/√p)^ω = n^ω / p^{(ω-1)/2}</span></div>
-            <div class="row"><span class="label">Comm volume</span><span class="value">Θ(n²/√p) words/proc</span></div>
-            <div class="row"><span class="label">Tcomm</span><span class="value comm">2√p·tₛ + 2n²/√p·tᵥ</span></div>
-            <div class="formula">Tₚ = n^ω / p^{(ω-1)/2} + 2√p·tₛ + 2n²/√p·tᵥ</div>
-            <div class="section-title" style="margin-top:10px;">Cost-Optimality (vs naive W=n³)</div>
-            <div class="note">Comm term dominates: p·(n²/√p) = n²√p</div>
-            <div class="note">Cost-opt: n²√p = O(n³) → √p = O(n)</div>
-            <div class="formula highlight">Cost-opt p = O(n²) vs naive W=n³</div>
-            <div class="note">vs Strassen W=Θ(n^ω): NOT cost-opt</div>
-            <div class="note">(parallel work > seq Strassen work)</div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- SORTING -->
-    <div id="sort" class="page">
-        <div class="page-title">Ch4: SORTING</div>
-        <div class="sub-nav">
-            <button class="sub-btn" onclick="showSection('bitonic')">Bitonic</button>
-            <button class="sub-btn" onclick="showSection('oddeven')">Odd-Even</button>
-            <button class="sub-btn" onclick="showSection('enum')">Enumeration</button>
-        </div>
-
-        <div id="bitonic" class="section">
-            <div class="section-title">Bitonic Sort</div>
-            <div class="row"><span class="label">W</span><span class="value">n log²n</span></div>
-            <div class="row"><span class="label">Why?</span><span class="value">log n stages × log n steps</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Compare-exchange</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n/p</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n log²n / p</span></div>
-            <div class="row"><span class="label">Tcomm</span><span class="value comm">logp(tₛ + n/p·tᵥ)</span></div>
-            <div class="formula">Tₚ = nlog²n/p + logp(tₛ + n/p·tᵥ)</div>
-            <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log²p)</span></div>
-            <div class="note">n=p case: Tp = log²n(tc+ts+tw)</div>
-            <div class="section-title" style="margin-top:10px;">Why k-dim Hypercube for 2^k Merge</div>
-            <div class="note">• Bitonic merge of 2^k needs k compare steps</div>
-            <div class="note">• Step i: compare at distance 2^(k-i)</div>
-            <div class="note">• Distance 2^j in sequence = dim j in hypercube</div>
-            <div class="note">• k-cube: exactly k dimensions available</div>
-            <div class="note highlight">• Each merge step uses one dimension</div>
-            <div class="section-title" style="margin-top:10px;">XOR Partner & Subcube Proof</div>
-            <div class="note highlight">Stage j: partner = label XOR 2ʲ</div>
-            <div class="note">• XOR 2ʲ flips bit j → hypercube dim j</div>
-            <div class="note">• For merge(2ᵏ): only bits 0..k-1 vary</div>
-            <div class="note">• Higher bits FIXED → k-dim subcube!</div>
-            <div class="formula">Subcube = nodes with same high (d-k) bits</div>
-            <div class="section-title" style="margin-top:10px;">Subcube Mapping</div>
-            <div class="note">• Element i → node binary(i)</div>
-            <div class="note">• 2^k elements → k-dim subcube</div>
-            <div class="note">• Subcube = nodes sharing (d-k) fixed bits</div>
-            <div class="section-title" style="margin-top:10px;">p = n/2 Variant</div>
-            <div class="note highlight">Each proc holds 2 elements</div>
-            <div class="note">• First: local sort the 2-item pair</div>
-            <div class="note">• Then: run same stages with m=2</div>
-            <div class="note">• After exchange: local sort 2 elements</div>
-            <div class="note">• Message size = 2 (block size)</div>
-            <div class="formula">Tₚ = 2log²n + log(n/2)·(tₛ + 2tᵥ) + O(1)</div>
-            <div class="note">General p=n/2ᵏ: local sort 2ᵏ, msg size 2ᵏ</div>
-        </div>
-
-        <div id="oddeven" class="section" style="display:none;">
-            <div class="section-title">Odd-Even Transposition</div>
-            <div class="row"><span class="label">W</span><span class="value">n² (seq alg)</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">Ring</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Neighbor exchange</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n/p</span></div>
-            <div class="row"><span class="label">#Phases</span><span class="value">p</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n log(n/p) / p</span></div>
-            <div class="row"><span class="label">Tcomm startup</span><span class="value comm">p·tₛ</span></div>
-            <div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n·tᵥ</span></div>
-            <div class="formula">Tₚ = nlog(n/p)/p + p·tₛ + n·tᵥ</div>
-            <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p²)</span></div>
-        </div>
-
-        <div id="enum" class="section" style="display:none;">
-            <div class="section-title">Enumeration Sort</div>
-            <div class="row"><span class="label">W</span><span class="value">n²</span></div>
-            <div class="row"><span class="label">Why?</span><span class="value">Compare all pairs</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">2D Mesh</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">All-to-all broadcast</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n/p</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
-            <div class="row"><span class="label">Tcomm startup</span><span class="value comm">2(√p-1)·tₛ</span></div>
-            <div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n·tᵥ</span></div>
-            <div class="formula">Tₚ = n²/p + 2(√p-1)tₛ + n·tᵥ</div>
-            <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- SEARCH -->
-    <div id="search" class="page">
-        <div class="page-title">Ch5: SEARCH/DOP</div>
-        <div class="section">
-            <div class="section-title">Dynamic Mapping</div>
-            <div class="note">Best: Tasks even across procs</div>
-            <div class="note">Worst: Largest tasks same proc</div>
-            <div class="formula">S = T_seq / T_parallel</div>
-            <div class="note">Best S: Total / ceil(Total/p)</div>
-            <div class="note">Worst S: Total / (largest tasks on 1 proc)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Parallel Best-First Search</div>
-            <div class="formula">S ≤ p(texp+tacc)/(texp+p·tacc)</div>
-            <div class="row"><span class="label">texp</span><span class="value">expand node (parallel)</span></div>
-            <div class="row"><span class="label">tacc</span><span class="value">access open list (serial!)</span></div>
-            <div class="note">Bottleneck: open list is sequential!</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Dijkstra Token Termination</div>
-            <div class="row"><span class="label">Topo</span><span class="value">Ring</span></div>
-            <div class="row"><span class="label">Token</span><span class="value">WHITE or BLACK</span></div>
-            <div class="row"><span class="label">Processor</span><span class="value">WHITE or BLACK</span></div>
-            <div class="note highlight">Rules:</div>
-            <div class="note">• All start WHITE</div>
-            <div class="note">• Proc→BLACK if send to LOWER ID</div>
-            <div class="note">• Token→BLACK if pass BLACK proc</div>
-            <div class="note">• BLACK proc passes token, turns WHITE</div>
-            <div class="note highlight">DONE: WHITE token arrives at WHITE P0</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Tree-Based (Weights)</div>
-            <div class="row"><span class="label">Start</span><span class="value">P0 weight=1</span></div>
-            <div class="row"><span class="label">Give work</span><span class="value">Split weight ½</span></div>
-            <div class="row"><span class="label">Finish</span><span class="value">Return weight to giver</span></div>
-            <div class="row"><span class="label highlight">DONE</span><span class="value highlight">P0 weight=1 again</span></div>
-            <div class="note">Drawback: Weights get tiny (precision)</div>
-            <div class="note">Fix: Use fractions or integers</div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- GRAPH -->
-    <div id="graph" class="page">
-        <div class="page-title">Ch6: GRAPH</div>
-        <div class="sub-nav">
-            <button class="sub-btn" onclick="showSection('prim')">Prim's</button>
-            <button class="sub-btn" onclick="showSection('floyd')">Floyd's</button>
-            <button class="sub-btn" onclick="showSection('dijksp')">Dijkstra S-P</button>
-            <button class="sub-btn" onclick="showSection('dijkspar')">Dijkstra S-Par</button>
-            <button class="sub-btn" onclick="showSection('conn')">Connected</button>
-            <button class="sub-btn" onclick="showSection('apspmem')">APSP Memory</button>
-        </div>
-
-        <div id="prim" class="section">
-            <div class="section-title">Prim's MST (Hypercube)</div>
-            <div class="row"><span class="label">W</span><span class="value">n²</span></div>
-            <div class="row"><span class="label">Why?</span><span class="value">n iter × n edge checks</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
-            <div class="row"><span class="label">Op 1</span><span class="value">All-to-one reduce</span></div>
-            <div class="row"><span class="label">Op 2</span><span class="value">One-to-all broadcast</span></div>
-            <div class="row"><span class="label">m</span><span class="value">O(1) - just vertex</span></div>
-            <div class="row"><span class="label">#Iter</span><span class="value">n</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
-            <div class="row"><span class="label">Tcomm</span><span class="value comm">n·logp·(tₛ+tᵥ)</span></div>
-            <div class="formula">Tₚ = n²/p + n·logp·(tₛ+tᵥ)</div>
-            <div class="formula">E = 1/(1 + p·logp·(tₛ+tᵥ)/n)</div>
-            <div class="note">If (tₛ+tᵥ)=1: E = 1/(1 + p logp/n)</div>
-            <div class="row"><span class="label">Cost-opt</span><span class="value highlight">p = O(n/log n)</span></div>
-            <div class="row"><span class="label">Memory/proc</span><span class="value">n²/p + n</span></div>
-            <div class="section-title" style="margin-top:10px;">Prim's MST (√p×√p Mesh)</div>
-            <div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
-            <div class="row"><span class="label">Adj storage</span><span class="value">n²/p per proc</span></div>
-            <div class="row"><span class="label">m</span><span class="value">O(1) - vertex id + key</span></div>
-            <div class="row"><span class="label">Per-iter comm</span><span class="value comm">Θ(√p·tₛ + √p·tᵥ)</span></div>
-            <div class="note">Mesh reduce+bcast: √p phases each</div>
-            <div class="row"><span class="label">Total comm</span><span class="value comm">n·Θ(√p·tₛ + √p·tᵥ)</span></div>
-            <div class="formula highlight">Tₚ = n²/p + n·√p·(tₛ+tᵥ)</div>
-            <div class="row"><span class="label">Memory/proc</span><span class="value highlight">Θ(n²/p + n/√p)</span></div>
-            <div class="note">n²/p for adj block, n/√p for distance array</div>
-            <div class="row"><span class="label">Cost-opt</span><span class="value">p·n√p = O(n²) → p = O(n^(2/3))</span></div>
-        </div>
-
-        <div id="floyd" class="section" style="display:none;">
-            <div class="section-title">Floyd's APSP</div>
-            <div class="row"><span class="label">W</span><span class="value">n³</span></div>
-            <div class="row"><span class="label">Why?</span><span class="value">n iter × n² updates</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Broadcast row + col</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n/√p</span></div>
-            <div class="row"><span class="label">#Iter</span><span class="value">n</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
-            <div class="row"><span class="label">Tcomm/iter</span><span class="value comm">2(n/√p)·tᵥ</span></div>
-            <div class="row"><span class="label">Tcomm total</span><span class="value comm">2n²/√p·tᵥ</span></div>
-            <div class="formula">Tₚ = n³/p + 2n²/√p·tᵥ</div>
-            <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
-            <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n²)</span></div>
-            <div class="row"><span class="label">Memory/proc</span><span class="value">n²/p + 2n/√p</span></div>
-        </div>
-
-        <div id="dijksp" class="section" style="display:none;">
-            <div class="section-title">Dijkstra Source-Partitioned</div>
-            <div class="row"><span class="label">W</span><span class="value">n³</span></div>
-            <div class="row"><span class="label">Why?</span><span class="value">n sources × n² each</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">Any</span></div>
-            <div class="row"><span class="label">Op</span><span class="value highlight">NONE!</span></div>
-            <div class="note">Embarrassingly parallel!</div>
-            <div class="formula">Tₚ = n³/p</div>
-            <div class="row"><span class="label">Speedup</span><span class="value highlight">p (perfect!)</span></div>
-            <div class="row"><span class="label">Efficiency</span><span class="value highlight">1 (perfect!)</span></div>
-            <div class="row"><span class="label">Constraint</span><span class="value">p ≤ n</span></div>
-            <div class="row"><span class="label">Memory/proc</span><span class="value highlight">n² + n (FULL adj!)</span></div>
-        </div>
-
-        <div id="dijkspar" class="section" style="display:none;">
-            <div class="section-title">Dijkstra Source-Parallel</div>
-            <div class="note">Parallelize WITHIN single-source Dijkstra</div>
-            <div class="row"><span class="label">W</span><span class="value">n² (one source)</span></div>
-            <div class="row"><span class="label">Partition</span><span class="value">n/p vertices per proc</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Min-reduce + broadcast</span></div>
-            <div class="row"><span class="label">#Iter</span><span class="value">n</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
-            <div class="row"><span class="label">Tcomm</span><span class="value comm">n·logp (reduce+bcast)</span></div>
-            <div class="formula">Tₚ = n²/p + n·logp</div>
-            <div class="row"><span class="label">Max p</span><span class="value">n</span></div>
-            <div class="row"><span class="label">Memory/proc</span><span class="value">n²/p + n (adj + dist)</span></div>
-        </div>
-
-        <div id="conn" class="section" style="display:none;">
-            <div class="section-title">Connected Components (Shiloach-Vishkin)</div>
-            <div class="note highlight">Algorithm: hook + shortcut (pointer jumping)</div>
-            <div class="row"><span class="label">Input</span><span class="value">Adj matrix m=Θ(n²)</span></div>
-            <div class="section-title" style="margin-top:10px;">Per Iteration</div>
-            <div class="row"><span class="label">Hook</span><span class="value">Scan edges: Θ(n²/p)</span></div>
-            <div class="row"><span class="label">Shortcut</span><span class="value">Update parents: Θ(n/p)</span></div>
-            <div class="row"><span class="label">#Iterations</span><span class="value highlight">Θ(log n)</span></div>
-            <div class="section-title" style="margin-top:10px;">Complexity</div>
-            <div class="row"><span class="label">W (seq SV)</span><span class="value">Θ(n²·logn)</span></div>
-            <div class="row"><span class="label">W (seq DFS)</span><span class="value">Θ(n²) for adj matrix</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">(n²/p)·logn</span></div>
-            <div class="row"><span class="label">Tcomm</span><span class="value comm">logn·(tₛlogp + n/p·tᵥ)</span></div>
-            <div class="formula">Tₚ = (n²logn)/p + logn·(tₛlogp + n/p·tᵥ)</div>
-            <div class="note">Simplified (if tᵥ term dominates):</div>
-            <div class="formula">Tₚ ≈ (n²logn)/p + (nlogn)/p·tᵥ</div>
-            <div class="section-title" style="margin-top:10px;">Speedup</div>
-            <div class="formula">vs DFS (W=n²): S = Θ(p/logn)</div>
-            <div class="formula">vs seq SV (W=n²logn): S = Θ(p)</div>
-            <div class="note highlight">State which baseline W you're using!</div>
-        </div>
-
-        <div id="apspmem" class="section" style="display:none;">
-            <div class="section-title">APSP Memory Comparison (at pₘₐₓ)</div>
-            <div class="note">Input: adj matrix G=Θ(n²), Output: D=Θ(n²)</div>
-            <table>
-                <tr><th>Variant</th><th>pₘₐₓ</th><th>Mem/proc</th><th>Total</th></tr>
-                <tr><td>Dijkstra S-Part</td><td class="highlight">n</td><td>Θ(n²)</td><td class="highlight">Θ(n³)</td></tr>
-                <tr><td>Dijkstra S-Par</td><td class="highlight">n</td><td>Θ(n)</td><td>Θ(n²)</td></tr>
-                <tr><td>Floyd 2D</td><td class="highlight">n²</td><td>Θ(1)</td><td>Θ(n²)</td></tr>
-            </table>
-            <div class="section-title" style="margin-top:10px;">Why These Totals?</div>
-            <div class="note highlight">Dijkstra S-Part: G REPLICATED on each!</div>
-            <div class="note">• p procs × n² adj = Θ(n·n²) = Θ(n³)</div>
-            <div class="note">Dijkstra S-Par: G DISTRIBUTED by rows</div>
-            <div class="note">• G: Θ(n²), D: Θ(n²) → Total Θ(n²)</div>
-            <div class="note highlight">Floyd 2D: everything DISTRIBUTED</div>
-            <div class="note">• G,D both blocked → Total Θ(n²)</div>
-            <div class="note highlight">Floyd most memory-efficient at max p!</div>
-            <div class="note">(Shared memory: S-Part also Θ(n²))</div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- DP -->
-    <div id="dp" class="page">
-        <div class="page-title">Ch7: DP</div>
-        <div class="section">
-            <div class="section-title">LCS - WHY E ≤ 0.5</div>
-            <div class="row"><span class="label">W</span><span class="value">n²</span></div>
-            <div class="row"><span class="label">Method</span><span class="value">Anti-diagonal wavefront</span></div>
-            <div class="row"><span class="label">#Processors</span><span class="value">n (max per diag)</span></div>
-            <div class="row"><span class="label">#Diagonals</span><span class="value">2n-1</span></div>
-            <div class="row"><span class="label">Tcomp/diag</span><span class="value">tᶜ</span></div>
-            <div class="row"><span class="label">Tcomm/diag</span><span class="value">tₛ + tᵥ</span></div>
-            <div class="formula">Tₚ = (2n-1)(tₛ + tᵥ + tᶜ)</div>
-            <div class="formula">E = n²·tᶜ / [n(2n-1)(tₛ+tᵥ+tᶜ)]</div>
-            <div class="formula highlight">If tₛ=tᵥ=0: E = n/(2n-1) > 0.5 → 0.5</div>
-            <div class="note">Even with ZERO comm, E approaches 50%!</div>
-            <div class="note">Diagonals vary: 1,2,...n,...2,1</div>
-        </div>
-        <div class="section">
-            <div class="section-title">0/1 Knapsack</div>
-            <div class="row"><span class="label">W</span><span class="value">nc·tᶜ</span></div>
-            <div class="row"><span class="label">n</span><span class="value"># items</span></div>
-            <div class="row"><span class="label">c</span><span class="value">capacity</span></div>
-            <div class="row"><span class="label">Each proc</span><span class="value">c/p entries</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Circular shift</span></div>
-            <div class="row"><span class="label">Tshift(m)</span><span class="value highlight">2tₛ + m·tᵥ</span></div>
-            <div class="row"><span class="label">m per shift</span><span class="value">c/p</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">nc/p · tᶜ</span></div>
-            <div class="row"><span class="label">Tcomm</span><span class="value comm">n·(2tₛ + c/p·tᵥ)</span></div>
-            <div class="formula">Tₚ = (nc/p)·tᶜ + n·(2tₛ + tᵥ·c/p)</div>
-            <div class="section-title" style="margin-top:10px;">Efficiency Bound (t₂, tᶜ form)</div>
-            <div class="note">Let t₂ = tᵥ (per-word comm time)</div>
-            <div class="formula">E = 1 / (1 + (2p·tₛ)/(c·tᶜ) + tᵥ/tᶜ)</div>
-            <div class="note">As (n,c) → ∞ with p fixed:</div>
-            <div class="formula highlight">E ≤ 1/(1 + t₂/tᶜ) = tᶜ/(tᶜ + t₂)</div>
-            <div class="note highlight">Bandwidth limits E even for ∞ problem!</div>
-            <div class="note">• If t₂ = tᶜ: E ≤ 0.5</div>
-            <div class="note">• If t₂ = 0.1·tᶜ: E ≤ 0.91</div>
-            <div class="note">• If t₂ = 0: E → 1 (no bandwidth limit)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Efficiency Bound Template</div>
-            <div class="note">Given: Tₚ = W/p + f(p)·tₛ + g(p,n)·tᵥ</div>
-            <div class="formula">E = W / [W + p·f·tₛ + p·g·tᵥ]</div>
-            <div class="note">• If W >> p·comm: E → 1</div>
-            <div class="note">• If startup dominates: E → W/(p·f·tₛ)</div>
-            <div class="note">• If bandwidth dominates: E → W/(p·g·tᵥ)</div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- FFT -->
-    <div id="fft" class="page">
-        <div class="page-title">Ch8: FFT</div>
-        <div class="section">
-            <div class="section-title">Binary-Exchange (p=n)</div>
-            <div class="row"><span class="label">W</span><span class="value">n log n</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Exchange with neighbor</span></div>
-            <div class="row"><span class="label">#Phases</span><span class="value">log n</span></div>
-            <div class="row"><span class="label">Tcomp</span><span class="value comp">log n · tᶜ</span></div>
-            <div class="row"><span class="label">Tcomm</span><span class="value comm">log n · (tₛ + tᵥ)</span></div>
-            <div class="formula">Tₚ = log n (tᶜ + tₛ + tᵥ)</div>
-            <div class="formula">S = n / (1 + (tₛ+tᵥ)/tᶜ)</div>
-        </div>
-        <div class="section">
-            <div class="section-title">2D Transpose (p &lt; n)</div>
-            <div class="row"><span class="label">Op</span><span class="value">All-to-all personalized</span></div>
-            <div class="formula">Tₚ = nlogn/p + tₛlogp + tᵥ(nlogp)/p</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Find Minimum Tₚ</div>
-            <div class="row"><span class="label">Given</span><span class="value">Tₚ=(n/p)logn + tᵥ(n/p)logp</span></div>
-            <div class="row"><span class="label">Step 1</span><span class="value">dTₚ/dp = 0</span></div>
-            <div class="row"><span class="label">Derivative</span><span class="value">-nlogn/p² + tᵥn(1-logp)/p²</span></div>
-            <div class="row"><span class="label">Set = 0</span><span class="value">logn = tᵥ(1-logp)</span></div>
-            <div class="formula">logp = 1 - logn/tᵥ</div>
-            <div class="formula">For tᵥ=10: logp = 1 - logn/10</div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- QUICK REFERENCE -->
-    <div id="quick" class="page">
-        <div class="page-title">⚡ ALL ALGORITHMS</div>
-        <div class="section">
-            <table>
-                <tr><th>Algo</th><th>W</th><th>Tₚ</th></tr>
-                <tr><td>Mat-Vec 1D</td><td>n²</td><td>n²/p + tₛlogp + n·tᵥ</td></tr>
-                <tr><td>Mat-Vec 2D</td><td>n²</td><td>n²/p + tₛlogp + (nlogp)/√p·tᵥ</td></tr>
-                <tr><td>Cannon</td><td>n³</td><td>n³/p + 2√p(tₛ+n²/p·tᵥ)</td></tr>
-                <tr><td>DNS</td><td>n³</td><td>n³/p + tₛlogp + n²/p^⅔·tᵥ</td></tr>
-                <tr><td>Bitonic</td><td>nlog²n</td><td>nlog²n/p + logp(tₛ+n/p·tᵥ)</td></tr>
-                <tr><td>Odd-Even</td><td>n²</td><td>nlog(n/p)/p + p·tₛ+n·tᵥ</td></tr>
-                <tr><td>Enum</td><td>n²</td><td>n²/p + 2(√p-1)tₛ + n·tᵥ</td></tr>
-                <tr><td>Prim</td><td>n²</td><td>n²/p + nlogp</td></tr>
-                <tr><td>Floyd</td><td>n³</td><td>n³/p + 2n²/√p·tᵥ</td></tr>
-                <tr><td>Dijkstra S-P</td><td>n³</td><td>n³/p (no comm!)</td></tr>
-            </table>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- ISOEFFICIENCY -->
-    <div id="iso" class="page">
-        <div class="page-title">📊 ISOEFFICIENCY & COST-OPT</div>
-        <div class="section">
-            <div class="section-title">Isoefficiency</div>
-            <table>
-                <tr><th>Algorithm</th><th>Isoeff</th></tr>
-                <tr><td>Mat-Vec 1D</td><td class="highlight">O(p²)</td></tr>
-                <tr><td>Mat-Vec 2D</td><td class="highlight">O(p log²p)</td></tr>
-                <tr><td>Cannon</td><td class="highlight">O(p^1.5)</td></tr>
-                <tr><td>DNS</td><td class="highlight">O(p log³p)</td></tr>
-                <tr><td>Bitonic</td><td class="highlight">O(p log²p)</td></tr>
-                <tr><td>Odd-Even</td><td class="highlight">O(p²)</td></tr>
-                <tr><td>Enum Sort</td><td class="highlight">O(p^1.5)</td></tr>
-                <tr><td>Floyd</td><td class="highlight">O(p^1.5)</td></tr>
-            </table>
-        </div>
-        <div class="section">
-            <div class="section-title">Cost-Optimal p</div>
-            <table>
-                <tr><th>Algorithm</th><th>Cost-opt p</th></tr>
-                <tr><td>Mat-Vec 1D</td><td>O(n/logn)</td></tr>
-                <tr><td>Mat-Vec 2D</td><td>O(n²/log²n)</td></tr>
-                <tr><td>Cannon</td><td>O(n²)</td></tr>
-                <tr><td>DNS</td><td>O(n³/log³n)</td></tr>
-                <tr><td>Prim</td><td>O(n/logn)</td></tr>
-                <tr><td>Floyd</td><td>O(n²)</td></tr>
-                <tr><td>Dijkstra S-P</td><td>p ≤ n</td></tr>
-            </table>
-        </div>
-        <div class="section">
-            <div class="section-title">Scalability Ranking</div>
-            <div class="note">Best → Worst:</div>
-            <div class="note">O(p) > O(p log²p) > O(p^1.5) > O(p²)</div>
-            <div class="note">Lower isoeff = better scalability</div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    <!-- MEMORY -->
-    <div id="memory" class="page">
-        <div class="page-title">💾 MEMORY PER PROCESSOR</div>
-        <div class="section">
-            <div class="section-title">Matrix Algorithms</div>
-            <table>
-                <tr><th>Algorithm</th><th>Memory/proc</th></tr>
-                <tr><td>Mat-Vec 1D</td><td>n²/p + n</td></tr>
-                <tr><td>Mat-Vec 2D</td><td>n²/p + 2n/√p</td></tr>
-                <tr><td>Cannon</td><td class="highlight">3n²/p</td></tr>
-                <tr><td>DNS</td><td>3n²/p^(2/3)</td></tr>
-            </table>
-            <div class="note">Cannon: A,B,C blocks each n²/p</div>
-            <div class="note">DNS: slices on 3D mesh</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Graph Algorithms</div>
-            <table>
-                <tr><th>Algorithm</th><th>Memory/proc</th></tr>
-                <tr><td>Prim</td><td>n²/p + n</td></tr>
-                <tr><td>Floyd 2D</td><td>n²/p + 2n/√p</td></tr>
-                <tr><td>Dijkstra S-Part</td><td class="highlight">n² + n (full adj!)</td></tr>
-                <tr><td>Dijkstra S-Par</td><td>n²/p + n</td></tr>
-            </table>
-            <div class="note">Prim: adj rows + distance array</div>
-            <div class="note">Floyd: D block + row/col buffers</div>
-            <div class="note">Dijkstra S-Part: adj REPLICATED!</div>
-        </div>
-        <div class="section">
-            <div class="section-title">Sorting Algorithms</div>
-            <table>
-                <tr><th>Algorithm</th><th>Memory/proc</th></tr>
-                <tr><td>Bitonic</td><td>n/p + buffer</td></tr>
-                <tr><td>Odd-Even</td><td>2n/p (merge buffer)</td></tr>
-                <tr><td>Enumeration</td><td>n/p + n (full copy)</td></tr>
-            </table>
-        </div>
-        <div class="section">
-            <div class="section-title">Stencil/Image</div>
-            <table>
-                <tr><th>Decomposition</th><th>Memory/proc</th></tr>
-                <tr><td>1D (row strips)</td><td>n(n/p + 2)</td></tr>
-                <tr><td>2D (blocks)</td><td>(n/√p + 2)²</td></tr>
-            </table>
-            <div class="note">+2 for ghost rows/edges</div>
-        </div>
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
-    
-
-    <!-- VISUAL CHAPTER -->
-    <div id="visual" class="page">
-        <div class="page-title purple">Ch9: VISUAL RECIPES (NO DRAWINGS)</div>
-
-        <div class="sub-nav">
-            <button class="sub-btn" onclick="showSection('v_taskgraphs')">Task Graphs</button>
-            <button class="sub-btn" onclick="showSection('v_matmul')">Cannon / DNS</button>
-            <button class="sub-btn" onclick="showSection('v_sort')">Sorting Networks</button>
-            <button class="sub-btn" onclick="showSection('v_term')">Termination</button>
-            <button class="sub-btn" onclick="showSection('v_luby')">Luby MIS</button>
-            <button class="sub-btn" onclick="showSection('v_fft')">FFT Maps</button>
-            <button class="sub-btn" onclick="showSection('v_dp')">DP Graphs</button>
-        </div>
-
-        <!-- TASK GRAPHS -->
-        <div id="v_taskgraphs" class="section">
-            <div class="section-title">Task-Dependency Graphs (DAG) — Fast Recipe</div>
-            <div class="note">Goal: draw a DAG + compute metrics (concurrency, critical path, max speedup).</div>
-
-            <div class="section-title" style="margin-top:10px;">How to Draw</div>
-            <div class="note">1) Vertex = one <span class="highlight">task</span> (given by the decomposition).</div>
-            <div class="note">2) Edge u → v if v needs data produced by u (<span class="highlight">true dependence</span>).</div>
-            <div class="note">3) Put tasks of the same “superstep / loop-iteration” on the same level (if synchronous).</div>
-
-            <div class="section-title" style="margin-top:10px;">How to Compute Metrics</div>
-            <div class="formula">Work W = (#tasks) × (cost per task)</div>
-            <div class="formula">Max concurrency = max #tasks that can run in parallel (max level width)</div>
-            <div class="formula">Critical path L = length of the longest path in the DAG</div>
-            <div class="formula">Max speedup (∞ procs): Smax = W / L</div>
-            <div class="formula">Min #procs to reach Smax ≈ max concurrency</div>
-            <div class="note">Useful lower bound: Tp ≥ max(W/p, L).</div>
-
-            <div class="section-title" style="margin-top:10px;">BITONIC_SORT code task graph (n=8)</div>
-            <div class="note">Given: nested loops i=0..d-1, j=i..0 (d=log2 n). Task = one execution of comp_exchange.</div>
-            <div class="row"><span class="label">n</span><span class="value">8 ⇒ d = 3</span></div>
-            <div class="row"><span class="label">#Supersteps</span><span class="value highlight">d(d+1)/2 = 6</span></div>
-            <div class="note">Each superstep (i,j) is one global compare-exchange phase (all processors act once).</div>
-            <div class="note highlight">DAG shape: 6 levels in a chain (level s depends on level s-1).</div>
-            <div class="row"><span class="label">Concurrency</span><span class="value">n tasks per level</span></div>
-            <div class="row"><span class="label">Critical path</span><span class="value">6 (if 1 unit / superstep)</span></div>
-            <div class="row"><span class="label">Total tasks</span><span class="value">6n</span></div>
-
-            <div class="section-title" style="margin-top:10px;">FFT_like_pattern code task graph (n=4)</div>
-            <div class="note">Task = each execution of line 6 (label node as (i,j)). Initialization line 3 is one task “I”.</div>
-            <div class="row"><span class="label">n</span><span class="value">4 ⇒ m=log2 n = 2 stages (j=0,1)</span></div>
-            <div class="note highlight">Edges:</div>
-            <div class="note">• I → (i,0) for all i.</div>
-            <div class="note">• For j ≥ 1: (i,j−1) → (i,j) AND (i XOR 2^j, j−1) → (i,j).</div>
-            <div class="note">This creates a butterfly pattern (stage-by-stage dependence).</div>
-            <div class="row"><span class="label">Concurrency</span><span class="value">n tasks per stage</span></div>
-            <div class="row"><span class="label">Critical path</span><span class="value">m (+1 if counting I)</span></div>
-        </div>
-
-        <!-- MATMUL VISUAL -->
-        <div id="v_matmul" class="section" style="display:none;">
-            <div class="section-title">Cannon (p=16) — “How to draw the pictures”</div>
-            <div class="note">Exam-style: show mapping + communication steps on 16 procs (4×4).</div>
-
-            <div class="row"><span class="label">Grid</span><span class="value">√p×√p = 4×4, processors P(r,c)</span></div>
-            <div class="row"><span class="label">Blocks</span><span class="value">A[r,c], B[r,c], C[r,c] (block size n/4)</span></div>
-
-            <div class="section-title" style="margin-top:10px;">Step 0: Initial Skew (alignment)</div>
-            <div class="note">• Shift A left by <span class="highlight">row index r</span> (wrap-around).</div>
-            <div class="note">• Shift B up by <span class="highlight">col index c</span> (wrap-around).</div>
-
-            <div class="section-title" style="margin-top:10px;">Steps 1..4: Multiply + Shift</div>
-            <div class="note">Repeat for s = 0..3:</div>
-            <div class="note">1) Local multiply: C[r,c] += A_local × B_local</div>
-            <div class="note">2) Shift A left by 1, shift B up by 1 (circular).</div>
-
-            <div class="section-title" style="margin-top:10px;">Drawing Trick (avoid re-drawing shifts)</div>
-            <div class="note">After initial skew + s shifts (q=4):</div>
-            <div class="formula">A at P(r,c): A[r, (c + r + s) mod q]</div>
-            <div class="formula">B at P(r,c): B[(r + c + s) mod q, c]</div>
-            <div class="note">Write these indices inside each grid cell for each picture.</div>
-
-            <div class="section-title" style="margin-top:12px;">DNS for 3×3 matrices — “How to draw the pictures”</div>
-            <div class="note">Goal: show 3D layout + broadcasts + reduction. For n=3, use q=3 ⇒ p=q³=27 procs.</div>
-            <div class="row"><span class="label">Topology</span><span class="value">3×3×3 (i,j,k) 3D mesh/torus</span></div>
-
-            <div class="section-title" style="margin-top:10px;">Mapping</div>
-            <div class="note">Processor P(i,j,k) computes partial for C[i,j] with k as “summation index”.</div>
-            <div class="formula">Hold A(i,k) and B(k,j) (block size 1×1 when n=q=3)</div>
-
-            <div class="section-title" style="margin-top:10px;">Communication / Compute Steps</div>
-            <div class="note">1) Broadcast A(i,k) along the <span class="highlight">j</span>-dimension: (i,*,k).</div>
-            <div class="note">2) Broadcast B(k,j) along the <span class="highlight">i</span>-dimension: (*,j,k).</div>
-            <div class="note">3) Local multiply: partial = A(i,k)·B(k,j).</div>
-            <div class="note">4) Reduce partials along <span class="highlight">k</span> to sum into C(i,j).</div>
-
-            <div class="note">Drawing trick: draw 3 layers (k=0,1,2), each a 3×3 grid; show broadcasts inside each layer and reduction across layers.</div>
-        </div>
-
-        <!-- SORTING VISUAL -->
-        <div id="v_sort" class="section" style="display:none;">
-            <div class="section-title">Bitonic Sort on 4 numbers — network as comparator list</div>
-            <div class="note">If asked to “draw network + write outputs”, you can redraw from this list.</div>
-
-            <div class="section-title" style="margin-top:10px;">Comparator Notation</div>
-            <div class="note">Comparator (a,b) ↑ : output min→a, max→b</div>
-            <div class="note">Comparator (a,b) ↓ : output max→a, min→b</div>
-
-            <div class="section-title" style="margin-top:10px;">n=4 Bitonic Network (ascending sort)</div>
-            <div class="note">Stage 1 (make bitonic): (0,1) ↑ and (2,3) ↓</div>
-            <div class="note">Stage 2 (merge distance 2): (0,2) ↑ and (1,3) ↑</div>
-            <div class="note">Stage 3 (merge distance 1): (0,1) ↑ and (2,3) ↑</div>
-            <div class="note">Processors usable: p = n (one item/proc). For p=n: Tp ≈ log²n·(tᶜ+tₛ+tᵥ).</div>
-
-            <div class="section-title" style="margin-top:12px;">Enumeration Sort on 4 numbers — “how to illustrate”</div>
-            <div class="note">Recipe (works for any n):</div>
-            <div class="note">1) All-to-all share values (each proc learns all numbers).</div>
-            <div class="note">2) Each element computes rank = #{values smaller} (+ tie-break by index).</div>
-            <div class="note">3) Place element into output position = rank (send to owner via all-to-all personalized).</div>
-
-            <div class="section-title" style="margin-top:10px;">Rank formula</div>
-            <div class="formula">rank(x_i) = |{j: x_j &lt; x_i}| + |{j&lt;i: x_j = x_i}|</div>
-            <div class="note">For distinct values: rank(x_i) = #{j: x_j &lt; x_i}.</div>
-            <div class="note">Max processors (simple version): p = n (one element per proc).</div>
-        </div>
-
-        <!-- TERMINATION VISUAL -->
-        <div id="v_term" class="section" style="display:none;">
-            <div class="section-title">Dijkstra Token Termination — how to “draw steps” fast</div>
-            <div class="note">What to draw each picture: ring P0→P1→…→P(p−1)→P0, token position+color, proc colors (WHITE/BLACK), idle/busy.</div>
-
-            <div class="section-title" style="margin-top:10px;">Simulation Checklist</div>
-            <div class="note">1) Init: token WHITE at P0, all procs WHITE, all busy.</div>
-            <div class="note">2) When a proc sends work to LOWER ID → proc becomes BLACK.</div>
-            <div class="note">3) Token becomes BLACK if it passes any BLACK proc.</div>
-            <div class="note">4) When a BLACK proc forwards token → proc turns WHITE.</div>
-            <div class="note highlight">DONE when token returns to P0 WHITE and P0 is idle.</div>
-
-            <div class="section-title" style="margin-top:12px;">Tree-Based Weights — rules + worked scenario</div>
-            <div class="note">Rule: a processor with weight w splits work → keeps w/2 and sends w/2 with the work.</div>
-            <div class="note">When child finishes → returns its remaining weight to parent.</div>
-            <div class="note highlight">DONE when P0 idle and weight(P0)=1.</div>
-
-            <div class="section-title" style="margin-top:10px;">Worked Example (P0→P1, P0→P2, P1→P3, then finish)</div>
-            <table>
-                <tr><th>Step</th><th>Action</th><th>Weights (P0,P1,P2,P3)</th></tr>
-                <tr><td>0</td><td>Start</td><td>(1, 0, 0, 0)</td></tr>
-                <tr><td>1</td><td>P0 gives to P1</td><td>(1/2, 1/2, 0, 0)</td></tr>
-                <tr><td>2</td><td>P0 gives to P2</td><td>(1/4, 1/2, 1/4, 0)</td></tr>
-                <tr><td>3</td><td>P1 gives to P3</td><td>(1/4, 1/4, 1/4, 1/4)</td></tr>
-                <tr><td>4</td><td>P2 finishes → return to P0</td><td>(1/2, 1/4, 0, 1/4)</td></tr>
-                <tr><td>5</td><td>P3 finishes → return to P1</td><td>(1/2, 1/2, 0, 0)</td></tr>
-                <tr><td>6</td><td>P1 finishes → return to P0</td><td class="highlight">(1, 0, 0, 0)</td></tr>
-            </table>
-            <div class="note">If P0 is idle at step 6 and token/weights confirm → termination.</div>
-        </div>
-
-        <!-- LUBY -->
-        <div id="v_luby" class="section" style="display:none;">
-            <div class="section-title">Luby’s Algorithm (MIS) — how to illustrate iterations</div>
-            <div class="note">Each iteration: assign random numbers → choose candidates → add to MIS → delete candidates+neighbors → repeat.</div>
-
-            <div class="section-title" style="margin-top:10px;">Per-Iteration Rules</div>
-            <div class="note">1) Each active vertex v draws random r(v).</div>
-            <div class="note highlight">2) Candidate if r(v) is strictly larger than all neighbor r(u) (tie-break by ID if needed).</div>
-            <div class="note">3) Add all candidates to MIS.</div>
-            <div class="note">4) Remove candidates and all their neighbors from the graph.</div>
-
-            <div class="section-title" style="margin-top:10px;">If “random generator returns vertex ID”</div>
-            <div class="note highlight">r(v) = ID(v) ⇒ candidates = local maxima by ID.</div>
-            <div class="note">Then just pick vertices whose ID is larger than every neighbor ID.</div>
-
-            <div class="section-title" style="margin-top:10px;">Fast “picture” template (what to show)</div>
-            <div class="note">• Circle/highlight candidate set</div>
-            <div class="note">• Mark MIS so far</div>
-            <div class="note">• Cross out removed vertices (candidates + neighbors)</div>
-            <div class="note">Stop when no vertices remain. #iterations = #rounds drawn.</div>
-
-            <div class="section-title" style="margin-top:10px;">How to force exactly 2 iterations (if allowed to choose randoms)</div>
-            <div class="note">Choose round-1 randoms so that:</div>
-            <div class="note">• Selected candidates form an independent set.</div>
-            <div class="note">• After removing candidates+neighbors, remaining graph is non-empty.</div>
-            <div class="note">In round 2, give remaining vertices highest randoms so they get picked.</div>
-        </div>
-
-        <!-- FFT -->
-        <div id="v_fft" class="section" style="display:none;">
-            <div class="section-title">Binary-Exchange FFT (n=8,p=8) — interaction pattern</div>
-            <div class="note">Label processors by 3-bit IDs 0..7. Stage j pairs i with i XOR 2^j.</div>
-
-            <div class="section-title" style="margin-top:10px;">Pairs per stage</div>
-            <div class="note">j=0 (flip bit 0): (0,1)(2,3)(4,5)(6,7)</div>
-            <div class="note">j=1 (flip bit 1): (0,2)(1,3)(4,6)(5,7)</div>
-            <div class="note">j=2 (flip bit 2): (0,4)(1,5)(2,6)(3,7)</div>
-            <div class="note">Draw as a 3D cube: each stage uses one cube dimension.</div>
-
-            <div class="section-title" style="margin-top:12px;">2D Transpose FFT (n=16)</div>
-            <div class="note">Classic view: arrange data as a √p×√p matrix, do FFTs on rows, transpose, FFTs on rows again (former columns).</div>
-
-            <div class="section-title" style="margin-top:10px;">Case A: p=16 (4×4 grid)</div>
-            <div class="note">Map index k to grid (r,c): k = 4r + c. Proc P(r,c) holds x[r,c].</div>
-            <div class="note">Step 1: Each row r computes 4-point FFT on its 4 values.</div>
-            <div class="note">Step 2: Transpose: send x[r,c] → P(c,r) (all-to-all personalized).</div>
-            <div class="note">Step 3: Each row (former column) computes 4-point FFT.</div>
-
-            <div class="section-title" style="margin-top:10px;">Case B: p=4 (2×2 grid)</div>
-            <div class="note">Each proc holds a block of 4 values. Do 4-point FFTs locally, then transpose blocks between the 2×2 procs, then finish FFTs.</div>
-            <div class="note">When asked “how many processors”: state which mapping you use (p=16 or p=4) as specified by the question.</div>
-        </div>
-
-        <!-- DP VISUAL -->
-        <div id="v_dp" class="section" style="display:none;">
-            <div class="section-title">0/1 Knapsack DP — task graph recipe</div>
-            <div class="note">Standard DP table: DP[i,w] for i=0..n (items) and w=0..c (capacity).</div>
-            <div class="note highlight">Each DP[i,w] depends only on previous row i−1:</div>
-            <div class="note">• DP[i,w] ← DP[i−1,w]</div>
-            <div class="note">• If w ≥ w_i: DP[i,w] ← DP[i−1,w−w_i] + p_i</div>
-
-            <div class="section-title" style="margin-top:10px;">For the specific instance (n=3, c=8, w=[2,3,4])</div>
-            <div class="note">To draw: make a grid with rows i=0..3 and columns w=0..8; draw 1 or 2 edges from row i−1 into each node (i,w) based on w_i.</div>
-
-            <div class="section-title" style="margin-top:12px;">Matrix Parenthesization DP — task graph recipe (A,B,C,D)</div>
-            <div class="note">Tasks are ranges: AA,BB,CC,DD, AB,BC,CD, AC,BD, AD.</div>
-            <div class="note">Edge: “bigger range depends on its split subranges”.</div>
-            <div class="note highlight">Dependencies (for 4 matrices):</div>
-            <div class="note">AB ← AA,BB</div>
-            <div class="note">BC ← BB,CC</div>
-            <div class="note">CD ← CC,DD</div>
-            <div class="note">AC ← (AA,BC) and (AB,CC)</div>
-            <div class="note">BD ← (BB,CD) and (BC,DD)</div>
-            <div class="note">AD ← (AA,BD) and (AB,CD) and (AC,DD)</div>
-
-            <div class="section-title" style="margin-top:12px;">1D Knapsack on CREW PRAM — what to say/draw</div>
-            <div class="note">Use 2 arrays prev[w], curr[w] so each row update is parallel-safe.</div>
-            <div class="note">Processors: p = c+1 (one per capacity w).</div>
-            <div class="note">For each item i (n iterations): all processors compute curr[w] in O(1) from prev[w] and prev[w−w_i].</div>
-            <div class="formula">Tp = Θ(n) with p=Θ(c) processors</div>
-            <div class="formula">Work W = Θ(nc) ⇒ cost pTp = Θ(nc) ⇒ cost-optimal</div>
-        </div>
-
-        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-    </div>
-
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+For j=0: inputs A[*,0] are given → edges I → (i,0) for all i.
+For j&gt;0: A[i,j] is output of (i,j-1)
+       A[i XOR 2^j, j] is output of (i XOR 2^j, j-1)
+So edges:
+  (i,j-1) → (i,j)
+  (i XOR 2^j, j-1) → (i,j)
+</pre></div>
+<div class="section-title" style="margin-top:10px;">Concrete for n=4 (m=2)</div>
+<div class="note">j=0 and j=1 only. All tasks with same j run concurrently (same stage).</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Stage j=0: (0,0) (1,0) (2,0) (3,0)   (all parallel)
+Stage j=1: (0,1) (1,1) (2,1) (3,1)   (all parallel)
+
+Edges (besides I→stage0):
+(0,0),(2,0) → (0,1) and (2,1)
+(1,0),(3,0) → (1,1) and (3,1)
+</pre></div>
+</div><button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div><div class="page" id="visual"><div class="page-title">🎨 VISUAL &amp; WORKED</div><div class="sub-nav"><button class="sub-btn" onclick="showSection('vis_lcs')">LCS TG</button><button class="sub-btn" onclick="showSection('vis_fft')">FFT TG</button><button class="sub-btn" onclick="showSection('vis_bitonic')">Bitonic (4P)</button><button class="sub-btn" onclick="showSection('vis_scatter')">Scatter proof</button><button class="sub-btn" onclick="showSection('vis_a2a')">All2All mesh</button></div><div class="section" id="vis_lcs"><div class="section-title">LCS DP Task Graph (n=4)</div>
+<div class="note"><b>Goal:</b> task-dependency graph for LCS DP where each task is computing <span class="highlight">f[i,j]</span>.</div>
+<div class="note"><b>Recurrence (standard):</b><br/>
+if A[i]=B[j] → f[i,j]=f[i-1,j-1]+1<br/>
+else → f[i,j]=max(f[i-1,j], f[i,j-1])
+</div>
+<div class="note"><b>Dependencies:</b> (i,j) depends on <span class="highlight">(i-1,j)</span>, <span class="highlight">(i,j-1)</span>, and <span class="highlight">(i-1,j-1)</span>.</div>
+<div class="note"><b>How to draw quickly (n=4):</b><br/>
+1) Draw a 4×4 grid of nodes (i,j), i=1..4 vertical, j=1..4 horizontal.<br/>
+2) For each node draw incoming arrows from ↑, ←, ↖ (or outgoing to ↓, →, ↘).</div>
+<div class="section-title" style="margin-top:10px;">Concurrent sets (wavefront)</div>
+<div class="note">All nodes with same <span class="highlight">i+j</span> are independent ⇒ can run concurrently once previous diagonals finished.</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+k=2: {(1,1)}
+k=3: {(1,2),(2,1)}
+k=4: {(1,3),(2,2),(3,1)}
+k=5: {(1,4),(2,3),(3,2),(4,1)}
+k=6: {(2,4),(3,3),(4,2)}
+k=7: {(3,4),(4,3)}
+k=8: {(4,4)}
+</pre></div>
+<div class="note"><b>#Steps:</b> 2n-1 = 7 wavefront steps for n=4 (diagonals). Max parallelism = n=4 (middle diagonal).</div>
+</div><div class="section" id="vis_fft" style="display:none;"><div class="section-title">FFT_like_pattern TG (n=4)</div>
+<div class="note"><b>Given code:</b> A[i,j+1] = A[i,j] + A[i XOR 2^j, j]</div>
+<div class="note">Task = each execution of line 6 ⇒ node labeled (i,j) produces A[i,j+1].</div>
+<div class="note"><b>n=4 ⇒ m=log2 n=2 ⇒ j∈{0,1}, i∈{0,1,2,3}</b></div>
+<div class="section-title" style="margin-top:10px;">Dependencies (dataflow)</div>
+<div class="note">Node (i,j) reads A[i,j] and A[i XOR 2^j, j].  
+So (i,j) depends on the tasks that produced those values.</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+For j=0: reads A[*,0] (input) → only depends on I (init).
+For j=1: (i,1) needs A[i,1] and A[i XOR 2,1]
+        A[i,1] is produced by (i,0)
+        A[i XOR 2,1] is produced by (i XOR 2,0)
+Edges: (i,0) → (i,1) and (i XOR 2,0) → (i,1)
+</pre></div>
+<div class="section-title" style="margin-top:10px;">Concrete edge list (n=4)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+I → (0,0),(1,0),(2,0),(3,0)
+
+(0,0),(2,0) → (0,1)
+(1,0),(3,0) → (1,1)
+(2,0),(0,0) → (2,1)
+(3,0),(1,0) → (3,1)
+</pre></div>
+<div class="note"><b>Concurrency:</b> all (i,0) run in parallel; then all (i,1) run in parallel.</div>
+</div><div class="section" id="vis_bitonic" style="display:none;"><div class="section-title">Bitonic Sort (compare-split, p=4)</div>
+<div class="note"><b>Setup:</b> n=8, p=4 ⇒ each proc has m=n/p=2 elements.</div>
+<div class="note"><b>Compare-split primitive:</b><br/>
+Two procs exchange their m-elements blocks, merge 2m elements, then split:<br/>
+<span class="highlight">+</span> (increasing): lower-rank keeps <i>smaller</i> half, higher-rank keeps <i>larger</i> half.<br/>
+<span class="highlight">−</span> (decreasing): lower-rank keeps <i>larger</i> half, higher-rank keeps <i>smaller</i> half.<br/>
+(Keep local order consistent with the comparator direction.)</div>
+<div class="section-title" style="margin-top:10px;">Network for p=4 (decreasing output)</div>
+<div class="note">Stages: k=2 then k=4. Steps (j): 1, then 2, then 1.</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Step 1 (k=2,j=1):  P0 --(−)-- P1     P2 --(+)-- P3
+Step 2 (k=4,j=2):  P0 --(−)-- P2     P1 --(−)-- P3
+Step 3 (k=4,j=1):  P0 --(−)-- P1     P2 --(−)-- P3
+</pre></div>
+<div class="section-title" style="margin-top:10px;">Worked values for input (0,1,2,3,4,5,6,7)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Initial local blocks (sorted):
+P0:[0,1]  P1:[2,3]  P2:[4,5]  P3:[6,7]
+
+After Step 1: (P0,P1)−   (P2,P3)+
+P0:[3,2]  P1:[1,0]  P2:[4,5]  P3:[6,7]
+
+After Step 2: (P0,P2)−   (P1,P3)−
+P0:[5,4]  P1:[7,6]  P2:[3,2]  P3:[1,0]
+
+After Step 3: (P0,P1)−   (P2,P3)−
+P0:[7,6]  P1:[5,4]  P2:[3,2]  P3:[1,0]
+</pre></div>
+<div class="note"><b>Final concatenation:</b> 7,6,5,4,3,2,1,0 (decreasing).</div>
+</div><div class="section" id="vis_scatter" style="display:none;"><div class="section-title">Scatter optimality proof (tₛ=0)</div>
+<div class="note"><b>Scatter on linear array:</b> root has p messages (each size m), one for each processor.</div>
+<div class="note"><b>Pipelined scatter time:</b></div>
+<div class="formula">T = (p-1)·(tₛ + m·tᵥ)</div>
+<div class="note"><b>Case tₛ=0:</b> T = (p-1)·m·tᵥ (matches exam form t_w·m·(p-1) if tᵥ≡t_w)</div>
+<div class="section-title" style="margin-top:10px;">Why this is asymptotically optimal (tₛ=0)</div>
+<div class="note">
+Lower bound: consider the first link out of the root. All other processors need their m words, so at least <span class="highlight">(p-1)m</span> words must cross that link.<br/>
+With startup 0, bandwidth-limited link time ≥ (p-1)m·tᵥ.<br/>
+Algorithm achieves this bound ⇒ asymptotically optimal.
+</div>
+</div><div class="section" id="vis_a2a" style="display:none;"><div class="section-title">All-to-all broadcast on 2D mesh</div>
+<div class="note"><b>All-to-all broadcast (allgather):</b> each processor broadcasts its own message of size m to all processors.</div>
+<div class="note"><b>2D mesh √p×√p derivation:</b> do it in 2 phases (rows then columns).</div>
+<div class="section-title" style="margin-top:10px;">Phase 1: allgather within each row</div>
+<div class="note">Each row has √p processors. Use ring allgather (√p-1 steps), message size m each step.</div>
+<div class="formula">T_row = (√p-1)·(tₛ + m·tᵥ)</div>
+<div class="section-title" style="margin-top:10px;">Phase 2: allgather within each column</div>
+<div class="note">After Phase 1, each processor holds √p messages ⇒ total size √p·m. Allgather that along the column.</div>
+<div class="formula">T_col = (√p-1)·(tₛ + √p·m·tᵥ)</div>
+<div class="section-title" style="margin-top:10px;">Total + simplification</div>
+<div class="formula">T = T_row + T_col = 2(√p-1)tₛ + (p-1)m·tᵥ</div>
+<div class="note">Because (√p-1)(√p+1)=p-1 ⇒ bandwidth term collapses nicely.</div>
+<div class="note"><b>Asymptotic:</b> Θ(√p·tₛ + p·m·tᵥ)</div>
+</div><button class="back-btn" onclick="showPage('menu')">← Back to Menu</button></div>
+<!-- QUICK REFERENCE -->
+<div class="page" id="quick">
+<div class="page-title">⚡ ALL ALGORITHMS</div>
+<div class="section">
+<table>
+<tr><th>Algo</th><th>W</th><th>Tₚ</th></tr>
+<tr><td>Mat-Vec 1D</td><td>n²</td><td>n²/p + tₛlogp + n·tᵥ</td></tr>
+<tr><td>Mat-Vec 2D</td><td>n²</td><td>n²/p + tₛlogp + (nlogp)/√p·tᵥ</td></tr>
+<tr><td>Cannon</td><td>n³</td><td>n³/p + 2√p(tₛ+n²/p·tᵥ)</td></tr>
+<tr><td>DNS</td><td>n³</td><td>n³/p + tₛlogp + n²/p^⅔·tᵥ</td></tr>
+<tr><td>Bitonic</td><td>nlog²n</td><td>nlog²n/p + logp(tₛ+n/p·tᵥ)</td></tr>
+<tr><td>Odd-Even</td><td>n²</td><td>nlog(n/p)/p + p·tₛ+n·tᵥ</td></tr>
+<tr><td>Enum</td><td>n²</td><td>n²/p + 2(√p-1)tₛ + n·tᵥ</td></tr>
+<tr><td>Prim</td><td>n²</td><td>n²/p + nlogp</td></tr>
+<tr><td>Floyd</td><td>n³</td><td>n³/p + 2n²/√p·tᵥ</td></tr>
+<tr><td>Dijkstra S-P</td><td>n³</td><td>n³/p (no comm!)</td></tr>
+</table>
+</div>
+<div class="section"><div class="section-title">Extra exam-ready nuggets</div>
+<div class="note"><b>LCS DP:</b> compute by anti-diagonals. #wavefront steps = 2n-1, max parallelism = n.</div>
+<div class="note"><b>All-to-all broadcast on √p×√p mesh:</b> T = 2(√p-1)tₛ + (p-1)m·tᵥ.</div>
+<div class="note"><b>Shared-memory quicksort:</b> T_p ≈ (n/p)log n + log n log p, isoeff n=Θ(p log p).</div>
+</div><button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- ISOEFFICIENCY -->
+<div class="page" id="iso">
+<div class="page-title">📊 ISOEFFICIENCY &amp; COST-OPT</div>
+<div class="section">
+<div class="section-title">Isoefficiency</div>
+<table>
+<tr><th>Algorithm</th><th>Isoeff</th></tr>
+<tr><td>Mat-Vec 1D</td><td class="highlight">O(p²)</td></tr>
+<tr><td>Mat-Vec 2D</td><td class="highlight">O(p log²p)</td></tr>
+<tr><td>Cannon</td><td class="highlight">O(p^1.5)</td></tr>
+<tr><td>DNS</td><td class="highlight">O(p log³p)</td></tr>
+<tr><td>Bitonic</td><td class="highlight">O(p log²p)</td></tr>
+<tr><td>Odd-Even</td><td class="highlight">O(p²)</td></tr>
+<tr><td>Enum Sort</td><td class="highlight">O(p^1.5)</td></tr>
+<tr><td>Floyd</td><td class="highlight">O(p^1.5)</td></tr>
+<tr><td>Quicksort (shared mem)</td><td class="highlight">n=Θ(p log p) ⇒ W=Θ(p log²p)</td></tr></table>
+</div>
+<div class="section">
+<div class="section-title">Cost-Optimal p</div>
+<table>
+<tr><th>Algorithm</th><th>Cost-opt p</th></tr>
+<tr><td>Mat-Vec 1D</td><td>O(n/logn)</td></tr>
+<tr><td>Mat-Vec 2D</td><td>O(n²/log²n)</td></tr>
+<tr><td>Cannon</td><td>O(n²)</td></tr>
+<tr><td>DNS</td><td>O(n³/log³n)</td></tr>
+<tr><td>Prim</td><td>O(n/logn)</td></tr>
+<tr><td>Floyd</td><td>O(n²)</td></tr>
+<tr><td>Dijkstra S-P</td><td>p ≤ n</td></tr>
+<tr><td>Quicksort (shared mem)</td><td>O(n/log n)</td></tr></table>
+</div>
+<div class="section">
+<div class="section-title">Scalability Ranking</div>
+<div class="note">Best → Worst:</div>
+<div class="note">O(p) &gt; O(p log²p) &gt; O(p^1.5) &gt; O(p²)</div>
+<div class="note">Lower isoeff = better scalability</div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
+<!-- MEMORY -->
+<div class="page" id="memory">
+<div class="page-title">💾 MEMORY PER PROCESSOR</div>
+<div class="section">
+<div class="section-title">Matrix Algorithms</div>
+<table>
+<tr><th>Algorithm</th><th>Memory/proc</th></tr>
+<tr><td>Mat-Vec 1D</td><td>n²/p + n</td></tr>
+<tr><td>Mat-Vec 2D</td><td>n²/p + 2n/√p</td></tr>
+<tr><td>Cannon</td><td class="highlight">3n²/p</td></tr>
+<tr><td>DNS</td><td>3n²/p^(2/3)</td></tr>
+</table>
+<div class="note">Cannon: A,B,C blocks each n²/p</div>
+<div class="note">DNS: slices on 3D mesh</div>
+</div>
+<div class="section">
+<div class="section-title">Graph Algorithms</div>
+<table>
+<tr><th>Algorithm</th><th>Memory/proc</th></tr>
+<tr><td>Prim</td><td>n²/p + n</td></tr>
+<tr><td>Floyd 2D</td><td>n²/p + 2n/√p</td></tr>
+<tr><td>Dijkstra S-Part</td><td class="highlight">n² + n (full adj!)</td></tr>
+<tr><td>Dijkstra S-Par</td><td>n²/p + n</td></tr>
+</table>
+<div class="note">Prim: adj rows + distance array</div>
+<div class="note">Floyd: D block + row/col buffers</div>
+<div class="note">Dijkstra S-Part: adj REPLICATED!</div>
+</div>
+<div class="section">
+<div class="section-title">Sorting Algorithms</div>
+<table>
+<tr><th>Algorithm</th><th>Memory/proc</th></tr>
+<tr><td>Bitonic</td><td>n/p + buffer</td></tr>
+<tr><td>Odd-Even</td><td>2n/p (merge buffer)</td></tr>
+<tr><td>Enumeration</td><td>n/p + n (full copy)</td></tr>
+</table>
+</div>
+<div class="section">
+<div class="section-title">Stencil/Image</div>
+<table>
+<tr><th>Decomposition</th><th>Memory/proc</th></tr>
+<tr><td>1D (row strips)</td><td>n(n/p + 2)</td></tr>
+<tr><td>2D (blocks)</td><td>(n/√p + 2)²</td></tr>
+</table>
+<div class="note">+2 for ghost rows/edges</div>
+</div>
+<button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+</div>
 <script>
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
