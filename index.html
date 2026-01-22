@@ -833,6 +833,7 @@ n log n = K·p log n log p
 <button class="sub-btn" onclick="showSection('dijkspar')">Dijkstra S-Par</button>
 <button class="sub-btn" onclick="showSection('conn')">Connected</button>
 <button class="sub-btn" onclick="showSection('apspmem')">APSP Memory</button>
+<button class="sub-btn" onclick="showSection('luby')">Luby MIS</button>
 </div>
 <div class="section" id="prim">
 <div class="section-title">Prim's MST (Hypercube) [5 pts]</div>
@@ -851,7 +852,9 @@ n log n = K·p log n log p
 <div class="note">If (tₛ+tᵥ)=1: E = 1/(1 + p logp/n)</div>
 <div class="row"><span class="label">Cost-opt</span><span class="value highlight">p = O(n/log n)</span></div>
 <div class="row"><span class="label">Memory/proc</span><span class="value">n²/p + n</span></div>
-<div class="section-title" style="margin-top:10px;">Prim's MST (√p×√p Mesh)</div>
+<div class="section-title" style="margin-top:10px;">Prim's MST (√p×√p Mesh) [12 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Prim's MST on mesh. Derive Tₚ, isoefficiency, cost-opt upper bound. Define each term, specify message size. Memory per proc?</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] Given E = 1/(1 + p log p / n), write condition for cost-optimality. Explain why.</div>
 <div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
 <div class="row"><span class="label">Adj storage</span><span class="value">n²/p per proc</span></div>
 <div class="row"><span class="label">m</span><span class="value">O(1) - vertex id + key</span></div>
@@ -885,7 +888,8 @@ Require p·T_p = O(n²) ⇒ p = O(n^{2/3})
         </div>
 </div>
 <div class="section" id="floyd" style="display:none;">
-<div class="section-title">Floyd's APSP</div>
+<div class="section-title">Floyd's APSP [11 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Floyd's APSP, n vertices, p procs in 2D mesh (p&lt;n). Derive Tₚ and isoefficiency. Describe scalability.</div>
 <div class="row"><span class="label">W</span><span class="value">n³</span></div>
 <div class="row"><span class="label">Why?</span><span class="value">n iter × n² updates</span></div>
 <div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
@@ -944,7 +948,8 @@ If p &gt; n, some processors idle ⇒ E drops ≈ n/p.
 <div class="row"><span class="label">Memory/proc</span><span class="value">n²/p + n (adj + dist)</span></div>
 </div>
 <div class="section" id="conn" style="display:none;">
-<div class="section-title">Connected Components (Shiloach-Vishkin)</div>
+<div class="section-title">Connected Components (Shiloach-Vishkin) [8 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Derive Tₚ and S for parallel connected-component algorithm. Undirected graph, n vertices, p procs (p&lt;n).</div>
 <div class="note highlight">Algorithm: hook + shortcut (pointer jumping)</div>
 <div class="row"><span class="label">Input</span><span class="value">Adj matrix m=Θ(n²)</span></div>
 <div class="section-title" style="margin-top:10px;">Per Iteration</div>
@@ -965,7 +970,8 @@ If p &gt; n, some processors idle ⇒ E drops ≈ n/p.
 <div class="note highlight">State which baseline W you're using!</div>
 </div>
 <div class="section" id="apspmem" style="display:none;">
-<div class="section-title">APSP Memory Comparison (at pₘₐₓ)</div>
+<div class="section-title">APSP Memory Comparison (at pₘₐₓ) [3 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Compute total memory for APSP variants at max processors (graph size n): (a) Dijkstra source-partition, (b) Dijkstra source-parallel, (c) Floyd.</div>
 <div class="note">Input: adj matrix G=Θ(n²), Output: D=Θ(n²)</div>
 <table>
 <tr><th>Variant</th><th>pₘₐₓ</th><th>Mem/proc</th><th>Total</th></tr>
@@ -982,6 +988,135 @@ If p &gt; n, some processors idle ⇒ E drops ≈ n/p.
 <div class="note">• G,D both blocked → Total Θ(n²)</div>
 <div class="note highlight">Floyd most memory-efficient at max p!</div>
 <div class="note">(Shared memory: S-Part also Θ(n²))</div>
+</div>
+
+<div class="section" id="luby" style="display:none;">
+<div class="section-title">Luby's Maximal Independent Set (MIS) [4+9 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [4 pts] Illustrate parallel Luby's MIS on graph. Choose random numbers for exactly 2 iterations.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [9 pts] Illustrate all steps of Luby's MIS. Random = vertex ID. Show candidates + partial solution each iteration. #iterations? #vertices in result?</div>
+
+<div class="section-title" style="margin-top:10px;">Algorithm</div>
+<div class="note">1. Each vertex picks random number</div>
+<div class="note">2. Vertex is <b>candidate</b> if its number > all neighbors' numbers</div>
+<div class="note">3. Add all candidates to MIS</div>
+<div class="note">4. Remove candidates and their neighbors from graph</div>
+<div class="note">5. Repeat until graph empty</div>
+
+<div class="section-title" style="margin-top:10px;">Example Graph</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+    1 ─── 3 ─── 5 ─── 6
+    │ ╲   │     │     │
+    │   ╲ │     │     │
+    0 ─── 2 ─── 4 ─── 7
+                  ╲   │
+                    ╲ │
+                      (4-6 edge)
+
+Adjacency:
+0: 1,2
+1: 0,2,3
+2: 0,1,3,4
+3: 1,2,5
+4: 2,5,6,7
+5: 3,4,6
+6: 4,5,7
+7: 4,6
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Worked Example (random = vertex ID)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+ITERATION 1:
+Random values = vertex IDs: 0,1,2,3,4,5,6,7
+
+Candidates (r[v] > all neighbors):
+  0: max neighbor = max(1,2) = 2 > 0? NO
+  1: max neighbor = max(0,2,3) = 3 > 1? NO
+  2: max neighbor = max(0,1,3,4) = 4 > 2? NO
+  3: max neighbor = max(1,2,5) = 5 > 3? NO
+  4: max neighbor = max(2,5,6,7) = 7 > 4? NO
+  5: max neighbor = max(3,4,6) = 6 > 5? NO
+  6: max neighbor = max(4,5,7) = 7 > 6? NO
+  7: max neighbor = max(4,6) = 6 < 7? YES ✓
+
+Candidates: {7}
+Add to MIS: {7}
+Remove 7 and neighbors {4,6}: remaining = {0,1,2,3,5}
+
+Graph after iter 1:
+    1 ─── 3 ─── 5
+    │ ╲   │
+    │   ╲ │
+    0 ─── 2
+
+ITERATION 2:
+Vertices: {0,1,2,3,5}, random = IDs
+
+Candidates:
+  0: max(1,2) = 2 > 0? NO
+  1: max(0,2,3) = 3 > 1? NO
+  2: max(0,1,3) = 3 > 2? NO
+  3: max(1,2,5) = 5 > 3? NO
+  5: max(3) = 3 < 5? YES ✓
+
+Candidates: {5}
+Add to MIS: {7,5}
+Remove 5 and neighbors {3}: remaining = {0,1,2}
+
+Graph after iter 2:
+    1
+    │ ╲
+    │   ╲
+    0 ─── 2
+
+ITERATION 3:
+Vertices: {0,1,2}, random = IDs
+
+Candidates:
+  0: max(1,2) = 2 > 0? NO
+  1: max(0,2) = 2 > 1? NO
+  2: max(0,1) = 1 < 2? YES ✓
+
+Candidates: {2}
+Add to MIS: {7,5,2}
+Remove 2 and neighbors {0,1}: remaining = {}
+
+DONE!
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Answer</div>
+<div class="note highlight"><b>#Iterations:</b> 3</div>
+<div class="note highlight"><b>MIS:</b> {2, 5, 7} — 3 vertices</div>
+
+<div class="section-title" style="margin-top:10px;">For exactly 2 iterations (choose random)</div>
+<div class="note">To get 2 iterations, need multiple candidates in iteration 1.</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Try: r = [5, 3, 8, 2, 7, 1, 6, 0]
+     (vertex: 0→5, 1→3, 2→8, 3→2, 4→7, 5→1, 6→6, 7→0)
+
+Iter 1 candidates:
+  0: neighbors{1,2} have {3,8}, max=8 > 5? NO
+  1: neighbors{0,2,3} have {5,8,2}, max=8 > 3? NO
+  2: neighbors{0,1,3,4} have {5,3,2,7}, max=7 < 8? YES ✓
+  3: neighbors{1,2,5} have {3,8,1}, max=8 > 2? NO
+  4: neighbors{2,5,6,7} have {8,1,6,0}, max=8 > 7? NO
+  5: neighbors{3,4,6} have {2,7,6}, max=7 > 1? NO
+  6: neighbors{4,5,7} have {7,1,0}, max=7 > 6? NO
+  7: neighbors{4,6} have {7,6}, max=7 > 0? NO
+
+Candidates: {2}
+MIS = {2}, remove {0,1,2,3,4}, remaining = {5,6,7}
+
+Iter 2: vertices {5,6,7}
+  5: neighbor{6} has 6 > 1? NO
+  6: neighbors{5,7} have {1,0}, max=1 < 6? YES ✓
+  7: neighbor{6} has 6 > 0? NO
+
+Candidates: {6}
+MIS = {2,6}, remove {5,6,7}, remaining = {}
+
+DONE in 2 iterations! MIS = {2, 6}
+</pre></div>
+</div>
 </div>
 <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
 </div>
