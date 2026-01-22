@@ -1109,18 +1109,79 @@ Stage 2: edges along z (P0-P4, P1-P5, P2-P6, P3-P7)
 <div class="note"><b>Graph view:</b> ranks are cube corners; each stage walks one dimension, so all pairs exchange simultaneously (log p = 3 stages).</div>
 </div>
 <div class="section">
-<div class="section-title">2D Transpose (p &lt; n)</div>
-<div class="row"><span class="label">Op</span><span class="value">All-to-all personalized</span></div>
-<div class="formula">Tₚ = nlogn/p + tₛlogp + tᵥ(nlogp)/p</div>
+<div class="section-title">2D Transpose Algorithm (p &lt; n)</div>
+<div class="note"><b>Idea:</b> Treat n-point FFT as √n × √n matrix. Each proc holds n/p elements.</div>
+<div class="section-title" style="margin-top:10px;">Algorithm Steps</div>
+<div class="note">1. Local FFT on n/p elements (column-wise)</div>
+<div class="note">2. <b>Transpose</b> (all-to-all personalized) — redistribute data</div>
+<div class="note">3. Local FFT on n/p elements (row-wise)</div>
+<div class="note">4. <b>Transpose</b> again</div>
+<div class="section-title" style="margin-top:10px;">Parallel Runtime (linear array)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Tₚ = Tcomp + Tcomm
+Tcomp = (n/p)·log n        [local FFTs]
+Tcomm = 2·[tₛ·log p + tᵥ·(n/p)·log p]  [2 transposes]
+</pre></div>
+<div class="formula highlight">Tₚ = (n/p)log n + 2tₛ·log p + 2tᵥ·(n/p)log p</div>
+<div class="section-title" style="margin-top:10px;">Meaning of each term</div>
+<div class="note">• <b>(n/p)log n</b> = local FFT work (n/p points, log n stages)</div>
+<div class="note">• <b>2·tₛ·log p</b> = startup for 2 all-to-all transposes (log p phases each)</div>
+<div class="note">• <b>2·tᵥ·(n/p)log p</b> = data transfer for transposes</div>
+<div class="section-title" style="margin-top:10px;">Speedup and Efficiency</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+W = n log n
+S = W/Tₚ = (n log n) / [(n/p)log n + 2tₛ log p + 2tᵥ(n/p)log p]
+  = p / [1 + 2p·tₛ·log p/(n log n) + 2tᵥ·log p/log n]
+E = S/p = 1 / [1 + 2p·tₛ·log p/(n log n) + 2tᵥ·log p/log n]
+</pre></div>
+<div class="section-title" style="margin-top:10px;">16-point FFT on 4 processors</div>
+<div class="note"><b>Setup:</b> n=16, p=4, each proc holds n/p=4 elements</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Initial:  P0:[0,1,2,3]  P1:[4,5,6,7]  P2:[8,9,10,11]  P3:[12,13,14,15]
+
+Step 1: Local FFT (4-pt) on each processor
+
+Step 2: Transpose (all-to-all)
+        P0 gets elements 0,4,8,12 (column 0)
+        P1 gets elements 1,5,9,13 (column 1)
+        P2 gets elements 2,6,10,14 (column 2)
+        P3 gets elements 3,7,11,15 (column 3)
+
+Step 3: Local FFT (4-pt) on each processor
+
+Step 4: Transpose back to original distribution
+</pre></div>
+<div class="note"><b>#Processors:</b> p can be any divisor of n; example uses p=4 for n=16.</div>
 </div>
 <div class="section">
-<div class="section-title">Find Minimum Tₚ</div>
-<div class="row"><span class="label">Given</span><span class="value">Tₚ=(n/p)logn + tᵥ(n/p)logp</span></div>
-<div class="row"><span class="label">Step 1</span><span class="value">dTₚ/dp = 0</span></div>
-<div class="row"><span class="label">Derivative</span><span class="value">-nlogn/p² + tᵥn(1-logp)/p²</span></div>
-<div class="row"><span class="label">Set = 0</span><span class="value">logn = tᵥ(1-logp)</span></div>
-<div class="formula">logp = 1 - logn/tᵥ</div>
-<div class="formula">For tᵥ=10: logp = 1 - logn/10</div>
+<div class="section-title">Find Minimum Tₚ (tₛ=0)</div>
+<div class="note"><b>Given:</b> Tₚ = (n/p)log n + tᵥ(n/p)log p</div>
+<div class="section-title" style="margin-top:10px;">Step 1: Differentiate and set to 0</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+dTₚ/dp = -n·logn/p² + tᵥ·n·(1-logp)/p² = 0
+Multiply by p²/n:
+-logn + tᵥ(1-logp) = 0
+logn = tᵥ - tᵥ·logp
+logp = 1 - logn/tᵥ
+</pre></div>
+<div class="section-title" style="margin-top:10px;">Step 2: Solve for p (tᵥ=10)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+log p = 1 - log n / 10
+p = 2^(1 - logn/10) = 2 / n^(1/10) = 2 / ¹⁰√n
+</pre></div>
+<div class="section-title" style="margin-top:10px;">Step 3: Find Tₚᵐⁱⁿ</div>
+<div class="note">Substitute p back into Tₚ:</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Tₚᵐⁱⁿ = (n/p)logn + tᵥ(n/p)logp
+     = (n/p)[logn + tᵥ·logp]
+     = (n/p)[logn + tᵥ(1 - logn/tᵥ)]
+     = (n/p)[logn + tᵥ - logn]
+     = (n/p)·tᵥ
+
+For tᵥ=10, p = 2/n^0.1:
+Tₚᵐⁱⁿ = (n · n^0.1 / 2) · 10 = 5·n^1.1
+</pre></div>
+<div class="formula highlight">Tₚᵐⁱⁿ = 5·n^1.1,  p_opt = 2/¹⁰√n (for tᵥ=10)</div>
 </div>
 <div class="section"><div class="section-title">FFT_like_pattern Task Graph (n=4)</div>
 <div class="note"><b>Problem:</b> tasks are executions of line 6:<br/>
