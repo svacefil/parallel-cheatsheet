@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Parallel Algo</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 14px;
@@ -20,180 +15,60 @@
             -webkit-text-size-adjust: none;
             padding-bottom: 60px;
         }
-
-        .menu {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 6px;
-        }
-
+        .menu { display: flex; flex-direction: column; gap: 6px; padding: 6px; }
         .menu-btn {
             background: linear-gradient(135deg, #2F5496, #1e3a6e);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 14px 8px;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
+            color: #fff; border: none; border-radius: 10px;
+            padding: 14px 8px; font-size: 14px; font-weight: 600;
+            text-align: center; cursor: pointer; text-decoration: none; display: block;
         }
-
-        .menu-btn:active {
-            background: #1e3a6e;
-        }
-
-        .menu-btn.formula {
-            background: linear-gradient(135deg, #2E7D32, #1b5e20);
-        }
-
-        .menu-btn.quick {
-            background: linear-gradient(135deg, #E65100, #bf360c);
-        }
-
-        .page {
-            display: none;
-            padding: 6px;
-            min-height: 100vh;
-        }
-
-        .page.active {
-            display: block;
-        }
-
+        .menu-btn:active { background: #1e3a6e; }
+        .menu-btn.formula { background: linear-gradient(135deg, #2E7D32, #1b5e20); }
+        .menu-btn.quick { background: linear-gradient(135deg, #E65100, #bf360c); }
+        .page { display: none; padding: 6px; min-height: 100vh; }
+        .page.active { display: block; }
         .back-btn {
-            background: #444;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 14px;
-            font-size: 14px;
-            cursor: pointer;
-            position: fixed;
-            bottom: 10px;
-            left: 5%;
-            width: 90%;
-            text-align: center;
-            z-index: 100;
+            background: #444; color: #fff; border: none; border-radius: 8px;
+            padding: 14px; font-size: 14px; cursor: pointer;
+            position: fixed; bottom: 10px; left: 5%; width: 90%;
+            text-align: center; z-index: 100;
         }
-
         .page-title {
-            background: #2F5496;
-            color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 8px;
+            background: #2F5496; color: #fff; padding: 10px; border-radius: 8px;
+            font-size: 15px; font-weight: bold; text-align: center; margin-bottom: 8px;
         }
-
         .section {
-            background: #1a1a1a;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 8px;
+            background: #1a1a1a; border-radius: 8px; padding: 10px; margin-bottom: 8px;
         }
-
         .section-title {
-            color: #4FC3F7;
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 6px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 4px;
+            color: #4FC3F7; font-size: 14px; font-weight: bold;
+            margin-bottom: 6px; border-bottom: 1px solid #333; padding-bottom: 4px;
         }
-
         .formula {
-            background: #0d2818;
-            color: #81C784;
-            padding: 8px 10px;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 13px;
-            margin: 5px 0;
-            word-break: break-all;
+            background: #0d2818; color: #81C784; padding: 8px 10px;
+            border-radius: 6px; font-family: monospace; font-size: 13px;
+            margin: 5px 0; word-break: break-all;
         }
-
         .row {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid #222;
-            font-size: 13px;
+            display: flex; justify-content: space-between; padding: 5px 0;
+            border-bottom: 1px solid #222; font-size: 13px;
         }
-
-        .row:last-child {
-            border-bottom: none;
-        }
-
-        .label {
-            color: #aaa;
-        }
-
-        .value {
-            color: #fff;
-            font-weight: 500;
-            text-align: right;
-            max-width: 60%;
-        }
-
-        .highlight {
-            color: #FFD54F;
-            font-weight: bold;
-        }
-
-        .note {
-            color: #FF8A65;
-            font-size: 12px;
-            font-style: italic;
-            margin-top: 6px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
-        th {
-            background: #2F5496;
-            color: #fff;
-            padding: 8px 4px;
-            text-align: left;
-        }
-
-        td {
-            padding: 6px 4px;
-            border-bottom: 1px solid #333;
-            vertical-align: top;
-        }
-
-        .sub-nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 8px;
-        }
-
+        .row:last-child { border-bottom: none; }
+        .label { color: #aaa; }
+        .value { color: #fff; font-weight: 500; text-align: right; max-width: 60%; }
+        .highlight { color: #FFD54F; font-weight: bold; }
+        .note { color: #FF8A65; font-size: 12px; font-style: italic; margin-top: 6px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        th { background: #2F5496; color: #fff; padding: 6px 4px; text-align: left; }
+        td { padding: 5px 4px; border-bottom: 1px solid #333; vertical-align: top; }
+        .sub-nav { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
         .sub-btn {
-            background: #444;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 8px;
-            font-size: 12px;
-            cursor: pointer;
-            flex: 1;
-            min-width: 45%;
+            background: #444; color: #fff; border: none; border-radius: 6px;
+            padding: 10px 8px; font-size: 12px; cursor: pointer; flex: 1; min-width: 45%;
         }
-
-        .sub-btn:active {
-            background: #666;
-        }
+        .sub-btn:active { background: #666; }
+        .comp { color: #81C784; }
+        .comm { color: #FFB74D; }
     </style>
 </head>
 <body>
@@ -201,7 +76,9 @@
     <div id="menu" class="page active">
         <div class="menu">
             <a class="menu-btn formula" onclick="showPage('master')">📐 Master Formula</a>
+            <a class="menu-btn formula" onclick="showPage('recipe')">🍳 Universal Recipe</a>
             <a class="menu-btn" onclick="showPage('comm')">📡 Ch2: Comm</a>
+            <a class="menu-btn" onclick="showPage('custom')">🔧 Ch2: Custom</a>
             <a class="menu-btn" onclick="showPage('matrix')">🔢 Ch3: Matrix</a>
             <a class="menu-btn" onclick="showPage('sort')">📊 Ch4: Sort</a>
             <a class="menu-btn" onclick="showPage('search')">🔍 Ch5: Search</a>
@@ -209,15 +86,15 @@
             <a class="menu-btn" onclick="showPage('dp')">📈 Ch7: DP</a>
             <a class="menu-btn" onclick="showPage('fft')">〰️ Ch8: FFT</a>
             <a class="menu-btn quick" onclick="showPage('quick')">⚡ Quick Ref</a>
+            <a class="menu-btn quick" onclick="showPage('iso')">📊 Isoefficiency</a>
         </div>
     </div>
 
     <!-- MASTER FORMULA -->
     <div id="master" class="page">
         <div class="page-title">MASTER FORMULA</div>
-
         <div class="section">
-            <div class="section-title">The Recipe</div>
+            <div class="section-title">Core Equations</div>
             <div class="formula">Tₚ = W/p + Tcomm</div>
             <div class="formula">Tₒ = p·Tₚ - W</div>
             <div class="formula">S = W / Tₚ</div>
@@ -225,7 +102,6 @@
             <div class="formula">Isoeff: W = K·Tₒ</div>
             <div class="formula">Cost-opt: p·Tₚ = O(W)</div>
         </div>
-
         <div class="section">
             <div class="section-title">Find Tcomm (5 Questions)</div>
             <div class="row"><span class="label">1.</span><span class="value">Operation?</span></div>
@@ -234,7 +110,6 @@
             <div class="row"><span class="label">4.</span><span class="value">Message size?</span></div>
             <div class="row"><span class="label">5.</span><span class="value">How many times?</span></div>
         </div>
-
         <div class="section">
             <div class="section-title">Phases by Topology</div>
             <div class="row"><span class="label">Ring</span><span class="value">p - 1</span></div>
@@ -242,51 +117,125 @@
             <div class="row"><span class="label">3D Mesh</span><span class="value">3(p^⅓ - 1)</span></div>
             <div class="row"><span class="label">Hypercube</span><span class="value">log p</span></div>
         </div>
+        <div class="section">
+            <div class="section-title">Key Insight</div>
+            <div class="row"><span class="label">All-to-All</span><span class="value highlight">msg GROWS → (p-1)m</span></div>
+            <div class="row"><span class="label">One-to-All</span><span class="value">msg SAME → phases×m</span></div>
+        </div>
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+    </div>
 
+    <!-- UNIVERSAL RECIPE -->
+    <div id="recipe" class="page">
+        <div class="page-title">🍳 UNIVERSAL RECIPE</div>
+        <div class="section">
+            <div class="section-title">Step 1: Identify</div>
+            <div class="row"><span class="label">W</span><span class="value">Sequential work</span></div>
+            <div class="row"><span class="label">Op?</span><span class="value">bcast/reduce/all2all</span></div>
+            <div class="row"><span class="label">Topo?</span><span class="value">ring/mesh/hyper</span></div>
+            <div class="row"><span class="label">#Proc</span><span class="value">per operation</span></div>
+            <div class="row"><span class="label">m?</span><span class="value">message size</span></div>
+            <div class="row"><span class="label">×?</span><span class="value">how many times</span></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Step 2: Build Tₚ</div>
+            <div class="formula">Tₚ = W/p + Tcomm</div>
+            <div class="formula">Tcomm = phases×tₛ + data×tᵥ</div>
+        </div>
+        <div class="section">
+            <div class="section-title">Step 3: Build Tₒ</div>
+            <div class="formula">Tₒ = p·Tₚ - W</div>
+        </div>
+        <div class="section">
+            <div class="section-title">Step 4: Isoefficiency</div>
+            <div class="formula">W = K·Tₒ → solve for W</div>
+            <div class="note">Take DOMINANT term in p</div>
+        </div>
+        <div class="section">
+            <div class="section-title">Step 5: Cost-Optimal</div>
+            <div class="formula">p·Tₚ = O(W) → solve for p</div>
+        </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- COMMUNICATION -->
     <div id="comm" class="page">
         <div class="page-title">Ch2: COMMUNICATION</div>
-
-        <div class="section">
-            <div class="section-title">Key Insight</div>
-            <div class="row"><span class="label">All-to-All</span><span class="value highlight">msg GROWS → (p-1)m</span></div>
-            <div class="row"><span class="label">One-to-All</span><span class="value">msg SAME → phases×m</span></div>
-        </div>
-
         <div class="section">
             <div class="section-title">All-to-All Broadcast</div>
+            <div class="note">Message GROWS: (p-1)×m total</div>
             <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)m·tᵥ</span></div>
             <div class="row"><span class="label">2D Mesh</span><span class="value">2(√p-1)tₛ + (p-1)m·tᵥ</span></div>
             <div class="row"><span class="label">3D Mesh</span><span class="value">3(p^⅓-1)tₛ + (p-1)m·tᵥ</span></div>
             <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)m·tᵥ</span></div>
         </div>
-
         <div class="section">
-            <div class="section-title">One-to-All / All-Reduce</div>
+            <div class="section-title">One-to-All Broadcast</div>
+            <div class="note">Message SAME: phases×m total</div>
             <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)m·tᵥ</span></div>
             <div class="row"><span class="label">2D Mesh</span><span class="value">2(√p-1)tₛ + 2(√p-1)m·tᵥ</span></div>
             <div class="row"><span class="label">3D Mesh</span><span class="value">3(p^⅓-1)tₛ + 3(p^⅓-1)m·tᵥ</span></div>
             <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (logp)m·tᵥ</span></div>
         </div>
+        <div class="section">
+            <div class="section-title">All-to-One Reduction</div>
+            <div class="note">Same as One-to-All (reverse)</div>
+        </div>
+        <div class="section">
+            <div class="section-title">All-Reduce</div>
+            <div class="note">Same as One-to-All formulas</div>
+        </div>
+        <div class="section">
+            <div class="section-title">All-to-All Personalized</div>
+            <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + p(p-1)/2·m·tᵥ</span></div>
+            <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)/2·m·tᵥ</span></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Scatter/Gather</div>
+            <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)m·tᵥ</span></div>
+            <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)m/p·tᵥ</span></div>
+        </div>
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+    </div>
 
+    <!-- CUSTOM Ch2 -->
+    <div id="custom" class="page">
+        <div class="page-title">Ch2: CUSTOM DERIVATIONS</div>
         <div class="section">
             <div class="section-title">Prefix Sum (n/p > 1)</div>
-            <div class="row"><span class="label">Phase 1</span><span class="value">(n/p-1)·tₐdd</span></div>
-            <div class="row"><span class="label">Phase 2</span><span class="value">logp·(tₛ+tₐdd)</span></div>
-            <div class="row"><span class="label">Phase 3</span><span class="value">(n/p)·tₐdd</span></div>
+            <div class="row"><span class="label">Phase 1</span><span class="value">Local prefix: (n/p-1)·tₐdd</span></div>
+            <div class="row"><span class="label">Phase 2</span><span class="value">Parallel: logp·(tₛ+tₐdd)</span></div>
+            <div class="row"><span class="label">Phase 3</span><span class="value">Update: (n/p)·tₐdd</span></div>
             <div class="formula">Total: (2n/p-1)tₐdd + logp(tₛ+tₐdd)</div>
         </div>
-
+        <div class="section">
+            <div class="section-title">Scatter Optimality (tₛ=0)</div>
+            <div class="formula">T = tᵥ·m·(p-1)</div>
+            <div class="note">Total data m split among p procs</div>
+            <div class="note">Each of (p-1) gets m/p data</div>
+            <div class="note">Lower bound Ω(tᵥ·m) → OPTIMAL</div>
+        </div>
+        <div class="section">
+            <div class="section-title">All2All Personal Lower Bound</div>
+            <div class="row"><span class="label">Avg dist</span><span class="value">(log p)/2 hops</span></div>
+            <div class="row"><span class="label">Total links</span><span class="value">(p log p)/2</span></div>
+            <div class="row"><span class="label">Traffic</span><span class="value">p²·m·(log p)/2</span></div>
+            <div class="formula">T ≥ tᵥ·m·(p-1)</div>
+        </div>
+        <div class="section">
+            <div class="section-title">Embarrassingly Parallel</div>
+            <div class="note">No communication!</div>
+            <div class="formula">Tₚ = W/p</div>
+            <div class="formula">S = p (perfect!)</div>
+            <div class="formula">E = 1 (perfect!)</div>
+            <div class="note">Limited by concurrency: p ≤ tasks</div>
+        </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- MATRIX -->
     <div id="matrix" class="page">
         <div class="page-title">Ch3: MATRIX</div>
-
         <div class="sub-nav">
             <button class="sub-btn" onclick="showSection('mv1d')">Mat-Vec 1D</button>
             <button class="sub-btn" onclick="showSection('mv2d')">Mat-Vec 2D</button>
@@ -295,12 +244,17 @@
         </div>
 
         <div id="mv1d" class="section">
-            <div class="section-title">Matrix-Vector 1D</div>
+            <div class="section-title">Matrix-Vector 1D (Row Part.)</div>
             <div class="row"><span class="label">W</span><span class="value">n²</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">All-to-all bcast</span></div>
             <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
+            <div class="row"><span class="label">Op</span><span class="value">All-to-all broadcast</span></div>
+            <div class="row"><span class="label">Why?</span><span class="value">Each needs FULL vector</span></div>
             <div class="row"><span class="label">m</span><span class="value">n/p</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+            <div class="row"><span class="label">Tcomm startup</span><span class="value comm">tₛ log p</span></div>
+            <div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n·tᵥ (≈(p-1)·n/p)</span></div>
             <div class="formula">Tₚ = n²/p + tₛlogp + n·tᵥ</div>
+            <div class="row"><span class="label">Tₒ</span><span class="value">p·tₛlogp + pn·tᵥ</span></div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p²)</span></div>
             <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n/logn)</span></div>
         </div>
@@ -308,10 +262,14 @@
         <div id="mv2d" class="section" style="display:none;">
             <div class="section-title">Matrix-Vector 2D</div>
             <div class="row"><span class="label">W</span><span class="value">n²</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Bcast + Reduce</span></div>
             <div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
-            <div class="row"><span class="label">#Proc</span><span class="value">√p per row/col</span></div>
+            <div class="row"><span class="label">Op 1</span><span class="value">One-to-all bcast (cols)</span></div>
+            <div class="row"><span class="label">Op 2</span><span class="value">All-to-one reduce (rows)</span></div>
             <div class="row"><span class="label">m</span><span class="value">n/√p</span></div>
+            <div class="row"><span class="label">#Proc/op</span><span class="value">√p</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+            <div class="row"><span class="label">Tcomm startup</span><span class="value comm">tₛ log p</span></div>
+            <div class="row"><span class="label">Tcomm transfer</span><span class="value comm">(nlogp)/√p·tᵥ</span></div>
             <div class="formula">Tₚ = n²/p + tₛlogp + (nlogp)/√p·tᵥ</div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log²p)</span></div>
             <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n²/log²n)</span></div>
@@ -320,10 +278,13 @@
         <div id="cannon" class="section" style="display:none;">
             <div class="section-title">Cannon's Algorithm</div>
             <div class="row"><span class="label">W</span><span class="value">n³</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Circular shift</span></div>
             <div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
-            <div class="row"><span class="label">m</span><span class="value">n²/p</span></div>
-            <div class="row"><span class="label">×</span><span class="value">√p times</span></div>
+            <div class="row"><span class="label">Op</span><span class="value">Circular shift</span></div>
+            <div class="row"><span class="label">Why?</span><span class="value">Shift A left, B up</span></div>
+            <div class="row"><span class="label">m</span><span class="value">n²/p (submatrix)</span></div>
+            <div class="row"><span class="label">#Shifts</span><span class="value">√p times</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
+            <div class="row"><span class="label">Tcomm</span><span class="value comm">2√p(tₛ + n²/p·tᵥ)</span></div>
             <div class="formula">Tₚ = n³/p + 2√p(tₛ + n²/p·tᵥ)</div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
             <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n²)</span></div>
@@ -333,21 +294,22 @@
         <div id="dns" class="section" style="display:none;">
             <div class="section-title">DNS Algorithm</div>
             <div class="row"><span class="label">W</span><span class="value">n³</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Bcast + Reduce</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">3D Mesh p^⅓</span></div>
+            <div class="row"><span class="label">Topo</span><span class="value">3D Mesh p^⅓×p^⅓×p^⅓</span></div>
+            <div class="row"><span class="label">Op</span><span class="value">Broadcast + Reduce</span></div>
             <div class="row"><span class="label">m</span><span class="value">n²/p^⅔</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
+            <div class="row"><span class="label">Tcomm startup</span><span class="value comm">tₛ log p</span></div>
+            <div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n²/p^⅔·tᵥ</span></div>
             <div class="formula">Tₚ = n³/p + tₛlogp + n²/p^⅔·tᵥ</div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log³p)</span></div>
             <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n³/log³n)</span></div>
         </div>
-
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- SORTING -->
     <div id="sort" class="page">
         <div class="page-title">Ch4: SORTING</div>
-
         <div class="sub-nav">
             <button class="sub-btn" onclick="showSection('bitonic')">Bitonic</button>
             <button class="sub-btn" onclick="showSection('oddeven')">Odd-Even</button>
@@ -357,9 +319,12 @@
         <div id="bitonic" class="section">
             <div class="section-title">Bitonic Sort</div>
             <div class="row"><span class="label">W</span><span class="value">n log²n</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Compare-exchange</span></div>
+            <div class="row"><span class="label">Why?</span><span class="value">log n stages × log n steps</span></div>
             <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
+            <div class="row"><span class="label">Op</span><span class="value">Compare-exchange</span></div>
             <div class="row"><span class="label">m</span><span class="value">n/p</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">n log²n / p</span></div>
+            <div class="row"><span class="label">Tcomm</span><span class="value comm">logp(tₛ + n/p·tᵥ)</span></div>
             <div class="formula">Tₚ = nlog²n/p + logp(tₛ + n/p·tᵥ)</div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log²p)</span></div>
         </div>
@@ -367,10 +332,13 @@
         <div id="oddeven" class="section" style="display:none;">
             <div class="section-title">Odd-Even Transposition</div>
             <div class="row"><span class="label">W</span><span class="value">n log n</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Neighbor exchange</span></div>
             <div class="row"><span class="label">Topo</span><span class="value">Ring</span></div>
+            <div class="row"><span class="label">Op</span><span class="value">Neighbor exchange</span></div>
             <div class="row"><span class="label">m</span><span class="value">n/p</span></div>
             <div class="row"><span class="label">#Phases</span><span class="value">p</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">n log(n/p) / p</span></div>
+            <div class="row"><span class="label">Tcomm startup</span><span class="value comm">p·tₛ</span></div>
+            <div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n·tᵥ</span></div>
             <div class="formula">Tₚ = nlog(n/p)/p + p·tₛ + n·tᵥ</div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p²)</span></div>
         </div>
@@ -378,51 +346,57 @@
         <div id="enum" class="section" style="display:none;">
             <div class="section-title">Enumeration Sort</div>
             <div class="row"><span class="label">W</span><span class="value">n²</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">All-to-all bcast</span></div>
+            <div class="row"><span class="label">Why?</span><span class="value">Compare all pairs</span></div>
             <div class="row"><span class="label">Topo</span><span class="value">2D Mesh</span></div>
+            <div class="row"><span class="label">Op</span><span class="value">All-to-all broadcast</span></div>
             <div class="row"><span class="label">m</span><span class="value">n/p</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+            <div class="row"><span class="label">Tcomm startup</span><span class="value comm">2(√p-1)·tₛ</span></div>
+            <div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n·tᵥ</span></div>
             <div class="formula">Tₚ = n²/p + 2(√p-1)tₛ + n·tᵥ</div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
         </div>
-
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- SEARCH -->
     <div id="search" class="page">
         <div class="page-title">Ch5: SEARCH/DOP</div>
-
         <div class="section">
-            <div class="section-title">Best-First Search</div>
-            <div class="formula">S ≤ p(texp+tacc)/(texp+p·tacc)</div>
-            <div class="note">Bottleneck: open list access is serial!</div>
+            <div class="section-title">Dynamic Mapping</div>
+            <div class="note">Best: Tasks even across procs</div>
+            <div class="note">Worst: Largest tasks same proc</div>
+            <div class="formula">S = T_seq / T_parallel</div>
         </div>
-
+        <div class="section">
+            <div class="section-title">Parallel Best-First Search</div>
+            <div class="formula">S ≤ p(texp+tacc)/(texp+p·tacc)</div>
+            <div class="row"><span class="label">texp</span><span class="value">expand node (parallel)</span></div>
+            <div class="row"><span class="label">tacc</span><span class="value">access open list (serial!)</span></div>
+            <div class="note">Bottleneck: open list is sequential!</div>
+        </div>
         <div class="section">
             <div class="section-title">Dijkstra Token Termination</div>
             <div class="row"><span class="label">Topo</span><span class="value">Ring</span></div>
             <div class="row"><span class="label">Token</span><span class="value">WHITE/BLACK</span></div>
-            <div class="row"><span class="label">Proc</span><span class="value">WHITE/BLACK</span></div>
-            <div class="note">→BLACK if send to lower ID</div>
+            <div class="row"><span class="label">Processor</span><span class="value">WHITE/BLACK</span></div>
+            <div class="note">Proc→BLACK if send to lower ID</div>
             <div class="note">Token→BLACK if pass BLACK proc</div>
-            <div class="note">Done: WHITE token → WHITE P0</div>
+            <div class="note highlight">Done: WHITE token → WHITE P0</div>
         </div>
-
         <div class="section">
             <div class="section-title">Tree-Based (Weights)</div>
             <div class="row"><span class="label">Start</span><span class="value">P0 weight=1</span></div>
             <div class="row"><span class="label">Give work</span><span class="value">Split weight ½</span></div>
-            <div class="row"><span class="label">Done</span><span class="value">Return weight</span></div>
-            <div class="row"><span class="label">End</span><span class="value">P0 weight=1</span></div>
+            <div class="row"><span class="label">Done</span><span class="value">Return weight to parent</span></div>
+            <div class="row"><span class="label highlight">End</span><span class="value highlight">P0 weight=1 again</span></div>
         </div>
-
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- GRAPH -->
     <div id="graph" class="page">
         <div class="page-title">Ch6: GRAPH</div>
-
         <div class="sub-nav">
             <button class="sub-btn" onclick="showSection('prim')">Prim's</button>
             <button class="sub-btn" onclick="showSection('floyd')">Floyd's</button>
@@ -432,9 +406,14 @@
         <div id="prim" class="section">
             <div class="section-title">Prim's MST</div>
             <div class="row"><span class="label">W</span><span class="value">n²</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Reduce + Bcast</span></div>
-            <div class="row"><span class="label">m</span><span class="value">O(1)</span></div>
-            <div class="row"><span class="label">×</span><span class="value">n iterations</span></div>
+            <div class="row"><span class="label">Why?</span><span class="value">n iter × n edge checks</span></div>
+            <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
+            <div class="row"><span class="label">Op 1</span><span class="value">All-to-one reduce</span></div>
+            <div class="row"><span class="label">Op 2</span><span class="value">One-to-all broadcast</span></div>
+            <div class="row"><span class="label">m</span><span class="value">O(1) - just vertex</span></div>
+            <div class="row"><span class="label">#Iter</span><span class="value">n</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
+            <div class="row"><span class="label">Tcomm</span><span class="value comm">n log p</span></div>
             <div class="formula">Tₚ = n²/p + n log p</div>
             <div class="formula">E = 1/(1 + p log p/n)</div>
             <div class="row"><span class="label">Cost-opt</span><span class="value highlight">p = O(n/log n)</span></div>
@@ -443,10 +422,14 @@
         <div id="floyd" class="section" style="display:none;">
             <div class="section-title">Floyd's APSP</div>
             <div class="row"><span class="label">W</span><span class="value">n³</span></div>
-            <div class="row"><span class="label">Op</span><span class="value">Bcast row+col</span></div>
-            <div class="row"><span class="label">Topo</span><span class="value">2D Mesh</span></div>
+            <div class="row"><span class="label">Why?</span><span class="value">n iter × n² updates</span></div>
+            <div class="row"><span class="label">Topo</span><span class="value">2D Mesh √p×√p</span></div>
+            <div class="row"><span class="label">Op</span><span class="value">Broadcast row + col</span></div>
             <div class="row"><span class="label">m</span><span class="value">n/√p</span></div>
-            <div class="row"><span class="label">×</span><span class="value">n iterations</span></div>
+            <div class="row"><span class="label">#Iter</span><span class="value">n</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
+            <div class="row"><span class="label">Tcomm/iter</span><span class="value comm">2(n/√p)·tᵥ</span></div>
+            <div class="row"><span class="label">Tcomm total</span><span class="value comm">2n²·tᵥ</span></div>
             <div class="formula">Tₚ = n³/p + 2n²·tᵥ</div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
         </div>
@@ -454,78 +437,102 @@
         <div id="dijksp" class="section" style="display:none;">
             <div class="section-title">Dijkstra Source-Partitioned</div>
             <div class="row"><span class="label">W</span><span class="value">n³</span></div>
-            <div class="row"><span class="label">Comm</span><span class="value highlight">NONE!</span></div>
+            <div class="row"><span class="label">Why?</span><span class="value">n sources × n² each</span></div>
+            <div class="row"><span class="label">Topo</span><span class="value">Any</span></div>
+            <div class="row"><span class="label">Op</span><span class="value highlight">NONE!</span></div>
+            <div class="note">Embarrassingly parallel!</div>
             <div class="formula">Tₚ = n³/p</div>
-            <div class="row"><span class="label">S</span><span class="value">p (perfect!)</span></div>
-            <div class="row"><span class="label">E</span><span class="value">1 (perfect!)</span></div>
-            <div class="note">Embarrassingly parallel</div>
+            <div class="row"><span class="label">Speedup</span><span class="value highlight">p (perfect!)</span></div>
+            <div class="row"><span class="label">Efficiency</span><span class="value highlight">1 (perfect!)</span></div>
+            <div class="row"><span class="label">Isoeff</span><span class="value">O(p³) by concurrency</span></div>
         </div>
-
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- DP -->
     <div id="dp" class="page">
         <div class="page-title">Ch7: DP</div>
-
         <div class="section">
-            <div class="section-title">LCS (Longest Common Subseq)</div>
+            <div class="section-title">LCS - WHY E ≤ 0.5</div>
             <div class="row"><span class="label">W</span><span class="value">n²</span></div>
             <div class="row"><span class="label">Method</span><span class="value">Anti-diagonal wavefront</span></div>
-            <div class="row"><span class="label">#Diags</span><span class="value">2n-1</span></div>
+            <div class="row"><span class="label">#Processors</span><span class="value">n (max per diag)</span></div>
+            <div class="row"><span class="label">#Diagonals</span><span class="value">2n-1</span></div>
+            <div class="row"><span class="label">Tcomp/diag</span><span class="value">tᶜ</span></div>
+            <div class="row"><span class="label">Tcomm/diag</span><span class="value">tₛ + tᵥ</span></div>
             <div class="formula">Tₚ = (2n-1)(tₛ + tᵥ + tᶜ)</div>
-            <div class="formula highlight">E = n/(2n-1) < 0.5 ALWAYS!</div>
-            <div class="note">Even with zero comm, E < 50%</div>
+            <div class="formula">E = n²·tᶜ / [n(2n-1)(tₛ+tᵥ+tᶜ)]</div>
+            <div class="formula highlight">If tₛ=tᵥ=0: E = n/(2n-1) < 0.5</div>
+            <div class="note">Even with ZERO comm, E < 50%!</div>
+            <div class="note">Diagonals vary: 1,2,...n,...2,1</div>
         </div>
-
         <div class="section">
             <div class="section-title">0/1 Knapsack</div>
             <div class="row"><span class="label">W</span><span class="value">O(nc)</span></div>
             <div class="row"><span class="label">Op</span><span class="value">Circular shift</span></div>
             <div class="formula">Tₚ = nc/p + n(tₛ + c/p·tᵥ)</div>
         </div>
-
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- FFT -->
     <div id="fft" class="page">
         <div class="page-title">Ch8: FFT</div>
-
         <div class="section">
             <div class="section-title">Binary-Exchange (p=n)</div>
             <div class="row"><span class="label">W</span><span class="value">n log n</span></div>
             <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
+            <div class="row"><span class="label">Op</span><span class="value">Exchange with neighbor</span></div>
             <div class="row"><span class="label">#Phases</span><span class="value">log n</span></div>
+            <div class="row"><span class="label">Tcomp</span><span class="value comp">log n · tᶜ</span></div>
+            <div class="row"><span class="label">Tcomm</span><span class="value comm">log n · (tₛ + tᵥ)</span></div>
             <div class="formula">Tₚ = log n (tᶜ + tₛ + tᵥ)</div>
             <div class="formula">S = n / (1 + (tₛ+tᵥ)/tᶜ)</div>
         </div>
-
         <div class="section">
-            <div class="section-title">2D Transpose (p<n)</div>
-            <div class="row"><span class="label">Op</span><span class="value">All-to-all personal</span></div>
+            <div class="section-title">2D Transpose (p &lt; n)</div>
+            <div class="row"><span class="label">Op</span><span class="value">All-to-all personalized</span></div>
             <div class="formula">Tₚ = nlogn/p + tₛlogp + tᵥ(nlogp)/p</div>
         </div>
-
         <div class="section">
             <div class="section-title">Find Minimum Tₚ</div>
             <div class="row"><span class="label">Given</span><span class="value">Tₚ=(n/p)logn + tᵥ(n/p)logp</span></div>
             <div class="row"><span class="label">Step 1</span><span class="value">dTₚ/dp = 0</span></div>
             <div class="row"><span class="label">Step 2</span><span class="value">Solve for p</span></div>
+            <div class="formula">Result: log p = 1 - logn/tᵥ</div>
             <div class="formula">For tᵥ=10: logp = 1 - logn/10</div>
         </div>
-
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- QUICK REFERENCE -->
     <div id="quick" class="page">
-        <div class="page-title">⚡ QUICK REFERENCE</div>
-
+        <div class="page-title">⚡ ALL ALGORITHMS</div>
         <div class="section">
-            <div class="section-title">Isoefficiency Summary</div>
             <table>
-                <tr><th>Algo</th><th>Isoeff</th></tr>
+                <tr><th>Algo</th><th>W</th><th>Tₚ</th></tr>
+                <tr><td>Mat-Vec 1D</td><td>n²</td><td>n²/p + tₛlogp + n·tᵥ</td></tr>
+                <tr><td>Mat-Vec 2D</td><td>n²</td><td>n²/p + tₛlogp + (nlogp)/√p·tᵥ</td></tr>
+                <tr><td>Cannon</td><td>n³</td><td>n³/p + 2√p(tₛ+n²/p·tᵥ)</td></tr>
+                <tr><td>DNS</td><td>n³</td><td>n³/p + tₛlogp + n²/p^⅔·tᵥ</td></tr>
+                <tr><td>Bitonic</td><td>nlog²n</td><td>nlog²n/p + logp(tₛ+n/p·tᵥ)</td></tr>
+                <tr><td>Odd-Even</td><td>nlogn</td><td>nlog(n/p)/p + p·tₛ+n·tᵥ</td></tr>
+                <tr><td>Enum</td><td>n²</td><td>n²/p + 2(√p-1)tₛ + n·tᵥ</td></tr>
+                <tr><td>Prim</td><td>n²</td><td>n²/p + nlogp</td></tr>
+                <tr><td>Floyd</td><td>n³</td><td>n³/p + 2n²·tᵥ</td></tr>
+                <tr><td>Dijkstra S-P</td><td>n³</td><td>n³/p (no comm!)</td></tr>
+            </table>
+        </div>
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
+    </div>
+
+    <!-- ISOEFFICIENCY -->
+    <div id="iso" class="page">
+        <div class="page-title">📊 ISOEFFICIENCY & COST-OPT</div>
+        <div class="section">
+            <div class="section-title">Isoefficiency</div>
+            <table>
+                <tr><th>Algorithm</th><th>Isoeff</th></tr>
                 <tr><td>Mat-Vec 1D</td><td class="highlight">O(p²)</td></tr>
                 <tr><td>Mat-Vec 2D</td><td class="highlight">O(p log²p)</td></tr>
                 <tr><td>Cannon</td><td class="highlight">O(p^1.5)</td></tr>
@@ -537,20 +544,19 @@
                 <tr><td>Dijkstra S-P</td><td class="highlight">O(p³)</td></tr>
             </table>
         </div>
-
         <div class="section">
             <div class="section-title">Cost-Optimal p</div>
             <table>
-                <tr><th>Algo</th><th>Cost-opt p</th></tr>
+                <tr><th>Algorithm</th><th>Cost-opt p</th></tr>
                 <tr><td>Mat-Vec 1D</td><td>O(n/logn)</td></tr>
                 <tr><td>Mat-Vec 2D</td><td>O(n²/log²n)</td></tr>
                 <tr><td>Cannon</td><td>O(n²)</td></tr>
                 <tr><td>DNS</td><td>O(n³/log³n)</td></tr>
                 <tr><td>Prim</td><td>O(n/logn)</td></tr>
                 <tr><td>Floyd</td><td>O(n)</td></tr>
+                <tr><td>Dijkstra S-P</td><td>p ≤ n</td></tr>
             </table>
         </div>
-
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
@@ -560,7 +566,6 @@
             document.getElementById(pageId).classList.add('active');
             window.scrollTo(0, 0);
         }
-
         function showSection(sectionId) {
             const page = document.querySelector('.page.active');
             page.querySelectorAll('.section').forEach(s => s.style.display = 'none');
