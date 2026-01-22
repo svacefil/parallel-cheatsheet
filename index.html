@@ -92,7 +92,7 @@
 <a class="menu-btn" onclick="showPage('graph')">🕸️ Ch6: Graph</a>
 <a class="menu-btn" onclick="showPage('dp')">📈 Ch7: DP</a>
 <a class="menu-btn" onclick="showPage('fft')">〰️ Ch8: FFT</a>
-<a class="menu-btn" onclick="showPage('visual')">🎨 Visual &amp; Worked</a><a class="menu-btn quick" onclick="showPage('quick')">⚡ Quick Ref</a>
+<a class="menu-btn" onclick="showPage('visual')">🎨 Task Graphs</a><a class="menu-btn quick" onclick="showPage('quick')">⚡ Quick Ref</a>
 <a class="menu-btn quick" onclick="showPage('iso')">📊 Isoefficiency</a>
 <a class="menu-btn quick" onclick="showPage('memory')">💾 Memory</a>
 </div>
@@ -1854,7 +1854,7 @@ Edges (besides I→stage0):
 (1,0),(3,0) → (1,1) and (3,1)
 </pre></div>
 </div><button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-</div><div class="page" id="visual"><div class="page-title">🎨 VISUAL &amp; WORKED</div><div class="sub-nav"><button class="sub-btn" onclick="showSection('vis_lcs')">LCS TG</button><button class="sub-btn" onclick="showSection('vis_fft')">FFT TG</button><button class="sub-btn" onclick="showSection('vis_bitonic')">Bitonic (4P)</button><button class="sub-btn" onclick="showSection('vis_scatter')">Scatter proof</button><button class="sub-btn" onclick="showSection('vis_a2a')">All2All mesh</button></div><div class="section" id="vis_lcs"><div class="section-title">LCS DP Task Graph (n=4)</div>
+</div><div class="page" id="visual"><div class="page-title">🎨 TASK GRAPHS</div><div class="sub-nav"><button class="sub-btn" onclick="showSection('vis_lcs')">LCS TG</button><button class="sub-btn" onclick="showSection('vis_fft')">FFT TG</button></div><div class="section" id="vis_lcs"><div class="section-title">LCS DP Task Graph (n=4)</div>
 <div class="note"><b>Goal:</b> task-dependency graph for LCS DP where each task is computing <span class="highlight">f[i,j]</span>.</div>
 <div class="note"><b>Recurrence (standard):</b><br/>
 if A[i]=B[j] → f[i,j]=f[i-1,j-1]+1<br/>
@@ -1900,64 +1900,6 @@ I → (0,0),(1,0),(2,0),(3,0)
 (3,0),(1,0) → (3,1)
 </pre></div>
 <div class="note"><b>Concurrency:</b> all (i,0) run in parallel; then all (i,1) run in parallel.</div>
-</div><div class="section" id="vis_bitonic" style="display:none;"><div class="section-title">Bitonic Sort (compare-split, p=4)</div>
-<div class="note"><b>Setup:</b> n=8, p=4 ⇒ each proc has m=n/p=2 elements.</div>
-<div class="note"><b>Compare-split primitive:</b><br/>
-Two procs exchange their m-elements blocks, merge 2m elements, then split:<br/>
-<span class="highlight">+</span> (increasing): lower-rank keeps <i>smaller</i> half, higher-rank keeps <i>larger</i> half.<br/>
-<span class="highlight">−</span> (decreasing): lower-rank keeps <i>larger</i> half, higher-rank keeps <i>smaller</i> half.<br/>
-(Keep local order consistent with the comparator direction.)</div>
-<div class="section-title" style="margin-top:10px;">Network for p=4 (decreasing output)</div>
-<div class="note">Stages: k=2 then k=4. Steps (j): 1, then 2, then 1.</div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
-Step 1 (k=2,j=1):  P0 --(−)-- P1     P2 --(+)-- P3
-Step 2 (k=4,j=2):  P0 --(−)-- P2     P1 --(−)-- P3
-Step 3 (k=4,j=1):  P0 --(−)-- P1     P2 --(−)-- P3
-</pre></div>
-<div class="section-title" style="margin-top:10px;">Worked values for input (0,1,2,3,4,5,6,7)</div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
-Initial local blocks (sorted):
-P0:[0,1]  P1:[2,3]  P2:[4,5]  P3:[6,7]
-
-After Step 1: (P0,P1)−   (P2,P3)+
-P0:[3,2]  P1:[1,0]  P2:[4,5]  P3:[6,7]
-
-After Step 2: (P0,P2)−   (P1,P3)−
-P0:[5,4]  P1:[7,6]  P2:[3,2]  P3:[1,0]
-
-After Step 3: (P0,P1)−   (P2,P3)−
-P0:[7,6]  P1:[5,4]  P2:[3,2]  P3:[1,0]
-</pre></div>
-<div class="note"><b>Final concatenation:</b> 7,6,5,4,3,2,1,0 (decreasing).</div>
-</div><div class="section" id="vis_scatter" style="display:none;"><div class="section-title">Scatter optimality proof (tₛ=0) [7 pts]</div>
-<div class="note" style="color:#FF8A65;"><b>Q:</b> Show that if tₛ=0, then tᵥ·m·(p-1) for scatter on linear array is asymptotically optimal. Describe meaning of each term.</div>
-<div class="note"><b>Scatter on linear array:</b> root has p messages (each size m), one for each processor.</div>
-<div class="note"><b>Pipelined scatter time:</b></div>
-<div class="formula">T = (p-1)·(tₛ + m·tᵥ)</div>
-<div class="note"><b>Case tₛ=0:</b> T = (p-1)·m·tᵥ (matches exam form t_w·m·(p-1) if tᵥ≡t_w)</div>
-<div class="section-title" style="margin-top:10px;">Meaning of each term</div>
-<div class="note">• <b>tᵥ (or t_w)</b> = per-word transfer time (bandwidth cost)</div>
-<div class="note">• <b>m</b> = message size (words per processor)</div>
-<div class="note">• <b>(p-1)</b> = number of messages sent (one to each non-root processor)</div>
-<div class="section-title" style="margin-top:10px;">Why this is asymptotically optimal (tₛ=0)</div>
-<div class="note">
-Lower bound: consider the first link out of the root. All other processors need their m words, so at least <span class="highlight">(p-1)m</span> words must cross that link.<br/>
-With startup 0, bandwidth-limited link time ≥ (p-1)m·tᵥ.<br/>
-Algorithm achieves this bound ⇒ asymptotically optimal.
-</div>
-</div><div class="section" id="vis_a2a" style="display:none;"><div class="section-title">All-to-all broadcast on 2D mesh</div>
-<div class="note"><b>All-to-all broadcast (allgather):</b> each processor broadcasts its own message of size m to all processors.</div>
-<div class="note"><b>2D mesh √p×√p derivation:</b> do it in 2 phases (rows then columns).</div>
-<div class="section-title" style="margin-top:10px;">Phase 1: allgather within each row</div>
-<div class="note">Each row has √p processors. Use ring allgather (√p-1 steps), message size m each step.</div>
-<div class="formula">T_row = (√p-1)·(tₛ + m·tᵥ)</div>
-<div class="section-title" style="margin-top:10px;">Phase 2: allgather within each column</div>
-<div class="note">After Phase 1, each processor holds √p messages ⇒ total size √p·m. Allgather that along the column.</div>
-<div class="formula">T_col = (√p-1)·(tₛ + √p·m·tᵥ)</div>
-<div class="section-title" style="margin-top:10px;">Total + simplification</div>
-<div class="formula">T = T_row + T_col = 2(√p-1)tₛ + (p-1)m·tᵥ</div>
-<div class="note">Because (√p-1)(√p+1)=p-1 ⇒ bandwidth term collapses nicely.</div>
-<div class="note"><b>Asymptotic:</b> Θ(√p·tₛ + p·m·tᵥ)</div>
 </div><button class="back-btn" onclick="showPage('menu')">← Back to Menu</button></div>
 <!-- QUICK REFERENCE -->
 <div class="page" id="quick">
