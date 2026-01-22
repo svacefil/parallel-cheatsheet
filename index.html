@@ -269,7 +269,8 @@
 <div class="page" id="comm">
 <div class="page-title">Ch2: COMMUNICATION</div>
 <div class="section">
-<div class="section-title">All-to-All Broadcast</div>
+<div class="section-title">All-to-All Broadcast [8 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Derive all-to-all broadcast and all-reduce on √p×√p 2D mesh. Explain difference between costs.</div>
 <div class="note">Message GROWS: (p-1)×m total</div>
 <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)m·tᵥ</span></div>
 <div class="row"><span class="label">2D Mesh</span><span class="value">2(√p-1)tₛ + (p-1)m·tᵥ</span></div>
@@ -292,7 +293,8 @@ Asymptotic:     Θ(√p·tₛ + p·m·tᵥ)
           (p-1)m·tᵥ = each processor receives (p-1) messages of size m in total.
         </div>
 
-<div class="section-title" style="margin-top:10px;">Derivation on 3D mesh (p^⅓×p^⅓×p^⅓)</div>
+<div class="section-title" style="margin-top:10px;">Derivation on 3D mesh (p^⅓×p^⅓×p^⅓) [9 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Derive all-to-all broadcast on p^⅓×p^⅓×p^⅓ 3D mesh. Compare with hypercube. Which is faster? Why?</div>
 <div class="note">
           Use 3 phases: allgather in x-dim, then y-dim, then z-dim.
         </div>
@@ -380,8 +382,9 @@ TOTAL: (2n/p - 1)·t_add + log2(p)·(t_s + t_add)
 <div class="formula">S = n / (logn·(tₛ+tₐdd))</div>
 <div class="note">Cost = n·logn → NOT cost-optimal (W=n)</div>
 </div>
-<div class="section"><div class="section-title">Scatter Optimality on Linear Array (tₛ=0)</div>
-<div class="note"><b>Setup:</b> scatter from root to p-1 other processors on a 1D linear array (pipeline).  
+<div class="section"><div class="section-title">Scatter Optimality on Linear Array (tₛ=0) [7 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Show that if tₛ=0, then tᵥ·m·(p-1) for scatter on linear array is asymptotically optimal. Describe meaning of each term.</div>
+<div class="note"><b>Setup:</b> scatter from root to p-1 other processors on a 1D linear array (pipeline).
         Each destination receives a message of size <span class="highlight">m</span> (words). Total data M = p·m.</div>
 <div class="formula">T_pipe = (p-1)(tₛ + m·tᵥ)</div>
 <div class="note"><b>If tₛ=0:</b> T_pipe = (p-1)m·tᵥ = tᵥ·M·(p-1)/p</div>
@@ -741,7 +744,8 @@ Efficiency: E = S/p = T_s / (p·T_p)
           If p grows too fast, the mesh startup term 2√p·tₛ starts to dominate.
         </div>
 </div>
-<div class="section" id="quicksort" style="display:none;"><div class="section-title">Parallel Quicksort (shared-address space)</div>
+<div class="section" id="quicksort" style="display:none;"><div class="section-title">Parallel Quicksort (shared-address space) [12 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Parallel quicksort, shared-address-space, p procs, n elements. Derive asymptotic Tₚ and isoefficiency. Identify which operations determine scalability. Describe meaning of each term.</div>
 <div class="note"><b>Goal:</b> derive Tp and isoefficiency (expected / average-case).</div>
 <div class="note"><b>Model:</b> shared memory with p processors (barriers instead of explicit message passing).</div>
 <div class="section-title" style="margin-top:10px;">Core idea (one partition level)</div>
@@ -831,7 +835,8 @@ n log n = K·p log n log p
 <button class="sub-btn" onclick="showSection('apspmem')">APSP Memory</button>
 </div>
 <div class="section" id="prim">
-<div class="section-title">Prim's MST (Hypercube)</div>
+<div class="section-title">Prim's MST (Hypercube) [5 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Parallel Prim's MST. Weighted adj matrix, n vertices. Derive asymptotic Tₚ, S, E.</div>
 <div class="row"><span class="label">W</span><span class="value">n²</span></div>
 <div class="row"><span class="label">Why?</span><span class="value">n iter × n edge checks</span></div>
 <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
@@ -1047,7 +1052,8 @@ but inside each D_k run all tasks concurrently.
 <div class="page" id="fft">
 <div class="page-title">Ch8: FFT</div>
 <div class="section">
-<div class="section-title">Binary-Exchange (p=n)</div>
+<div class="section-title">Binary-Exchange (p=n) [5 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Derive parallel runtime and speedup of Binary-Exchange FFT. n input, p=n procs. Use tₛ, tᵥ, tᶜ.</div>
 <div class="row"><span class="label">W</span><span class="value">n log n</span></div>
 <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
 <div class="row"><span class="label">Op</span><span class="value">Exchange with neighbor</span></div>
@@ -1058,7 +1064,8 @@ but inside each D_k run all tasks concurrently.
 <div class="formula">S = n / (1 + (tₛ+tᵥ)/tᶜ)</div>
 </div>
 <div class="section">
-<div class="section-title">8-Point Mapping (unordered inputs, p=8)</div>
+<div class="section-title">8-Point Mapping (unordered inputs, p=8) [5 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Describe how binary-exchange FFT maps on parallel processors. 8-point unordered FFT on 8 procs. Graphically illustrate interaction pattern.</div>
 <div class="note"><b>Setup:</b> processor rank = data index (0..7). Each stage s talks to rank differing in bit s (hypercube binary-exchange). No bit-reversal needed for unordered FFT.</div>
 <div class="note"><b>Per stage work:</b> local butterfly on the pair (x, partner) then exchange updated value for the next stage.</div>
 <div class="section-title" style="margin-top:10px;">Interaction pattern (pairs per stage)</div>
@@ -1109,7 +1116,8 @@ Stage 2: edges along z (P0-P4, P1-P5, P2-P6, P3-P7)
 <div class="note"><b>Graph view:</b> ranks are cube corners; each stage walks one dimension, so all pairs exchange simultaneously (log p = 3 stages).</div>
 </div>
 <div class="section">
-<div class="section-title">2D Transpose Algorithm (p &lt; n)</div>
+<div class="section-title">2D Transpose Algorithm (p &lt; n) [12 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Derive Tₚ, S, E for 2D transpose FFT on linear array of p nodes (p&lt;n). Describe meaning of each term.</div>
 <div class="note"><b>Idea:</b> Treat n-point FFT as √n × √n matrix. Each proc holds n/p elements.</div>
 <div class="section-title" style="margin-top:10px;">Algorithm Steps</div>
 <div class="note">1. Local FFT on n/p elements (column-wise)</div>
@@ -1134,7 +1142,8 @@ S = W/Tₚ = (n log n) / [(n/p)log n + 2tₛ log p + 2tᵥ(n/p)log p]
   = p / [1 + 2p·tₛ·log p/(n log n) + 2tᵥ·log p/log n]
 E = S/p = 1 / [1 + 2p·tₛ·log p/(n log n) + 2tᵥ·log p/log n]
 </pre></div>
-<div class="section-title" style="margin-top:10px;">16-point FFT on 4 processors</div>
+<div class="section-title" style="margin-top:10px;">16-point FFT on 4 processors [4+3 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Describe 2D transpose FFT mapping. 16-point FFT on 16 or 4 procs. Illustrate each step. How many processors?</div>
 <div class="note"><b>Setup:</b> n=16, p=4, each proc holds n/p=4 elements</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
 Initial:  P0:[0,1,2,3]  P1:[4,5,6,7]  P2:[8,9,10,11]  P3:[12,13,14,15]
@@ -1154,7 +1163,8 @@ Step 4: Transpose back to original distribution
 <div class="note"><b>#Processors:</b> p can be any divisor of n; example uses p=4 for n=16.</div>
 </div>
 <div class="section">
-<div class="section-title">Find Minimum Tₚ (tₛ=0)</div>
+<div class="section-title">Find Minimum Tₚ (tₛ=0) [14 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Given Tₚ=(n/p)logn + tᵥ(n/p)logp, max p=n. Find p when Tₚ is minimal and find Tₚᵐⁱⁿ for tᵥ=10.</div>
 <div class="note"><b>Given:</b> Tₚ = (n/p)log n + tᵥ(n/p)log p</div>
 <div class="section-title" style="margin-top:10px;">Step 1: Differentiate and set to 0</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap;">
@@ -1287,7 +1297,8 @@ After Step 3: (P0,P1)−   (P2,P3)−
 P0:[7,6]  P1:[5,4]  P2:[3,2]  P3:[1,0]
 </pre></div>
 <div class="note"><b>Final concatenation:</b> 7,6,5,4,3,2,1,0 (decreasing).</div>
-</div><div class="section" id="vis_scatter" style="display:none;"><div class="section-title">Scatter optimality proof (tₛ=0)</div>
+</div><div class="section" id="vis_scatter" style="display:none;"><div class="section-title">Scatter optimality proof (tₛ=0) [7 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Show that if tₛ=0, then tᵥ·m·(p-1) for scatter on linear array is asymptotically optimal. Describe meaning of each term.</div>
 <div class="note"><b>Scatter on linear array:</b> root has p messages (each size m), one for each processor.</div>
 <div class="note"><b>Pipelined scatter time:</b></div>
 <div class="formula">T = (p-1)·(tₛ + m·tᵥ)</div>
