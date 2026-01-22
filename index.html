@@ -1070,6 +1070,42 @@ Stage s=1 (flip bit 1):
 Stage s=2 (flip bit 2):
   (0↔4) (1↔5) (2↔6) (3↔7)
 </pre></div>
+<div class="section-title" style="margin-top:10px;">Butterfly Diagram (draw this!)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+   Stage0     Stage1     Stage2
+     │          │          │
+P0 ──┼── P1    P0 ──┼── P2    P0 ──┼── P4
+     ╳          ╳          ╳
+P1 ──┼── P0    P1 ──┼── P3    P1 ──┼── P5
+
+P2 ──┼── P3    P2 ──┼── P0    P2 ──┼── P6
+     ╳          ╳          ╳
+P3 ──┼── P2    P3 ──┼── P1    P3 ──┼── P7
+
+P4 ──┼── P5    P4 ──┼── P6    P4 ──┼── P0
+     ╳          ╳          ╳
+P5 ──┼── P4    P5 ──┼── P7    P5 ──┼── P1
+
+P6 ──┼── P7    P6 ──┼── P4    P6 ──┼── P2
+     ╳          ╳          ╳
+P7 ──┼── P6    P7 ──┼── P5    P7 ──┼── P3
+</pre></div>
+<div class="section-title" style="margin-top:10px;">3D Hypercube View</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+    P4 ─────────── P5
+   /│             /│
+  / │            / │
+P0 ─────────── P1  │
+ │  │           │  │
+ │ P6 ──────────│─ P7
+ │ /            │ /
+ │/             │/
+P2 ─────────── P3
+
+Stage 0: edges along x (P0-P1, P2-P3, P4-P5, P6-P7)
+Stage 1: edges along y (P0-P2, P1-P3, P4-P6, P5-P7)
+Stage 2: edges along z (P0-P4, P1-P5, P2-P6, P3-P7)
+</pre></div>
 <div class="note"><b>Graph view:</b> ranks are cube corners; each stage walks one dimension, so all pairs exchange simultaneously (log p = 3 stages).</div>
 </div>
 <div class="section">
