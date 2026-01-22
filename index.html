@@ -18,9 +18,9 @@
             color: #fff;
             line-height: 1.4;
             -webkit-text-size-adjust: none;
+            padding-bottom: 60px;
         }
 
-        /* Main menu */
         .menu {
             display: flex;
             flex-direction: column;
@@ -54,7 +54,6 @@
             background: linear-gradient(135deg, #E65100, #bf360c);
         }
 
-        /* Page sections */
         .page {
             display: none;
             padding: 6px;
@@ -70,10 +69,15 @@
             color: #fff;
             border: none;
             border-radius: 8px;
-            padding: 10px 14px;
-            font-size: 13px;
-            margin-bottom: 8px;
+            padding: 14px;
+            font-size: 14px;
             cursor: pointer;
+            position: fixed;
+            bottom: 10px;
+            left: 5%;
+            width: 90%;
+            text-align: center;
+            z-index: 100;
         }
 
         .page-title {
@@ -168,10 +172,6 @@
             vertical-align: top;
         }
 
-        .comp { color: #81C784; }
-        .comm { color: #FFB74D; }
-
-        /* Sub-navigation */
         .sub-nav {
             display: flex;
             flex-wrap: wrap;
@@ -214,7 +214,6 @@
 
     <!-- MASTER FORMULA -->
     <div id="master" class="page">
-        <button class="back-btn" onclick="showPage('menu')">← Back</button>
         <div class="page-title">MASTER FORMULA</div>
 
         <div class="section">
@@ -243,11 +242,12 @@
             <div class="row"><span class="label">3D Mesh</span><span class="value">3(p^⅓ - 1)</span></div>
             <div class="row"><span class="label">Hypercube</span><span class="value">log p</span></div>
         </div>
+
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- COMMUNICATION -->
     <div id="comm" class="page">
-        <button class="back-btn" onclick="showPage('menu')">← Back</button>
         <div class="page-title">Ch2: COMMUNICATION</div>
 
         <div class="section">
@@ -279,11 +279,12 @@
             <div class="row"><span class="label">Phase 3</span><span class="value">(n/p)·tₐdd</span></div>
             <div class="formula">Total: (2n/p-1)tₐdd + logp(tₛ+tₐdd)</div>
         </div>
+
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- MATRIX -->
     <div id="matrix" class="page">
-        <button class="back-btn" onclick="showPage('menu')">← Back</button>
         <div class="page-title">Ch3: MATRIX</div>
 
         <div class="sub-nav">
@@ -339,11 +340,12 @@
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log³p)</span></div>
             <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n³/log³n)</span></div>
         </div>
+
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- SORTING -->
     <div id="sort" class="page">
-        <button class="back-btn" onclick="showPage('menu')">← Back</button>
         <div class="page-title">Ch4: SORTING</div>
 
         <div class="sub-nav">
@@ -382,11 +384,12 @@
             <div class="formula">Tₚ = n²/p + 2(√p-1)tₛ + n·tᵥ</div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
         </div>
+
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- SEARCH -->
     <div id="search" class="page">
-        <button class="back-btn" onclick="showPage('menu')">← Back</button>
         <div class="page-title">Ch5: SEARCH/DOP</div>
 
         <div class="section">
@@ -412,11 +415,12 @@
             <div class="row"><span class="label">Done</span><span class="value">Return weight</span></div>
             <div class="row"><span class="label">End</span><span class="value">P0 weight=1</span></div>
         </div>
+
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- GRAPH -->
     <div id="graph" class="page">
-        <button class="back-btn" onclick="showPage('menu')">← Back</button>
         <div class="page-title">Ch6: GRAPH</div>
 
         <div class="sub-nav">
@@ -456,11 +460,12 @@
             <div class="row"><span class="label">E</span><span class="value">1 (perfect!)</span></div>
             <div class="note">Embarrassingly parallel</div>
         </div>
+
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- DP -->
     <div id="dp" class="page">
-        <button class="back-btn" onclick="showPage('menu')">← Back</button>
         <div class="page-title">Ch7: DP</div>
 
         <div class="section">
@@ -479,11 +484,12 @@
             <div class="row"><span class="label">Op</span><span class="value">Circular shift</span></div>
             <div class="formula">Tₚ = nc/p + n(tₛ + c/p·tᵥ)</div>
         </div>
+
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- FFT -->
     <div id="fft" class="page">
-        <button class="back-btn" onclick="showPage('menu')">← Back</button>
         <div class="page-title">Ch8: FFT</div>
 
         <div class="section">
@@ -508,11 +514,12 @@
             <div class="row"><span class="label">Step 2</span><span class="value">Solve for p</span></div>
             <div class="formula">For tᵥ=10: logp = 1 - logn/10</div>
         </div>
+
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <!-- QUICK REFERENCE -->
     <div id="quick" class="page">
-        <button class="back-btn" onclick="showPage('menu')">← Back</button>
         <div class="page-title">⚡ QUICK REFERENCE</div>
 
         <div class="section">
@@ -543,6 +550,8 @@
                 <tr><td>Floyd</td><td>O(n)</td></tr>
             </table>
         </div>
+
+        <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
 
     <script>
