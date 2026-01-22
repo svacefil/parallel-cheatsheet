@@ -104,7 +104,7 @@
             <div class="row"><span class="label">Diameter</span><span class="value highlight">2(√p - 1)</span></div>
             <div class="row"><span class="label">Bisection</span><span class="value highlight">√p</span></div>
             <div class="row"><span class="label">Links</span><span class="value">2(√p)(√p-1) = 2p-2√p</span></div>
-            <div class="row"><span class="label">Cost</span><span class="value highlight">2p - 2√p ≈ 2p</span></div>
+            <div class="row"><span class="label">Cost (Σdeg)</span><span class="value highlight">4p - 4√p ≈ 4p</span></div>
         </div>
         <div class="section">
             <div class="section-title">2D Torus (wraparound)</div>
@@ -283,12 +283,13 @@
         <div class="section">
             <div class="section-title">All-to-All Personalized</div>
             <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + p(p-1)/2·m·tᵥ</span></div>
-            <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)/2·m·tᵥ</span></div>
+            <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p/2)logp·m·tᵥ</span></div>
         </div>
         <div class="section">
             <div class="section-title">Scatter/Gather</div>
-            <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)m·tᵥ</span></div>
-            <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)m/p·tᵥ</span></div>
+            <div class="note">Convention: M = total data at root</div>
+            <div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + (p-1)M/p·tᵥ</span></div>
+            <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)M/p·tᵥ</span></div>
         </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
     </div>
@@ -311,10 +312,9 @@
         </div>
         <div class="section">
             <div class="section-title">Scatter Optimality (tₛ=0)</div>
-            <div class="formula">T = tᵥ·m·(p-1)</div>
-            <div class="note">Total data m split among p procs</div>
-            <div class="note">Each of (p-1) gets m/p data</div>
-            <div class="note">Lower bound Ω(tᵥ·m) → OPTIMAL</div>
+            <div class="note">M = total data at root, each gets M/p</div>
+            <div class="formula">T = tᵥ·(p-1)·M/p ≈ tᵥ·M</div>
+            <div class="note">Lower bound Ω(tᵥ·M) → OPTIMAL</div>
         </div>
         <div class="section">
             <div class="section-title">All2All Personal Lower Bound</div>
@@ -433,7 +433,7 @@
 
         <div id="oddeven" class="section" style="display:none;">
             <div class="section-title">Odd-Even Transposition</div>
-            <div class="row"><span class="label">W</span><span class="value">n log n</span></div>
+            <div class="row"><span class="label">W</span><span class="value">n² (seq alg)</span></div>
             <div class="row"><span class="label">Topo</span><span class="value">Ring</span></div>
             <div class="row"><span class="label">Op</span><span class="value">Neighbor exchange</span></div>
             <div class="row"><span class="label">m</span><span class="value">n/p</span></div>
@@ -540,8 +540,8 @@
             <div class="row"><span class="label">#Iter</span><span class="value">n</span></div>
             <div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
             <div class="row"><span class="label">Tcomm/iter</span><span class="value comm">2(n/√p)·tᵥ</span></div>
-            <div class="row"><span class="label">Tcomm total</span><span class="value comm">2n²·tᵥ</span></div>
-            <div class="formula">Tₚ = n³/p + 2n²·tᵥ</div>
+            <div class="row"><span class="label">Tcomm total</span><span class="value comm">2n²/√p·tᵥ</span></div>
+            <div class="formula">Tₚ = n³/p + 2n²/√p·tᵥ</div>
             <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
         </div>
 
@@ -580,8 +580,8 @@
             <div class="row"><span class="label">Tcomm/diag</span><span class="value">tₛ + tᵥ</span></div>
             <div class="formula">Tₚ = (2n-1)(tₛ + tᵥ + tᶜ)</div>
             <div class="formula">E = n²·tᶜ / [n(2n-1)(tₛ+tᵥ+tᶜ)]</div>
-            <div class="formula highlight">If tₛ=tᵥ=0: E = n/(2n-1) < 0.5</div>
-            <div class="note">Even with ZERO comm, E < 50%!</div>
+            <div class="formula highlight">If tₛ=tᵥ=0: E = n/(2n-1) > 0.5 → 0.5</div>
+            <div class="note">Even with ZERO comm, E approaches 50%!</div>
             <div class="note">Diagonals vary: 1,2,...n,...2,1</div>
         </div>
         <div class="section">
@@ -636,10 +636,10 @@
                 <tr><td>Cannon</td><td>n³</td><td>n³/p + 2√p(tₛ+n²/p·tᵥ)</td></tr>
                 <tr><td>DNS</td><td>n³</td><td>n³/p + tₛlogp + n²/p^⅔·tᵥ</td></tr>
                 <tr><td>Bitonic</td><td>nlog²n</td><td>nlog²n/p + logp(tₛ+n/p·tᵥ)</td></tr>
-                <tr><td>Odd-Even</td><td>nlogn</td><td>nlog(n/p)/p + p·tₛ+n·tᵥ</td></tr>
+                <tr><td>Odd-Even</td><td>n²</td><td>nlog(n/p)/p + p·tₛ+n·tᵥ</td></tr>
                 <tr><td>Enum</td><td>n²</td><td>n²/p + 2(√p-1)tₛ + n·tᵥ</td></tr>
                 <tr><td>Prim</td><td>n²</td><td>n²/p + nlogp</td></tr>
-                <tr><td>Floyd</td><td>n³</td><td>n³/p + 2n²·tᵥ</td></tr>
+                <tr><td>Floyd</td><td>n³</td><td>n³/p + 2n²/√p·tᵥ</td></tr>
                 <tr><td>Dijkstra S-P</td><td>n³</td><td>n³/p (no comm!)</td></tr>
             </table>
         </div>
@@ -679,7 +679,7 @@
         <div class="section">
             <div class="section-title">Scalability Ranking</div>
             <div class="note">Best → Worst:</div>
-            <div class="note">O(p) > O(p^1.5) > O(p log²p) > O(p²)</div>
+            <div class="note">O(p) > O(p log²p) > O(p^1.5) > O(p²)</div>
             <div class="note">Lower isoeff = better scalability</div>
         </div>
         <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
