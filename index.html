@@ -92,7 +92,7 @@
 <a class="menu-btn" onclick="showPage('graph')">🕸️ Ch6: Graph</a>
 <a class="menu-btn" onclick="showPage('dp')">📈 Ch7: DP</a>
 <a class="menu-btn" onclick="showPage('fft')">〰️ Ch8: FFT</a>
-<a class="menu-btn" onclick="showPage('visual')">🎨 Task Graphs</a><a class="menu-btn quick" onclick="showPage('quick')">⚡ Quick Ref</a>
+<a class="menu-btn quick" onclick="showPage('quick')">⚡ Quick Ref</a>
 <a class="menu-btn quick" onclick="showPage('iso')">📊 Isoefficiency</a>
 <a class="menu-btn quick" onclick="showPage('memory')">💾 Memory</a>
 </div>
@@ -100,6 +100,12 @@
 <!-- TOPOLOGY METRICS -->
 <div class="page" id="topology">
 <div class="page-title purple">Ch1: TOPOLOGY METRICS</div>
+<div class="section">
+<div class="section-title">Network Metrics [3+3+3 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [3 pts] For √p×√p 2D mesh (no wraparound): derive (a) diameter, (b) bisection width, (c) cost.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [3 pts] For √p×√p 2D torus (wraparound): derive (a) diameter, (b) bisection width, (c) cost.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [3 pts] For p-node hypercube: derive (a) diameter, (b) bisection width, (c) cost.</div>
+</div>
 <div class="section">
 <div class="section-title">2D Mesh (no wraparound)</div>
 <div class="row"><span class="label">Nodes</span><span class="value">√p × √p</span></div>
@@ -140,48 +146,203 @@
 </div>
 <!-- BASICS Ch1 -->
 <div class="page" id="basics">
-<div class="page-title purple">Ch1: BASICS &amp; PROOFS</div>
-<div class="section">
-<div class="section-title">Amdahl's Law</div>
-<div class="note">If W has serial part Ws:</div>
-<div class="formula">S ≤ W / Ws</div>
-<div class="note">Proof: Tp ≥ Ws (serial part can't parallelize)</div>
-<div class="note">S = W/Tp ≤ W/Ws</div>
+<div class="page-title purple">Ch1: BASICS, PROOFS & TASK GRAPHS</div>
+<div class="sub-nav">
+<button class="sub-btn" onclick="showSection('ch1_theory')">Theory</button>
+<button class="sub-btn" onclick="showSection('ch1_taskgraph')">Task Graph Analysis</button>
+<button class="sub-btn" onclick="showSection('ch1_fft_tg')">FFT Task Graph</button>
+<button class="sub-btn" onclick="showSection('ch1_lcs_tg')">LCS Task Graph</button>
 </div>
-<div class="section">
-<div class="section-title">Core Definitions</div>
-<div class="row"><span class="label">Speedup</span><span class="value">S = Ts / Tp = W / Tp</span></div>
-<div class="row"><span class="label">Efficiency</span><span class="value">E = S / p</span></div>
-<div class="row"><span class="label">Cost</span><span class="value">C = p · Tp</span></div>
-<div class="row"><span class="label">Overhead</span><span class="value">To = p·Tp - W</span></div>
-<div class="note">E range: 0 &lt; E ≤ 1</div>
+<div class="section" id="ch1_theory">
+<div class="section-title">Exam Questions [5+1+2+5 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] Amdahl's Law: If problem size W has serial component Wₛ, prove W/Wₛ is upper bound on speedup.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [1 pt] Define efficiency E and explain its range of values.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [2 pts] Define cost of parallel system. When is it cost-optimal?</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] Prove: if Tₒ≤Θ(p), Tₚ decreases to constant. If Tₒ>Θ(p), Tₚ has distinct minimum.</div>
+
+<div class="section-title" style="margin-top:10px;">Amdahl's Law Proof</div>
+<div class="note">If W has serial part Wₛ:</div>
+<div class="formula">S ≤ W / Wₛ</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Proof:
+  Tₚ ≥ Wₛ  (serial part cannot be parallelized)
+  S = W/Tₚ ≤ W/Wₛ
+
+No matter how many processors, speedup bounded by W/Wₛ.
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Core Definitions</div>
+<div class="row"><span class="label">Speedup</span><span class="value">S = Tₛ / Tₚ = W / Tₚ</span></div>
+<div class="row"><span class="label">Efficiency</span><span class="value">E = S / p = W / (p·Tₚ)</span></div>
+<div class="row"><span class="label">Cost</span><span class="value">C = p · Tₚ</span></div>
+<div class="row"><span class="label">Overhead</span><span class="value">Tₒ = p·Tₚ - W</span></div>
+<div class="note highlight">E range: 0 &lt; E ≤ 1 (1 = perfect parallelization)</div>
+
+<div class="section-title" style="margin-top:10px;">Cost Optimal</div>
+<div class="formula">p · Tₚ = O(W)  ⟺  E = Θ(1)</div>
+<div class="note">Parallel cost equals sequential work (up to constant factor)</div>
+
+<div class="section-title" style="margin-top:10px;">Tₒ vs Tₚ Relationship Proof</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Tₚ = W/p + Tₒ/p
+
+Case 1: Tₒ ≤ Θ(p)
+  Tₒ/p ≤ c (constant)
+  As p→∞: W/p→0, Tₒ/p→constant
+  → Tₚ approaches constant, keeps decreasing
+
+Case 2: Tₒ > Θ(p), say Tₒ = Θ(p^α), α>1
+  Tₚ = W/p + Θ(p^{α-1})
+  dTₚ/dp = -W/p² + (α-1)Θ(p^{α-2}) = 0
+
+  At small p: -W/p² dominates → Tₚ decreasing
+  At large p: +Θ(p^{α-2}) dominates → Tₚ increasing
+  → Tₚ has distinct MINIMUM
+</pre></div>
 </div>
-<div class="section">
-<div class="section-title">Cost Optimal</div>
-<div class="formula">p · Tp = O(W)</div>
-<div class="note">Parallel cost = sequential work</div>
-<div class="note">Equivalently: E = Θ(1)</div>
+
+<div class="section" id="ch1_taskgraph" style="display:none;">
+<div class="section-title">Task Graph Analysis [4 pts per graph]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [4 pts] For given task graph, determine:
+1. Max degree of concurrency
+2. Critical path length
+3. Max speedup (unlimited procs)
+4. Min procs for max speedup
+5. Max speedup with 2, 4, 8 procs</div>
+
+<div class="section-title" style="margin-top:10px;">Formulas</div>
+<div class="row"><span class="label">Max concurrency</span><span class="value">Max # tasks executable in parallel</span></div>
+<div class="row"><span class="label">Critical path</span><span class="value">Longest dependency chain (# nodes)</span></div>
+<div class="row"><span class="label">Max speedup</span><span class="value">S_max = (Total nodes) / (Critical path length)</span></div>
+<div class="row"><span class="label">Min procs for S_max</span><span class="value">= Max concurrency</span></div>
+
+<div class="section-title" style="margin-top:10px;">Example: Binary Tree (15 nodes, depth 4)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+        ○           Level 0: 1 node
+       / \
+      ○   ○         Level 1: 2 nodes
+     /\   /\
+    ○ ○  ○  ○       Level 2: 4 nodes
+   /\ /\ /\ /\
+  ○○ ○○ ○○ ○○       Level 3: 8 nodes
+
+Total nodes: 15
+Critical path: 4 (root to leaf)
+Max concurrency: 8 (bottom level)
+S_max = 15/4 = 3.75
+Min procs for S_max: 8
+
+With limited procs (bottom-up reduction):
+  p=2: T = 1+1+2+4 = 8  → S = 15/8 = 1.875
+  p=4: T = 1+1+1+2 = 5  → S = 15/5 = 3.0
+  p=8: T = 1+1+1+1 = 4  → S = 15/4 = 3.75
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Example: Star + Chain (Fig c type)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Star: 1 center + 8 leaves = 9 nodes (parallel)
+Chain: 5 nodes (sequential)
+Total: 14 nodes
+
+         ○ ○
+        ○ ○ ○ ○ ○ ○   (8 leaves)
+            ○         (center)
+            │
+            ○─○─○─○─○ (chain of 5)
+
+Critical path: 1 + 5 = 6
+Max concurrency: 8 (star leaves)
+S_max = 14/6 = 2.33
+Min procs: 8
+</pre></div>
 </div>
-<div class="section">
-<div class="section-title">Isoefficiency</div>
-<div class="formula">W = K · To</div>
-<div class="note">How W must grow with p to maintain E</div>
-<div class="note">Lower isoeff = better scalability</div>
+
+<div class="section" id="ch1_fft_tg" style="display:none;">
+<div class="section-title">FFT-like Pattern Task Graph [3+7 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [3 pts] For n=8, draw task-dependency graph where each execution of Line 7 is a task.</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [7 pts] For n=4, draw task graph. Denote line 6 nodes by (i,j), line 3 nodes by "I" (init).</div>
+
+<div class="section-title" style="margin-top:10px;">Algorithm</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+procedure FFT_like_pattern(A, n)
+  m := log2(n)
+  for j := 0 to m-1 do
+    for i := 0 to n-1 do
+      A[i, j+1] := A[i, j] + A[i XOR 2^j, j]
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Task Graph for n=4 (m=2)</div>
+<div class="note">Task = each execution of A[i,j+1] := A[i,j] + A[i XOR 2^j, j]</div>
+<div class="note">j ∈ {0,1}, i ∈ {0,1,2,3}</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Dependencies:
+  Node (i,j) reads A[i,j] and A[i XOR 2^j, j]
+
+For j=0: reads A[*,0] (input) → depends on I
+For j=1: (i,1) needs A[i,1] and A[i XOR 2,1]
+         A[i,1] produced by (i,0)
+         A[i XOR 2,1] produced by (i XOR 2,0)
+
+Concrete edges (n=4):
+━━━━━━━━━━━━━━━━━━━━━━
+I → (0,0), (1,0), (2,0), (3,0)
+
+j=0, XOR 2^0 = XOR 1:
+  (0,0) reads A[0,0], A[1,0] → edges from I
+  (1,0) reads A[1,0], A[0,0] → edges from I
+  (2,0) reads A[2,0], A[3,0] → edges from I
+  (3,0) reads A[3,0], A[2,0] → edges from I
+
+j=1, XOR 2^1 = XOR 2:
+  (0,1) reads A[0,1], A[2,1] → from (0,0), (2,0)
+  (1,1) reads A[1,1], A[3,1] → from (1,0), (3,0)
+  (2,1) reads A[2,1], A[0,1] → from (2,0), (0,0)
+  (3,1) reads A[3,1], A[1,1] → from (3,0), (1,0)
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Diagram</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+    I (init)
+    │
+    ├───┬───┬───┐
+    ↓   ↓   ↓   ↓
+  (0,0)(1,0)(2,0)(3,0)    ← j=0 (all parallel)
+    │╲  │╱  │╲  │╱
+    │ ╲╱│   │ ╲╱│
+    │ ╱╲│   │ ╱╲│
+    ↓╱  ↓╲  ↓╱  ↓╲
+  (0,1)(1,1)(2,1)(3,1)    ← j=1 (all parallel)
+
+Concurrency: all (i,0) parallel; all (i,1) parallel
+</pre></div>
 </div>
-<div class="section">
-<div class="section-title">To vs Tp Relationship</div>
-<div class="note">If To ≤ Θ(p):</div>
-<div class="note">→ Tp keeps decreasing, approaches constant</div>
-<div class="note">If To &gt; Θ(p):</div>
-<div class="note">→ Tp has a MINIMUM (first ↓ then ↑)</div>
-<div class="formula">Find min: dTp/dp = 0</div>
+
+<div class="section" id="ch1_lcs_tg" style="display:none;">
+<div class="section-title">LCS DP Task Graph</div>
+<div class="note"><b>Goal:</b> task-dependency graph for LCS DP where each task computes f[i,j].</div>
+<div class="note"><b>Recurrence:</b><br/>
+if A[i]=B[j] → f[i,j]=f[i-1,j-1]+1<br/>
+else → f[i,j]=max(f[i-1,j], f[i,j-1])
 </div>
-<div class="section">
-<div class="section-title">Task Graph Analysis</div>
-<div class="row"><span class="label">Max concurrency</span><span class="value">Max parallel tasks</span></div>
-<div class="row"><span class="label">Critical path</span><span class="value">Longest dependency chain</span></div>
-<div class="row"><span class="label">Max speedup</span><span class="value">Total work / Critical path</span></div>
-<div class="row"><span class="label">Min procs</span><span class="value">= Max concurrency</span></div>
+<div class="note"><b>Dependencies:</b> (i,j) depends on (i-1,j), (i,j-1), and (i-1,j-1).</div>
+
+<div class="section-title" style="margin-top:10px;">How to draw (n=4)</div>
+<div class="note">1) Draw 4×4 grid of nodes (i,j), i=1..4, j=1..4</div>
+<div class="note">2) For each node draw arrows from ↑, ←, ↖</div>
+
+<div class="section-title" style="margin-top:10px;">Concurrent sets (wavefront)</div>
+<div class="note">All nodes with same i+j are independent → run in parallel</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+k=2: {(1,1)}
+k=3: {(1,2),(2,1)}
+k=4: {(1,3),(2,2),(3,1)}
+k=5: {(1,4),(2,3),(3,2),(4,1)}
+k=6: {(2,4),(3,3),(4,2)}
+k=7: {(3,4),(4,3)}
+k=8: {(4,4)}
+</pre></div>
+<div class="note highlight"><b>#Steps:</b> 2n-1 = 7 wavefront steps for n=4</div>
+<div class="note highlight"><b>Max parallelism:</b> n = 4 (middle diagonal)</div>
 </div>
 <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
 </div>
@@ -821,15 +982,17 @@ Cost at pᵐⁱⁿ:
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [4 pts] Sequence [2,5,0,4]: illustrate all steps, draw network, show comparator outputs. #procs? Tₚ?</div>
 
 <div class="row"><span class="label">W</span><span class="value">n log²n</span></div>
-<div class="row"><span class="label">Why?</span><span class="value">log n stages × log n steps</span></div>
+<div class="row"><span class="label">Why?</span><span class="value">log n stages × (1+2+...+log n) steps</span></div>
 <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
 <div class="row"><span class="label">Op</span><span class="value">Compare-exchange</span></div>
 <div class="row"><span class="label">m</span><span class="value">n/p</span></div>
+<div class="row"><span class="label">#Comm steps</span><span class="value highlight">log²p (not log p!)</span></div>
 <div class="row"><span class="label">Tcomp</span><span class="value comp">n log²n / p</span></div>
-<div class="row"><span class="label">Tcomm</span><span class="value comm">logp(tₛ + n/p·tᵥ)</span></div>
-<div class="formula">Tₚ = nlog²n/p + logp(tₛ + n/p·tᵥ)</div>
-<div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log²p)</span></div>
-<div class="note">n=p case: Tp = log²n(tc+ts+tw)</div>
+<div class="row"><span class="label">Tcomm</span><span class="value comm">log²p · (tₛ + n/p·tᵥ)</span></div>
+<div class="formula highlight">Tₚ = nlog²n/p + log²p(tₛ + n/p·tᵥ)</div>
+<div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log⁴p)</span></div>
+<div class="note"><b>Why log²p comm:</b> Network has log p stages, stage k has k steps → Σk = log p(log p+1)/2 ≈ log²p/2</div>
+<div class="note">n=p case: Tp = log²n · (tc + ts + tw)</div>
 <div class="section-title" style="margin-top:10px;">Why k-dim Hypercube for 2^k Merge</div>
 <div class="note">• Bitonic merge of 2^k needs k compare steps</div>
 <div class="note">• Step i: compare at distance 2^(k-i)</div>
@@ -1756,24 +1919,37 @@ Stage 2: edges along z (P0-P4, P1-P5, P2-P6, P3-P7)
 <div class="note">2. <b>Transpose</b> (all-to-all personalized) — redistribute data</div>
 <div class="note">3. Local FFT on n/p elements (row-wise)</div>
 <div class="note">4. <b>Transpose</b> again</div>
-<div class="section-title" style="margin-top:10px;">Parallel Runtime (linear array)</div>
+<div class="section-title" style="margin-top:10px;">Parallel Runtime (LINEAR ARRAY)</div>
+<div class="note highlight"><b>Key:</b> On linear array, all-to-all personalized has Θ(p) startups, NOT log p!</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+All-to-all personalized on ring/linear array:
+  T = (p-1)tₛ + (p-1)(n/p)·p/2·tᵥ  [neighbor exchange model]
+  ≈ (p-1)tₛ + n(p-1)/2·tᵥ
+
+Simplified: Tcomm_transpose ≈ p·tₛ + (np/2)·tᵥ per transpose
+</pre></div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap;">
 Tₚ = Tcomp + Tcomm
 Tcomp = (n/p)·log n        [local FFTs]
-Tcomm = 2·[tₛ·log p + tᵥ·(n/p)·log p]  [2 transposes]
+Tcomm = 2·[(p-1)tₛ + (n/p)·(p-1)·tᵥ]  [2 transposes]
 </pre></div>
-<div class="formula highlight">Tₚ = (n/p)log n + 2tₛ·log p + 2tᵥ·(n/p)log p</div>
+<div class="formula highlight">Tₚ = (n/p)log n + 2(p-1)tₛ + 2(n/p)(p-1)tᵥ</div>
 <div class="section-title" style="margin-top:10px;">Meaning of each term</div>
 <div class="note">• <b>(n/p)log n</b> = local FFT work (n/p points, log n stages)</div>
-<div class="note">• <b>2·tₛ·log p</b> = startup for 2 all-to-all transposes (log p phases each)</div>
-<div class="note">• <b>2·tᵥ·(n/p)log p</b> = data transfer for transposes</div>
+<div class="note">• <b>2(p-1)tₛ</b> = startup for 2 transposes (p-1 comm steps each on linear array)</div>
+<div class="note">• <b>2(n/p)(p-1)tᵥ</b> = data transfer for transposes</div>
 <div class="section-title" style="margin-top:10px;">Speedup and Efficiency</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap;">
 W = n log n
-S = W/Tₚ = (n log n) / [(n/p)log n + 2tₛ log p + 2tᵥ(n/p)log p]
-  = p / [1 + 2p·tₛ·log p/(n log n) + 2tᵥ·log p/log n]
-E = S/p = 1 / [1 + 2p·tₛ·log p/(n log n) + 2tᵥ·log p/log n]
+S = W/Tₚ = (n log n) / [(n/p)log n + 2(p-1)tₛ + 2(n/p)(p-1)tᵥ]
+
+For large p:
+S ≈ (n log n) / [(n/p)log n + 2p·tₛ + 2n·tᵥ]
+E = S/p
+
+Isoefficiency: Tₒ = 2p²tₛ + 2pn·tᵥ → W = Θ(p²) (dominated by startup)
 </pre></div>
+<div class="note highlight"><b>Contrast with hypercube:</b> On hypercube, transpose uses log p phases → much better scalability.</div>
 <div class="section-title" style="margin-top:10px;">16-point FFT on 4 processors [4+3 pts]</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> Describe 2D transpose FFT mapping. 16-point FFT on 16 or 4 procs. Illustrate each step. How many processors?</div>
 <div class="note"><b>Setup:</b> n=16, p=4, each proc holds n/p=4 elements</div>
@@ -1797,33 +1973,47 @@ Step 4: Transpose back to original distribution
 <div class="section">
 <div class="section-title">Find Minimum Tₚ (tₛ=0) [14 pts]</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> Given Tₚ=(n/p)logn + tᵥ(n/p)logp, max p=n. Find p when Tₚ is minimal and find Tₚᵐⁱⁿ for tᵥ=10.</div>
-<div class="note"><b>Given:</b> Tₚ = (n/p)log n + tᵥ(n/p)log p</div>
-<div class="section-title" style="margin-top:10px;">Step 1: Differentiate and set to 0</div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
-dTₚ/dp = -n·logn/p² + tᵥ·n·(1-logp)/p² = 0
-Multiply by p²/n:
--logn + tᵥ(1-logp) = 0
-logn = tᵥ - tᵥ·logp
-logp = 1 - logn/tᵥ
-</pre></div>
-<div class="section-title" style="margin-top:10px;">Step 2: Solve for p (tᵥ=10)</div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
-log p = 1 - log n / 10
-p = 2^(1 - logn/10) = 2 / n^(1/10) = 2 / ¹⁰√n
-</pre></div>
-<div class="section-title" style="margin-top:10px;">Step 3: Find Tₚᵐⁱⁿ</div>
-<div class="note">Substitute p back into Tₚ:</div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
-Tₚᵐⁱⁿ = (n/p)logn + tᵥ(n/p)logp
-     = (n/p)[logn + tᵥ·logp]
-     = (n/p)[logn + tᵥ(1 - logn/tᵥ)]
-     = (n/p)[logn + tᵥ - logn]
-     = (n/p)·tᵥ
+<div class="note"><b>Given:</b> Tₚ = (n/p)log n + tᵥ(n/p)log p, constraint: 1 ≤ p ≤ n</div>
 
-For tᵥ=10, p = 2/n^0.1:
-Tₚᵐⁱⁿ = (n · n^0.1 / 2) · 10 = 5·n^1.1
+<div class="section-title" style="margin-top:10px;">Step 1: Check derivative</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+Tₚ = (n/p)[log n + tᵥ log p]
+
+dTₚ/dp = d/dp[(n/p)(log n + tᵥ log p)]
+       = (-n/p²)(log n + tᵥ log p) + (n/p)(tᵥ/p·ln2)
+       = (n/p²)[-log n - tᵥ log p + tᵥ/ln2]
+
+Setting = 0: log n + tᵥ log p = tᵥ/ln2 ≈ 1.44tᵥ
+
+For tᵥ=10: log n + 10 log p = 14.4
 </pre></div>
-<div class="formula highlight">Tₚᵐⁱⁿ = 5·n^1.1,  p_opt = 2/¹⁰√n (for tᵥ=10)</div>
+
+<div class="section-title" style="margin-top:10px;">Step 2: Check second derivative (is it min or max?)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+d²Tₚ/dp² evaluated at stationary point...
+Result: POSITIVE → stationary point is a MAXIMUM, not minimum!
+
+This means: minimum occurs at BOUNDARY of [1, n]
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Step 3: Compare endpoints</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
+At p=1:
+  Tₚ(1) = n·log n + tᵥ·n·0 = n log n
+
+At p=n:
+  Tₚ(n) = (n/n)log n + tᵥ(n/n)log n
+        = log n + tᵥ log n = (1 + tᵥ) log n
+
+For tᵥ=10:
+  Tₚ(1) = n log n
+  Tₚ(n) = 11 log n
+
+Which is smaller? For n > 11: Tₚ(n) < Tₚ(1)
+</pre></div>
+
+<div class="formula highlight">Tₚᵐⁱⁿ = (1 + tᵥ) log n = 11 log n  at  p = n</div>
+<div class="note highlight"><b>Key insight:</b> Stationary point from dTₚ/dp=0 is a MAXIMUM. Min is at endpoint p=n for typical n.</div>
 </div>
 <div class="section"><div class="section-title">FFT_like_pattern Task Graph (n=4)</div>
 <div class="note"><b>Problem:</b> tasks are executions of line 6:<br/>
@@ -1854,53 +2044,6 @@ Edges (besides I→stage0):
 (1,0),(3,0) → (1,1) and (3,1)
 </pre></div>
 </div><button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
-</div><div class="page" id="visual"><div class="page-title">🎨 TASK GRAPHS</div><div class="sub-nav"><button class="sub-btn" onclick="showSection('vis_lcs')">LCS TG</button><button class="sub-btn" onclick="showSection('vis_fft')">FFT TG</button></div><div class="section" id="vis_lcs"><div class="section-title">LCS DP Task Graph (n=4)</div>
-<div class="note"><b>Goal:</b> task-dependency graph for LCS DP where each task is computing <span class="highlight">f[i,j]</span>.</div>
-<div class="note"><b>Recurrence (standard):</b><br/>
-if A[i]=B[j] → f[i,j]=f[i-1,j-1]+1<br/>
-else → f[i,j]=max(f[i-1,j], f[i,j-1])
-</div>
-<div class="note"><b>Dependencies:</b> (i,j) depends on <span class="highlight">(i-1,j)</span>, <span class="highlight">(i,j-1)</span>, and <span class="highlight">(i-1,j-1)</span>.</div>
-<div class="note"><b>How to draw quickly (n=4):</b><br/>
-1) Draw a 4×4 grid of nodes (i,j), i=1..4 vertical, j=1..4 horizontal.<br/>
-2) For each node draw incoming arrows from ↑, ←, ↖ (or outgoing to ↓, →, ↘).</div>
-<div class="section-title" style="margin-top:10px;">Concurrent sets (wavefront)</div>
-<div class="note">All nodes with same <span class="highlight">i+j</span> are independent ⇒ can run concurrently once previous diagonals finished.</div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
-k=2: {(1,1)}
-k=3: {(1,2),(2,1)}
-k=4: {(1,3),(2,2),(3,1)}
-k=5: {(1,4),(2,3),(3,2),(4,1)}
-k=6: {(2,4),(3,3),(4,2)}
-k=7: {(3,4),(4,3)}
-k=8: {(4,4)}
-</pre></div>
-<div class="note"><b>#Steps:</b> 2n-1 = 7 wavefront steps for n=4 (diagonals). Max parallelism = n=4 (middle diagonal).</div>
-</div><div class="section" id="vis_fft" style="display:none;"><div class="section-title">FFT_like_pattern TG (n=4)</div>
-<div class="note"><b>Given code:</b> A[i,j+1] = A[i,j] + A[i XOR 2^j, j]</div>
-<div class="note">Task = each execution of line 6 ⇒ node labeled (i,j) produces A[i,j+1].</div>
-<div class="note"><b>n=4 ⇒ m=log2 n=2 ⇒ j∈{0,1}, i∈{0,1,2,3}</b></div>
-<div class="section-title" style="margin-top:10px;">Dependencies (dataflow)</div>
-<div class="note">Node (i,j) reads A[i,j] and A[i XOR 2^j, j].  
-So (i,j) depends on the tasks that produced those values.</div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
-For j=0: reads A[*,0] (input) → only depends on I (init).
-For j=1: (i,1) needs A[i,1] and A[i XOR 2,1]
-        A[i,1] is produced by (i,0)
-        A[i XOR 2,1] is produced by (i XOR 2,0)
-Edges: (i,0) → (i,1) and (i XOR 2,0) → (i,1)
-</pre></div>
-<div class="section-title" style="margin-top:10px;">Concrete edge list (n=4)</div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
-I → (0,0),(1,0),(2,0),(3,0)
-
-(0,0),(2,0) → (0,1)
-(1,0),(3,0) → (1,1)
-(2,0),(0,0) → (2,1)
-(3,0),(1,0) → (3,1)
-</pre></div>
-<div class="note"><b>Concurrency:</b> all (i,0) run in parallel; then all (i,1) run in parallel.</div>
-</div><button class="back-btn" onclick="showPage('menu')">← Back to Menu</button></div>
 <!-- QUICK REFERENCE -->
 <div class="page" id="quick">
 <div class="page-title">⚡ ALL ALGORITHMS</div>
@@ -1911,7 +2054,7 @@ I → (0,0),(1,0),(2,0),(3,0)
 <tr><td>Mat-Vec 2D</td><td>n²</td><td>n²/p + tₛlogp + (nlogp)/√p·tᵥ</td></tr>
 <tr><td>Cannon</td><td>n³</td><td>n³/p + 2√p(tₛ+n²/p·tᵥ)</td></tr>
 <tr><td>DNS</td><td>n³</td><td>n³/p + tₛlogp + n²/p^⅔·tᵥ</td></tr>
-<tr><td>Bitonic</td><td>nlog²n</td><td>nlog²n/p + logp(tₛ+n/p·tᵥ)</td></tr>
+<tr><td>Bitonic</td><td>nlog²n</td><td>nlog²n/p + log²p(tₛ+n/p·tᵥ)</td></tr>
 <tr><td>Odd-Even</td><td>n²</td><td>nlog(n/p)/p + p·tₛ+n·tᵥ</td></tr>
 <tr><td>Enum</td><td>n²</td><td>n²/p + 2(√p-1)tₛ + n·tᵥ</td></tr>
 <tr><td>Prim</td><td>n²</td><td>n²/p + nlogp</td></tr>
@@ -1936,7 +2079,7 @@ I → (0,0),(1,0),(2,0),(3,0)
 <tr><td>Mat-Vec 2D</td><td class="highlight">O(p log²p)</td></tr>
 <tr><td>Cannon</td><td class="highlight">O(p^1.5)</td></tr>
 <tr><td>DNS</td><td class="highlight">O(p log³p)</td></tr>
-<tr><td>Bitonic</td><td class="highlight">O(p log²p)</td></tr>
+<tr><td>Bitonic</td><td class="highlight">O(p log⁴p)</td></tr>
 <tr><td>Odd-Even</td><td class="highlight">O(p²)</td></tr>
 <tr><td>Enum Sort</td><td class="highlight">O(p^1.5)</td></tr>
 <tr><td>Floyd</td><td class="highlight">O(p^1.5)</td></tr>
