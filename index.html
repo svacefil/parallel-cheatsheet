@@ -806,7 +806,9 @@ Isoefficiency: W = Θ(p log p)
 <div class="formula">Tₚ = n²/p + tₛlogp + n·tᵥ</div>
 <div class="row"><span class="label">Tₒ</span><span class="value">p·tₛlogp + pn·tᵥ</span></div>
 <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p²)</span></div>
-<div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n/logn)</span></div>
+<div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n)</span></div>
+<div class="note"><i>Justification: Cost = p·Tₚ = n² + p·tₛlogp + pn·tᵥ. For cost-optimality, pn·tᵥ = O(n²) ⟹ p = O(n). The log p term is lower order.</i></div>
+<div class="note"><i>Assumption: All-to-all broadcast uses tree-based collective (log p phases for startup).</i></div>
 </div>
 <div class="section" id="mv2d" style="display:none;">
 <div class="section-title">Matrix-Vector 2D [10+12 pts]</div>
@@ -896,30 +898,28 @@ T_p,lastcol = T_p + T_redist
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
 Given: Tₚ = n³/p + 2tᵥn²/√p  (assuming tₛ=0)
 
-Let u = √p, so p = u²:
-  Tₚ = n³/u² + 2tᵥn²/u
+Check derivative:
+  dTₚ/dp = -n³/p² - tᵥn²/p^(3/2)
+         = -n³/p² - tᵥn²/p^(3/2) < 0 for all p > 0
 
-Differentiate w.r.t. u:
-  dTₚ/du = -2n³/u³ + (-1)·2tᵥn²/u²
-         = -2n³/u³ - 2tᵥn²/u² = 0
+Both terms are NEGATIVE → Tₚ is monotonically DECREASING in p!
+There is no interior minimum.
 
-Solve:
-  2n³/u³ = 2tᵥn²/u²
-  n³/u³ = tᵥn²/u²
-  n/u = tᵥ
-  u = n/tᵥ
+Minimum occurs at p_max (largest allowed p):
+  Typically p_max = n² (one element per proc for n×n matrices)
 
-So: √p = n/tᵥ → pᵐⁱⁿ = n²/tᵥ²
+At p = n²:
+  Tₚᵐⁱⁿ = n³/n² + 2tᵥn²/√(n²)
+        = n + 2tᵥn²/n
+        = n + 2tᵥn
+        = n(1 + 2tᵥ)
 
-Tₚᵐⁱⁿ = n³/(n²/tᵥ²) + 2tᵥn²/(n/tᵥ)
-      = n·tᵥ² + 2tᵥ²·n
-      = 3n·tᵥ²
-
-Cost at pᵐⁱⁿ:
-  Cost = p·Tₚ = (n²/tᵥ²)·(3n·tᵥ²) = 3n³
+Cost at p = n²:
+  Cost = p·Tₚ = n²·n(1 + 2tᵥ) = n³(1 + 2tᵥ)
   W = n³
-  Cost = 3W → YES, still cost-optimal (constant factor)!
+  Cost = (1 + 2tᵥ)W → YES, still cost-optimal (constant factor)!
 </pre></div>
+<div class="note"><i>Justification: dTₚ/dp < 0 always, so Tₚ decreases monotonically. Min at maximum allowed p.</i></div>
 </div>
 <div class="section" id="dns" style="display:none;">
 <div class="section-title">DNS Algorithm [14+5 pts]</div>
@@ -931,12 +931,14 @@ Cost at pᵐⁱⁿ:
 <div class="row"><span class="label">Op</span><span class="value">Broadcast + Reduce</span></div>
 <div class="row"><span class="label">m</span><span class="value">n²/p^⅔</span></div>
 <div class="row"><span class="label">Tcomp</span><span class="value comp">n³/p</span></div>
-<div class="row"><span class="label">Tcomm startup</span><span class="value comm">tₛ log p</span></div>
-<div class="row"><span class="label">Tcomm transfer</span><span class="value comm">n²/p^⅔·tᵥ</span></div>
-<div class="formula">Tₚ = n³/p + tₛlogp + n²/p^⅔·tᵥ</div>
+<div class="row"><span class="label">Tcomm startup</span><span class="value comm">Θ(log p)·tₛ</span></div>
+<div class="row"><span class="label">Tcomm transfer</span><span class="value comm">Θ((n²/p^⅔)·log p)·tᵥ</span></div>
+<div class="formula">Tₚ = n³/p + Θ(log p)·tₛ + Θ((n²/p^⅔)·log p)·tᵥ</div>
 <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log³p)</span></div>
 <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n³/log³n)</span></div>
 <div class="row"><span class="label">Memory/proc</span><span class="value">3n²/p^(2/3)</span></div>
+<div class="note"><i>Assumption: Broadcasts/reduces use tree-based collectives along each 3D mesh dimension (log p^⅓ = (log p)/3 phases per dimension).</i></div>
+<div class="note"><i>Justification: The bandwidth term includes log p factor because tree-based collectives send O(m·log p^⅓) total data per processor.</i></div>
 </div>
 <div class="section" id="strassen" style="display:none;">
 <div class="section-title">Simple 2D MatMul + Strassen Locally [exam]</div>
@@ -1746,8 +1748,8 @@ DONE in 2 iterations! MIS = {2, 6}
 <div class="page" id="dp">
 <div class="page-title">Ch7: DP</div>
 <div class="section">
-<div class="section-title">LCS - WHY E ≤ 0.5 [8+5+5 pts]</div>
-<div class="note" style="color:#FF8A65;"><b>Q:</b> [8 pts] Given E = n²tᶜ / [n(2n-1)(tₛ+tᵥ+tᶜ)], show efficiency is upper bounded by 0.5.</div>
+<div class="section-title">LCS - WHY E → 0.5 [8+5+5 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> [8 pts] Given E = n²tᶜ / [n(2n-1)(tₛ+tᵥ+tᶜ)], show efficiency approaches 0.5 as n grows.</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] LCS, two sequences length n. Derive Tₚ, S, E. Use tₛ, tᵥ, tᶜ.</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] Show LCS efficiency cannot exceed a certain value (assume comm=0).</div>
 <div class="row"><span class="label">W</span><span class="value">n²</span></div>
@@ -1758,9 +1760,11 @@ DONE in 2 iterations! MIS = {2, 6}
 <div class="row"><span class="label">Tcomm/diag</span><span class="value">tₛ + tᵥ</span></div>
 <div class="formula">Tₚ = (2n-1)(tₛ + tᵥ + tᶜ)</div>
 <div class="formula">E = n²·tᶜ / [n(2n-1)(tₛ+tᵥ+tᶜ)]</div>
-<div class="formula highlight">If tₛ=tᵥ=0: E = n/(2n-1) &gt; 0.5 → 0.5</div>
-<div class="note">Even with ZERO comm, E approaches 50%!</div>
-<div class="note">Diagonals vary: 1,2,...n,...2,1</div>
+<div class="formula highlight">If tₛ=tᵥ=0: E = n/(2n-1) → 0.5 as n→∞</div>
+<div class="note"><b>Asymptotic bound:</b> lim(n→∞) n/(2n-1) = 1/2</div>
+<div class="note">Even with ZERO comm, E approaches 50% asymptotically!</div>
+<div class="note">Diagonals vary in size: 1,2,...n,...2,1 (not all n procs used every step)</div>
+<div class="note"><i>Justification: The bound is asymptotic because for finite n, E = n/(2n-1) > 0.5. As n grows large, E approaches but never equals 0.5.</i></div>
 
 <div class="section-title" style="margin-top:10px;">Task graph + concurrency (exam-ready)</div>
 <div class="note">
@@ -1950,6 +1954,7 @@ E = S/p
 Isoefficiency: Tₒ = 2p²tₛ + 2pn·tᵥ → W = Θ(p²) (dominated by startup)
 </pre></div>
 <div class="note highlight"><b>Contrast with hypercube:</b> On hypercube, transpose uses log p phases → much better scalability.</div>
+<div class="note"><i>Assumption: Linear array uses neighbor-exchange routing for all-to-all personalized (p-1 phases). If tree/hypercube embedding assumed, use Θ(log p) phases instead.</i></div>
 <div class="section-title" style="margin-top:10px;">16-point FFT on 4 processors [4+3 pts]</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> Describe 2D transpose FFT mapping. 16-point FFT on 16 or 4 procs. Illustrate each step. How many processors?</div>
 <div class="note"><b>Setup:</b> n=16, p=4, each proc holds n/p=4 elements</div>
@@ -2053,7 +2058,7 @@ Edges (besides I→stage0):
 <tr><td>Mat-Vec 1D</td><td>n²</td><td>n²/p + tₛlogp + n·tᵥ</td></tr>
 <tr><td>Mat-Vec 2D</td><td>n²</td><td>n²/p + tₛlogp + (nlogp)/√p·tᵥ</td></tr>
 <tr><td>Cannon</td><td>n³</td><td>n³/p + 2√p(tₛ+n²/p·tᵥ)</td></tr>
-<tr><td>DNS</td><td>n³</td><td>n³/p + tₛlogp + n²/p^⅔·tᵥ</td></tr>
+<tr><td>DNS</td><td>n³</td><td>n³/p + Θ(logp)tₛ + Θ(n²logp/p^⅔)tᵥ</td></tr>
 <tr><td>Bitonic</td><td>nlog²n</td><td>nlog²n/p + log²p(tₛ+n/p·tᵥ)</td></tr>
 <tr><td>Odd-Even</td><td>n²</td><td>nlog(n/p)/p + p·tₛ+n·tᵥ</td></tr>
 <tr><td>Enum</td><td>n²</td><td>n²/p + 2(√p-1)tₛ + n·tᵥ</td></tr>
@@ -2089,7 +2094,7 @@ Edges (besides I→stage0):
 <div class="section-title">Cost-Optimal p</div>
 <table>
 <tr><th>Algorithm</th><th>Cost-opt p</th></tr>
-<tr><td>Mat-Vec 1D</td><td>O(n/logn)</td></tr>
+<tr><td>Mat-Vec 1D</td><td>O(n)</td></tr>
 <tr><td>Mat-Vec 2D</td><td>O(n²/log²n)</td></tr>
 <tr><td>Cannon</td><td>O(n²)</td></tr>
 <tr><td>DNS</td><td>O(n³/log³n)</td></tr>
