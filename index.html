@@ -1467,56 +1467,90 @@ Steps 6-10: Second round
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [7 pts] 4 procs (P0-P3). Show all steps with weights (1 step = 1 picture):
 Step 1: P0 gives work to P1 | Step 2: P0 gives work to P2 | Step 3: P1 gives work to P3 | Step 4: P2 finishes | Step 5: P3 finishes | Step 6: P1 finishes | Step 7: P0 finishes</div>
 
-<div class="row"><span class="label">Start</span><span class="value">P0 weight=1</span></div>
-<div class="row"><span class="label">Give work</span><span class="value">Split weight ½ to receiver</span></div>
-<div class="row"><span class="label">Finish</span><span class="value">Return weight to giver</span></div>
-<div class="row"><span class="label highlight">DONE</span><span class="value highlight">P0 weight=1 again</span></div>
+<div class="section-title" style="margin-top:10px;">The Idea</div>
+<div class="note">Each processor has a <b>weight</b>. Total weight in system = <b>1.0</b> always. When all weight returns to root → everyone is done.</div>
 
-<div class="section-title" style="margin-top:10px;">Worked Example (P0,P1,P2,P3)</div>
+<div class="section-title" style="margin-top:10px;">Rules</div>
+<table>
+<tr><th>Event</th><th>What Happens</th></tr>
+<tr><td><b>Start</b></td><td>Root (P0) has weight = 1.0, all others = 0</td></tr>
+<tr><td><b>Give work</b></td><td>Split your weight in half, give half to recipient</td></tr>
+<tr><td><b>Finish work</b></td><td>Send your weight back to parent</td></tr>
+<tr><td style="color:#4caf50;"><b>Termination</b></td><td style="color:#4caf50;">Root's weight = 1.0 again → DONE</td></tr>
+</table>
+
+<div class="section-title" style="margin-top:10px;">Example with 5 Processors</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
-STEP 0 (Initial):
-  P0: w=1 (working)
-  P1,P2,P3: idle
+Step 0: Initial
+        P0 [W=1.0]
 
-STEP 1: P0 → P1 (give work)
-  P0: w=1/2    P1: w=1/2
-  P2,P3: idle
+Step 1: P0 gives work to P1
+        P0 [W=0.5] ──work──→ P1 [W=0.5]
 
-STEP 2: P0 → P2 (give work)
-  P0: w=1/4    P1: w=1/2    P2: w=1/4
-  P3: idle
+Step 2: P0 gives work to P2
+        P0 [W=0.25]
+       ↙         ↘
+   P1 [0.5]    P2 [0.25]
 
-STEP 3: P1 → P3 (give work)
-  P0: w=1/4    P1: w=1/4    P2: w=1/4    P3: w=1/4
+Step 3: P1 gives work to P3
+        P0 [W=0.25]
+       ↙         ↘
+   P1 [0.25]    P2 [0.25]
+    ↓
+   P3 [0.25]
 
-STEP 4: P2 finishes → returns w to P0
-  P0: w=1/4+1/4=1/2    P1: w=1/4    P3: w=1/4
-  P2: done
+Step 4: P1 gives work to P4
+            P0 [0.25]
+           ↙         ↘
+       P1 [0.125]   P2 [0.25]
+       ↙     ↘
+   P3 [0.25]  P4 [0.125]
 
-STEP 5: P3 finishes → returns w to P1
-  P0: w=1/2    P1: w=1/4+1/4=1/2
-  P2,P3: done
+Step 5: P4 finishes → sends 0.125 to P1
+            P0 [0.25]
+           ↙         ↘
+       P1 [0.25]    P2 [0.25]
+        ↓
+    P3 [0.25]
 
-STEP 6: P1 finishes → returns w to P0
-  P0: w=1/2+1/2=1
-  P1,P2,P3: done
+Step 6: P3 finishes → sends 0.25 to P1
+            P0 [0.25]
+           ↙         ↘
+       P1 [0.5]     P2 [0.25]
 
-STEP 7: P0 finishes, w=1 ✓ TERMINATED!
+Step 7: P2 finishes → sends 0.25 to P0
+            P0 [0.5]
+           ↙
+       P1 [0.5]
+
+Step 8: P1 finishes → sends 0.5 to P0
+            P0 [1.0] ✓ TERMINATED!
 </pre></div>
 
-<div class="section-title" style="margin-top:10px;">Tree Structure</div>
+<div class="section-title" style="margin-top:10px;">Final Tree Structure</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
-        P0 (root)
-       /   \
-      P1    P2
-      |
-      P3
+            P0 (root)
+           /         \
+         P1           P2
+        /  \
+      P3    P4
 
-Work flows DOWN, weights return UP
+Work flows DOWN ↓
+Weights return UP ↑
 </pre></div>
 
-<div class="note"><b>Drawback:</b> Weights become very small (1/2ᵏ) → floating point precision loss</div>
-<div class="note"><b>Solution:</b> Use fractions (numerator/denominator) or scale to integers</div>
+<div class="section-title" style="margin-top:10px;">Drawback & Solution</div>
+<table>
+<tr><th>Drawback</th><th>Solution</th></tr>
+<tr><td>Weights get <b>tiny</b> after many splits<br>(0.5 → 0.25 → 0.125 → ...)</td><td>Use <b>integers</b>: start with large power of 2 (e.g., 2³²) and divide</td></tr>
+<tr><td><b>Floating point precision</b> errors accumulate</td><td>Or use <b>rational numbers</b> (fractions)</td></tr>
+<tr><td>After ~50 splits, weight ≈ 0 (underflow)</td><td>Integer division stays exact</td></tr>
+</table>
+
+<div class="section-title" style="margin-top:10px;">Key Insight</div>
+<div class="note"><b>Dijkstra Token:</b> Detects "did anyone send work backwards?"</div>
+<div class="note"><b>Tree Weights:</b> Tracks "has all work been accounted for?"</div>
+<div class="note" style="color:#4FC3F7; font-weight:bold;">Both guarantee: when termination is declared, everyone is truly done.</div>
 </div>
 <button class="back-btn" onclick="showPage('menu')">← Back to Menu</button>
 </div>
