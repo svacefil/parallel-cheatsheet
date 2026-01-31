@@ -1309,45 +1309,55 @@ n log n = K·p log n log p
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [4 pts] 7 tasks: 1,2,3,4,5,5,10. Centralized dynamic mapping, 2 procs. Compute best/worst-case speedup.</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [3 pts] 7 tasks: 2,4,6,8,10,10,20. Centralized dynamic mapping, 2 procs. Compute best/worst-case speedup. Explain.</div>
 
-<div class="note"><b>Method:</b> Central queue, procs take tasks when idle</div>
-<div class="formula">S = T_seq / T_parallel</div>
-<div class="note"><b>Best:</b> Work balanced across procs</div>
-<div class="note"><b>Worst:</b> Largest tasks on same proc</div>
+<div class="section-title" style="margin-top:10px;">What is Dynamic Mapping?</div>
+<div class="note">Tasks sit in a queue. When a processor finishes, it grabs the next task. The parallel time depends on the queue order.</div>
+<div class="formula">Speedup = T_sequential / T_parallel</div>
 
-<div class="section-title" style="margin-top:10px;">Worked Example 1: tasks [1,2,3,4,5,5,10]</div>
+<div class="section-title" style="margin-top:10px;">Problem 1: Tasks = {1, 2, 3, 4, 5, 5, 10}</div>
+<div class="row"><span class="label">Total work</span><span class="value">1+2+3+4+5+5+10 = <b>30</b></span></div>
+
+<div class="note" style="margin-top:8px;"><b>BEST CASE:</b> Balance the load perfectly. Each processor gets 15.</div>
+<div class="row"><span class="label">P0</span><span class="value">{10, 4, 1} = 15</span></div>
+<div class="row"><span class="label">P1</span><span class="value">{5, 5, 3, 2} = 15</span></div>
+<div class="formula">T_parallel = 15, Speedup = 30/15 = <b>2</b></div>
+
+<div class="note" style="margin-top:8px;"><b>WORST CASE:</b> Put the longest task at the END of the queue.</div>
+<div class="note">Queue order: 5, 5, 4, 3, 2, 1, <b>10</b></div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
-T_seq = 1+2+3+4+5+5+10 = 30
+Time │ P0        │ P1
+─────┼───────────┼───────────
+  0  │ takes 5   │ takes 5
+  5  │ takes 4   │ takes 3
+  8  │ —         │ takes 2
+  9  │ takes 1   │ —
+ 10  │ takes 10  │ idle (queue empty!)
+ 20  │ done      │ —
 
-BEST CASE (balance load):
-  P0: 10+5 = 15
-  P1: 1+2+3+4+5 = 15
-  T_par = 15
-  S_best = 30/15 = 2.0
-
-WORST CASE (largest on same proc):
-  P0: 10+5+5 = 20
-  P1: 1+2+3+4 = 10
-  T_par = 20
-  S_worst = 30/20 = 1.5
+P0 did: 5+4+1+10 = 20
+P1 did: 5+3+2 = 10
 </pre></div>
+<div class="formula">T_parallel = 20, Speedup = 30/20 = <b>1.5</b></div>
 
-<div class="section-title" style="margin-top:10px;">Worked Example 2: tasks [2,4,6,8,10,10,20]</div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
-T_seq = 2+4+6+8+10+10+20 = 60
+<div class="section-title" style="margin-top:10px;">Problem 2: Tasks = {2, 4, 6, 8, 10, 10, 20}</div>
+<div class="note highlight">This is exactly 2× Problem 1. Every task is doubled.</div>
+<div class="row"><span class="label">Total work</span><span class="value">2+4+6+8+10+10+20 = <b>60</b></span></div>
 
-BEST CASE:
-  P0: 20+10 = 30
-  P1: 2+4+6+8+10 = 30
-  T_par = 30
-  S_best = 60/30 = 2.0
+<div class="note" style="margin-top:8px;"><b>BEST CASE:</b></div>
+<div class="row"><span class="label">P0</span><span class="value">{20, 8, 2} = 30</span></div>
+<div class="row"><span class="label">P1</span><span class="value">{10, 10, 6, 4} = 30</span></div>
+<div class="formula">T_parallel = 30, Speedup = 60/30 = <b>2</b></div>
 
-WORST CASE:
-  P0: 20+10+10 = 40
-  P1: 2+4+6+8 = 20
-  T_par = 40
-  S_worst = 60/40 = 1.5
-</pre></div>
-<div class="note highlight">Pattern: Best=2.0 (perfect balance), Worst=1.5 (3 largest on 1 proc)</div>
+<div class="note" style="margin-top:8px;"><b>WORST CASE:</b> Queue order: 10, 10, 8, 6, 4, 2, <b>20</b></div>
+<div class="note">Same pattern: P0 ends up with 10+8+2+20 = 40, P1 gets 10+6+4 = 20</div>
+<div class="formula">T_parallel = 40, Speedup = 60/40 = <b>1.5</b></div>
+
+<div class="section-title" style="margin-top:10px;">Key Insight</div>
+<table>
+<tr><th></th><th>Best Case</th><th>Worst Case</th></tr>
+<tr><td><b>Strategy</b></td><td>Largest-first (LPT)</td><td>Largest-last</td></tr>
+<tr><td><b>Speedup</b></td><td><b>2</b> (perfect)</td><td><b>1.5</b></td></tr>
+</table>
+<div class="note" style="color:#4FC3F7; font-weight:bold; font-style:normal; margin-top:8px;">Worst case: biggest task grabbed last by one processor while the other just finished and goes idle.</div>
 </div>
 <div class="section">
 <div class="section-title">Parallel Best-First Search (Global Open List) [7 pts]</div>
