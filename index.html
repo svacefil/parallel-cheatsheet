@@ -567,7 +567,7 @@ Answer: (iii) is best overall (or tied with (i))
 <div class="row"><span class="label">Ring</span><span class="value highlight">(p-1)(tₛ + tᵥm)</span></div>
 <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)m·tᵥ</span></div>
 
-<div class="section-title" style="margin-top:10px;">Ring Derivation [8 pts]</div>
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q1 [8 pts] Ring Derivation</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
 <b>Setup:</b> p processors on ring, each has m words
 to send to EVERY other processor (personalized).
@@ -590,8 +590,7 @@ to send to EVERY other processor (personalized).
 • (p-1)tᵥm = bandwidth cost (p-1 packets of m)
 </pre></div>
 
-<div class="section-title" style="margin-top:10px;">Hypercube Optimality (tₛ=0) [5 pts]</div>
-<div class="note" style="color:#FF8A65;"><b>Q:</b> Show that tᵥm(p−1) is optimal when tₛ = 0. Given: Avg distance = (log p)/2</div>
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q2 [3 pts] Hypercube Lower Bound</div>
 
 <div class="section-title" style="margin-top:10px;">Step 1: Count total messages</div>
 <div class="row"><span class="label">Each of p nodes sends to</span><span class="value">every other node</span></div>
@@ -621,6 +620,7 @@ T  ≥  ─────────────────────── ×
 </pre></div>
 <div class="formula highlight">T ≥ tᵥ·m·(p−1)</div>
 
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q3 [5 pts] Show Optimality (tₛ=0)</div>
 <div class="section-title" style="margin-top:10px;">Algorithm Achieves This Bound</div>
 <div class="note">The standard hypercube all-to-all personalized algorithm uses d = log₂p phases.</div>
 <div class="note">In phase i, each node exchanges 2^i × m words with its neighbor in dimension i.</div>
