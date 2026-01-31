@@ -941,82 +941,113 @@ T_p,lastcol = T_p + T_redist
 </div>
 <div class="section" id="cannon" style="display:none;">
 <div class="section-title">Cannon's Algorithm [4+5+11 pts]</div>
-<div class="note" style="color:#FF8A65;"><b>Q:</b> [4 pts] Cannon's for n×n matrices on √p×√p mesh (√p&lt;n). Derive Tₚ. Memory per proc?</div>
-<div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] Illustrate Cannon's comm steps on 16 procs. Describe data mapping and comm steps.</div>
-<div class="note" style="color:#FF8A65;"><b>Q:</b> [11 pts] Given Tₚ = n³/p + 2tᵥn²/√p (tₛ=0). Compute Tₚᵐⁱⁿ and pᵐⁱⁿ. Still cost-optimal at pᵐⁱⁿ? Why?</div>
 
-<div class="section-title" style="margin-top:10px;">Setup</div>
+<!-- ========== Q1: 4 pts ========== -->
+<div class="section-title" style="margin-top:10px; background:#2F5496; color:#fff; padding:6px; border-radius:4px;">Q1 [4 pts]: Derive Tₚ and Memory per Processor</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Cannon's for n×n matrices on √p×√p mesh (√p&lt;n). Derive Tₚ. Memory per proc?</div>
+
+<div class="note" style="margin-top:8px;"><b>Setup:</b></div>
 <div class="row"><span class="label">Matrix size</span><span class="value">n × n</span></div>
 <div class="row"><span class="label">Processor grid</span><span class="value">√p × √p (2D torus)</span></div>
 <div class="row"><span class="label">Block size per proc</span><span class="value">(n/√p) × (n/√p)</span></div>
 
-<div class="section-title" style="margin-top:10px;">1. Computation Time</div>
+<div class="note" style="margin-top:8px;"><b>1. Computation Time:</b></div>
 <div class="note">Cannon's performs <b>√p block multiplications</b> per processor (one per shift iteration).</div>
 <div class="note">Each block multiplication involves matrices of size (n/√p) × (n/√p):</div>
 <div class="formula">T_block = (n/√p)³ · tᵥ = n³/p^(3/2) · tᵥ</div>
 <div class="note">Total computation (√p iterations):</div>
 <div class="formula highlight">T_comp = √p · n³/p^(3/2) = n³/p</div>
 
-<div class="section-title" style="margin-top:10px;">2. Communication Time</div>
-<div class="note">Each shift sends one block of size:</div>
-<div class="formula">(n/√p)² = n²/p words</div>
-<div class="note"><b>Number of shifts:</b></div>
+<div class="note" style="margin-top:8px;"><b>2. Communication Time:</b></div>
+<div class="note">Each shift sends one block of size: (n/√p)² = n²/p words</div>
 <div class="row"><span class="label">Shifts of A (left)</span><span class="value">√p (including initial alignment)</span></div>
 <div class="row"><span class="label">Shifts of B (up)</span><span class="value">√p (including initial alignment)</span></div>
 <div class="row"><span class="label">Total shifts</span><span class="value highlight">2√p</span></div>
-<div class="note">Communication cost:</div>
 <div class="formula highlight">T_comm = 2√p · (tₛ + tᵥ · n²/p)</div>
 
-<div class="section-title" style="margin-top:10px;">3. Total Parallel Runtime</div>
+<div class="note" style="margin-top:8px;"><b>3. Total Parallel Runtime:</b></div>
 <div class="formula highlight">Tₚ = n³/p + 2√p · (tₛ + tᵥ · n²/p)</div>
-<div class="note">Expanded form:</div>
-<div class="formula">Tₚ = n³/p · tᵥ + 2√p · tₛ + 2n²/√p · tᵥ</div>
+<div class="note">Expanded: Tₚ = n³/p + 2√p · tₛ + 2n²/√p · tᵥ</div>
 
-<div class="section-title" style="margin-top:10px;">Memory per Processor</div>
-<div class="note">Each processor stores <b>three blocks</b>:</div>
-<div class="row"><span class="label">Block of A</span><span class="value">(n/√p) × (n/√p) = n²/p</span></div>
-<div class="row"><span class="label">Block of B</span><span class="value">(n/√p) × (n/√p) = n²/p</span></div>
-<div class="row"><span class="label">Block of C</span><span class="value">(n/√p) × (n/√p) = n²/p</span></div>
+<div class="note" style="margin-top:8px;"><b>4. Memory per Processor:</b></div>
+<div class="note">Each processor stores three blocks (A, B, C):</div>
+<div class="row"><span class="label">Each block</span><span class="value">(n/√p) × (n/√p) = n²/p</span></div>
 <div class="formula highlight">Memory per processor = 3 · n²/p = Θ(n²/p)</div>
 
-<div class="section-title" style="margin-top:10px;">Summary Table</div>
+<div class="note" style="margin-top:8px;"><b>Summary (Q1 Answer):</b></div>
 <table>
 <tr><th>Component</th><th>Formula</th></tr>
-<tr><td>Computation</td><td>n³/p · tᵥ</td></tr>
+<tr><td>Computation</td><td>n³/p</td></tr>
 <tr><td>Communication</td><td>2√p · (tₛ + tᵥ · n²/p)</td></tr>
-<tr><td>Total Runtime</td><td>Tₚ = n³/p + 2√p · tₛ + 2n²/√p · tᵥ</td></tr>
-<tr><td>Memory/processor</td><td>3 · n²/p</td></tr>
+<tr><td><b>Total Tₚ</b></td><td><b>n³/p + 2√p · tₛ + 2n²/√p · tᵥ</b></td></tr>
+<tr><td><b>Memory/proc</b></td><td><b>3n²/p</b></td></tr>
 </table>
 
-<div class="row" style="margin-top:10px;"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
-<div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n²)</span></div>
+<!-- ========== Q2: 5 pts ========== -->
+<div class="section-title" style="margin-top:15px; background:#2F5496; color:#fff; padding:6px; border-radius:4px;">Q2 [5 pts]: Illustrate Comm Steps on 16 Processors</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Illustrate Cannon's comm steps on 16 procs. Describe data mapping and comm steps.</div>
 
-<div class="section-title" style="margin-top:10px;">Finding Tₚᵐⁱⁿ (11 pts answer)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+16 procs → 4×4 grid, √p = 4
+Each proc (i,j) holds: A[i,j], B[i,j], C[i,j] blocks
+
+INITIAL ALIGNMENT (before iterations):
+  • Shift row i of A left by i positions
+  • Shift col j of B up by j positions
+
+       Initial A          After A alignment
+    [00 01 02 03]       [00 01 02 03]  (row 0: no shift)
+    [10 11 12 13]  →    [11 12 13 10]  (row 1: shift 1)
+    [20 21 22 23]       [22 23 20 21]  (row 2: shift 2)
+    [30 31 32 33]       [33 30 31 32]  (row 3: shift 3)
+
+ITERATIONS (√p = 4 iterations):
+  For k = 0 to 3:
+    1. Each proc multiplies local A×B, adds to C
+    2. Shift A blocks LEFT by 1 (circular)
+    3. Shift B blocks UP by 1 (circular)
+
+Total shifts: 4 (alignment) + 4 (iterations) = 8 for each matrix
+             = 2√p total communication rounds
+</pre></div>
+
+<!-- ========== Q3: 11 pts ========== -->
+<div class="section-title" style="margin-top:15px; background:#2F5496; color:#fff; padding:6px; border-radius:4px;">Q3 [11 pts]: Find Tₚᵐⁱⁿ, pᵐⁱⁿ, Cost-Optimal?</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Given Tₚ = n³/p + 2tᵥn²/√p (tₛ=0). Compute Tₚᵐⁱⁿ and pᵐⁱⁿ. Still cost-optimal at pᵐⁱⁿ? Why?</div>
+
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
 Given: Tₚ = n³/p + 2tᵥn²/√p  (assuming tₛ=0)
 
-Check derivative:
+STEP 1: Check derivative
   dTₚ/dp = -n³/p² - tᵥn²/p^(3/2)
          = -n³/p² - tᵥn²/p^(3/2) < 0 for all p > 0
 
 Both terms are NEGATIVE → Tₚ is monotonically DECREASING in p!
-There is no interior minimum.
+There is NO interior minimum.
 
-Minimum occurs at p_max (largest allowed p):
+STEP 2: Find pᵐⁱⁿ
+  Minimum occurs at p_max (largest allowed p)
   Typically p_max = n² (one element per proc for n×n matrices)
 
-At p = n²:
+  pᵐⁱⁿ = n²
+
+STEP 3: Compute Tₚᵐⁱⁿ at p = n²
   Tₚᵐⁱⁿ = n³/n² + 2tᵥn²/√(n²)
         = n + 2tᵥn²/n
         = n + 2tᵥn
         = n(1 + 2tᵥ)
 
-Cost at p = n²:
-  Cost = p·Tₚ = n²·n(1 + 2tᵥ) = n³(1 + 2tᵥ)
+STEP 4: Check cost-optimality at p = n²
+  Cost = p · Tₚ = n² · n(1 + 2tᵥ) = n³(1 + 2tᵥ)
   W = n³
-  Cost = (1 + 2tᵥ)W → YES, still cost-optimal (constant factor)!
+  Cost = (1 + 2tᵥ) · W
+
+  Cost = O(W) → YES, still cost-optimal! (constant factor)
 </pre></div>
-<div class="note"><i>Justification: dTₚ/dp < 0 always, so Tₚ decreases monotonically. Min at maximum allowed p.</i></div>
+<div class="note" style="color:#4FC3F7; font-weight:bold;">Answer: pᵐⁱⁿ = n², Tₚᵐⁱⁿ = n(1+2tᵥ), YES cost-optimal (Cost = O(W))</div>
+
+<div class="row" style="margin-top:10px;"><span class="label">Isoeff</span><span class="value highlight">O(p^1.5)</span></div>
+<div class="row"><span class="label">Cost-opt range</span><span class="value">p = O(n²)</span></div>
 </div>
 <div class="section" id="dns" style="display:none;">
 <div class="section-title">DNS Algorithm [14+5 pts]</div>
