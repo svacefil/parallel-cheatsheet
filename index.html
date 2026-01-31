@@ -698,16 +698,49 @@ Isoefficiency: W = Θ(p log p)
 </div>
 <div class="section"><div class="section-title">Scatter Optimality on Linear Array (tₛ=0) [7 pts]</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> Show that if tₛ=0, then tᵥ·m·(p-1) for scatter on linear array is asymptotically optimal. Describe meaning of each term.</div>
-<div class="note"><b>Setup:</b> scatter from root to p-1 other processors on a 1D linear array (pipeline).
-        Each destination receives a message of size <span class="highlight">m</span> (words). Total data M = p·m.</div>
-<div class="formula">T_pipe = (p-1)(tₛ + m·tᵥ)</div>
-<div class="note"><b>If tₛ=0:</b> T_pipe = (p-1)m·tᵥ = tᵥ·M·(p-1)/p</div>
-<div class="section-title" style="margin-top:10px;">Lower bound (bandwidth)</div>
-<div class="note">
-          All p-1 messages must cross the first link out of the root ⇒ at least (p-1)m words cross that link.  
-          With tₛ=0, time per word is tᵥ ⇒ any algorithm needs time ≥ (p-1)m·tᵥ.
-        </div>
-<div class="note"><b>Conclusion:</b> pipeline achieves the lower bound ⇒ asymptotically optimal.</div>
+
+<div class="section-title" style="margin-top:10px;">What is Scatter?</div>
+<div class="note">One processor (the root) has p−1 different messages, each of size m. It needs to send one message to each of the other processors.</div>
+<div class="formula" style="font-size:11px; white-space:pre;">Root has:  [msg1] [msg2] [msg3] [msg4] [msg5] [msg6] [msg7]
+              ↓      ↓      ↓      ↓      ↓      ↓      ↓
+Send to:     P1     P2     P3     P4     P5     P6     P7</div>
+
+<div class="section-title" style="margin-top:10px;">What is a Linear Array?</div>
+<div class="note">Processors are connected in a straight line. The root can only send data through ONE link.</div>
+<div class="formula" style="font-size:11px; white-space:pre;">Root ——— P1 ——— P2 ——— P3 ——— P4 ——— P5 ——— P6 ——— P7
+     ^
+     |
+  Only ONE link leaves the root</div>
+
+<div class="section-title" style="margin-top:10px;">The Key Insight</div>
+<div class="note"><b>Everything must squeeze through that single link.</b></div>
+<div class="row"><span class="label">Root must send</span><span class="value">(p−1) messages</span></div>
+<div class="row"><span class="label">Each message has</span><span class="value">m words</span></div>
+<div class="row"><span class="label">Total words leaving root</span><span class="value highlight">m × (p−1)</span></div>
+
+<div class="section-title" style="margin-top:10px;">The Time Calculation</div>
+<div class="note">With tₛ = 0, transmission time = tᵥ × (number of words)</div>
+<div class="formula">Time = tᵥ × [total words leaving root] = tᵥ × m × (p−1)</div>
+
+<div class="section-title" style="margin-top:10px;">Why is This Optimal?</div>
+<div class="note"><b>Physical limit:</b> You cannot send m×(p−1) words through a link faster than tᵥ per word.</div>
+<div class="note">The algorithm achieves exactly this limit.</div>
+<div class="note">Therefore, no other algorithm can do better. <b>This is the best possible time.</b></div>
+
+<div class="section-title" style="margin-top:10px;">Term Meanings</div>
+<table>
+<tr><th>Term</th><th>What it is</th></tr>
+<tr><td>tᵥ</td><td>Seconds to send 1 word through a link</td></tr>
+<tr><td>m</td><td>Words in each message</td></tr>
+<tr><td>p−1</td><td>Number of messages to send</td></tr>
+<tr><td>tᵥ × m</td><td>Time to send one message</td></tr>
+<tr><td>tᵥ × m × (p−1)</td><td>Time to send all messages</td></tr>
+</table>
+
+<div class="section-title" style="margin-top:10px;">Summary</div>
+<div class="note">The root has one exit. All data must pass through it. The time is simply:</div>
+<div class="formula">(data amount) × (time per unit of data) = m(p−1) × tᵥ</div>
+<div class="note" style="color:#4FC3F7; font-weight:bold; font-style:normal;">You cannot beat physics. This is optimal.</div>
 </div>
 <div class="section">
 <div class="section-title">All2All Personal Lower Bound</div>
