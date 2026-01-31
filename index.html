@@ -1066,6 +1066,7 @@ Each proc (i,j): C[i,j] += A_local × B_local
 <tr><td><b>Initial skew</b></td><td>Circularly shift A left by row index, B up by column index (one-time)</td></tr>
 <tr><td><b>Main loop</b></td><td>√p = 4 phases: multiply locally, then shift A left by 1 and B up by 1 (wraparound)</td></tr>
 </table>
+<div class="note">Each shift sends one block of size (n/4)×(n/4) = n²/16 elements to the left/up neighbor (wraparound).</div>
 <div class="note" style="color:#4FC3F7; font-weight:bold;">Total shifts in main loop: 4 A-shifts + 4 B-shifts = √p shifts each</div>
 
 <!-- ========== Q3: 11 pts ========== -->
