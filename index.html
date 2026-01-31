@@ -564,24 +564,30 @@ Answer: (iii) is best overall (or tied with (i))
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [3 pts] Derive lower bound on hypercube (p=2^d nodes). Avg distance = (log p)/2, total links = (p log p)/2.</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] Show tᵥm(p-1) is optimal on hypercube when tₛ=0. Hint: avg distance = (log p)/2.</div>
 
-<div class="row"><span class="label">Ring</span><span class="value">(p-1)tₛ + p(p-1)/2·m·tᵥ</span></div>
+<div class="row"><span class="label">Ring</span><span class="value highlight">(p-1)(tₛ + tᵥm)</span></div>
 <div class="row"><span class="label">Hypercube</span><span class="value">(logp)tₛ + (p-1)m·tᵥ</span></div>
 
-<div class="section-title" style="margin-top:10px;">Ring Derivation</div>
+<div class="section-title" style="margin-top:10px;">Ring Derivation [8 pts]</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
-Each proc sends different msg to each other proc.
-Use (p-1) steps, rotating messages around ring.
+<b>Setup:</b> p processors on ring, each has m words
+to send to EVERY other processor (personalized).
 
-Step k: send to neighbor, msg travels k hops total
-  Msg size per step: m (one personalized msg)
-  But each proc sends (p-1) messages total
+<b>Algorithm:</b> (p-1) phases
+• Phase i: each proc sends ONE m-word packet
+  to clockwise neighbor
+• Messages "rotate" around ring
+• After (p-1) phases: all data delivered
 
-Total startups: (p-1)tₛ
-Total bandwidth: Each of p(p-1) messages travels
-  avg distance p/2 → total = p(p-1)·m·(p/2)/p
-  = (p-1)m·p/2 hops, but with store-forward:
-  T = (p-1)tₛ + Σ(k=1 to p-1) k·m·tᵥ
-    = (p-1)tₛ + m·tᵥ·(p-1)p/2
+<b>Cost per phase:</b>
+  1 startup + m words = tₛ + tᵥm
+
+<b>Total time:</b>
+  Tₚ = (p-1) × (tₛ + tᵥm)
+     = <span style="color:#4FC3F7;font-weight:bold;">(p-1)(tₛ + tᵥm)</span>
+
+<b>Term breakdown:</b>
+• (p-1)tₛ = startup overhead (p-1 sends)
+• (p-1)tᵥm = bandwidth cost (p-1 packets of m)
 </pre></div>
 
 <div class="section-title" style="margin-top:10px;">Hypercube Optimality (tₛ=0) [5 pts]</div>
