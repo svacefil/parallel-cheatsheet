@@ -1363,36 +1363,66 @@ P1 did: 5+3+2 = 10
 <div class="section-title">Parallel Best-First Search (Global Open List) [7 pts]</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [7 pts] For Parallel Best-First Search with one global open list, derive upper bound on speedup. Let t_exp = avg time to expand node, t_access = avg time to access open list. Assume seq and par expand same #nodes.</div>
 
-<div class="row"><span class="label">t_exp</span><span class="value">time to expand one node (parallel)</span></div>
-<div class="row"><span class="label">t_acc</span><span class="value">time to access open list (sequential!)</span></div>
-<div class="note"><b>Bottleneck:</b> Open list access is serialized!</div>
+<div class="section-title" style="margin-top:10px;">Problem Setup</div>
+<div class="row"><span class="label">Global Open list</span><span class="value">Shared by all processors</span></div>
+<div class="row"><span class="label">p</span><span class="value">Number of processors</span></div>
+<div class="row"><span class="label">N</span><span class="value">Nodes to expand (same for seq & par)</span></div>
+<div class="row"><span class="label">t_exp</span><span class="value">Avg time to expand a single node</span></div>
+<div class="row"><span class="label">t_access</span><span class="value">Avg time to access open list</span></div>
+<div class="note" style="color:#f44336;"><b>Key constraint:</b> Access to global Open list must be SERIALIZED (mutual exclusion required)</div>
 
-<div class="section-title" style="margin-top:10px;">Derivation</div>
+<div class="section-title" style="margin-top:10px;">Sequential Time</div>
+<div class="note">For each of N nodes: access open list (t_access) + expand node (t_exp)</div>
+<div class="formula">T₁ = N · (t_exp + t_access)</div>
+
+<div class="section-title" style="margin-top:10px;">Parallel Time</div>
+<div class="note"><b>Node expansion:</b> Can be parallelized across p processors</div>
+<div class="formula">T_exp,parallel = N · t_exp / p</div>
+<div class="note"><b>Open list access:</b> Must be done sequentially (one processor at a time)</div>
+<div class="formula">T_access,parallel = N · t_access</div>
+<div class="formula highlight">Tₚ = N·t_exp/p + N·t_access</div>
+
+<div class="section-title" style="margin-top:10px;">Speedup Derivation</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
-Sequential time for N nodes:
-  T_seq = N(t_exp + t_acc)
+S = T₁ / Tₚ
 
-Parallel with p processors:
-  - Each proc expands N/p nodes → (N/p)·t_exp in parallel
-  - BUT: all N accesses to open list are SERIAL
-  - Open list access: N·t_acc (cannot parallelize!)
+  = N(t_exp + t_access) / [N·t_exp/p + N·t_access]
 
-  T_par = (N/p)·t_exp + N·t_acc
+Simplify (cancel N):
 
-Speedup:
-  S = T_seq / T_par
-    = N(t_exp + t_acc) / [(N/p)·t_exp + N·t_acc]
-    = (t_exp + t_acc) / [t_exp/p + t_acc]
-    = p(t_exp + t_acc) / [t_exp + p·t_acc]
+  = (t_exp + t_access) / [t_exp/p + t_access]
+
+Multiply top and bottom by p:
+
+  = p(t_exp + t_access) / [t_exp + p·t_access]
 </pre></div>
+<div class="formula highlight">S = p(t_exp + t_access) / (t_exp + p·t_access)</div>
 
-<div class="formula highlight">S ≤ p(t_exp + t_acc) / (t_exp + p·t_acc)</div>
+<div class="section-title" style="margin-top:10px;">Upper Bound (p → ∞)</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+S_max = lim(p→∞) p(t_exp + t_access) / (t_exp + p·t_access)
 
-<div class="section-title" style="margin-top:10px;">Meaning of Terms</div>
-<div class="note">• <b>p(t_exp + t_acc)</b>: Ideal speedup if everything parallel</div>
-<div class="note">• <b>t_exp + p·t_acc</b>: Denominator shows serial bottleneck</div>
-<div class="note">• As p→∞: S → (t_exp + t_acc)/t_acc (limited by serial access!)</div>
-<div class="note highlight">Key insight: Open list serialization limits scalability</div>
+Divide top and bottom by p:
+
+      = lim(p→∞) (t_exp + t_access) / (t_exp/p + t_access)
+
+      = (t_exp + t_access) / t_access
+</pre></div>
+<div class="formula highlight">S_max = 1 + t_exp / t_access</div>
+
+<div class="section-title" style="margin-top:10px;">Interpretation</div>
+<table>
+<tr><th>Scenario</th><th>Speedup Bound</th></tr>
+<tr><td>t_exp = t_access</td><td>S_max = 2</td></tr>
+<tr><td>t_exp = 10 · t_access</td><td>S_max = 11</td></tr>
+<tr><td>t_exp ≪ t_access</td><td>S_max → 1 (no speedup)</td></tr>
+<tr><td>t_exp ≫ t_access</td><td>S_max → t_exp/t_access</td></tr>
+</table>
+
+<div class="section-title" style="margin-top:10px;">Key Insight</div>
+<div class="note">The single global Open list creates a <b>serialization bottleneck</b> that imposes a hard ceiling on speedup, regardless of how many processors are used.</div>
+<div class="note">Speedup is fundamentally limited by the ratio of useful computation (node expansion) to serialized overhead (list access).</div>
+<div class="note" style="color:#4FC3F7; font-weight:bold;">Solution: Use distributed/local Open lists or lock-free data structures to reduce the t_access bottleneck.</div>
 </div>
 <div class="section">
 <div class="section-title">Dijkstra Token Termination [9 pts]</div>
