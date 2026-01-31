@@ -584,24 +584,55 @@ Total bandwidth: Each of p(p-1) messages travels
     = (p-1)tₛ + m·tᵥ·(p-1)p/2
 </pre></div>
 
-<div class="section-title" style="margin-top:10px;">Hypercube Lower Bound</div>
+<div class="section-title" style="margin-top:10px;">Hypercube Optimality (tₛ=0) [5 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Show that tᵥm(p−1) is optimal when tₛ = 0. Given: Avg distance = (log p)/2</div>
+
+<div class="section-title" style="margin-top:10px;">Step 1: Count total messages</div>
+<div class="row"><span class="label">Each of p nodes sends to</span><span class="value">every other node</span></div>
+<div class="row"><span class="label">Total messages</span><span class="value">p(p−1)</span></div>
+<div class="row"><span class="label">Each message has</span><span class="value">m words</span></div>
+<div class="row"><span class="label">Total words</span><span class="value highlight">p(p−1)m</span></div>
+
+<div class="section-title" style="margin-top:10px;">Step 2: Calculate total work (word-hops)</div>
+<div class="note">Each word must travel across some number of links. On average:</div>
+<div class="formula">Total word-hops = p(p−1)m × (log p)/2</div>
+
+<div class="section-title" style="margin-top:10px;">Step 3: Count available bandwidth</div>
+<div class="row"><span class="label">Total links in hypercube</span><span class="value">(p × log p)/2</span></div>
+<div class="row"><span class="label">Each link can carry</span><span class="value">1/tᵥ words per unit time</span></div>
+
+<div class="section-title" style="margin-top:10px;">Step 4: Derive lower bound</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
-Total data: p² messages of size m (each to each)
-Total data movement: p²·m
+           Total word-hops
+T  ≥  ─────────────────────── × tᵥ
+           Total links
 
-Avg distance between nodes: (log p)/2
-Total link traversals needed: p²·m·(log p)/2
+           p(p−1)m × (log p)/2
+   =  ─────────────────────────── × tᵥ
+              (p × log p)/2
 
-Total links: (p log p)/2
-Each link has bandwidth 1/tᵥ per unit time
-
-Lower bound = (total traversals) / (total bandwidth)
-            = [p²·m·(log p)/2] / [(p log p)/2 · (1/tᵥ)]
-            = p²·m·tᵥ·(log p) / (p log p)
-            = p·m·tᵥ = Θ((p-1)m·tᵥ)
-
-If tₛ=0: T = (p-1)m·tᵥ matches lower bound → OPTIMAL
+   =  m(p−1) × tᵥ
 </pre></div>
+<div class="formula highlight">T ≥ tᵥ·m·(p−1)</div>
+
+<div class="section-title" style="margin-top:10px;">Algorithm Achieves This Bound</div>
+<div class="note">The standard hypercube all-to-all personalized algorithm uses d = log₂p phases.</div>
+<div class="note">In phase i, each node exchanges 2^i × m words with its neighbor in dimension i.</div>
+<div class="note">With tₛ = 0:</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+T = Σ(i=0 to d-1) tᵥ(2^i × m)
+
+  = tᵥm × Σ(i=0 to d-1) 2^i
+
+  = tᵥm × (2^d − 1)
+
+  = tᵥm(p − 1)
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Conclusion</div>
+<div class="row"><span class="label">Lower bound</span><span class="value">T ≥ tᵥm(p−1)</span></div>
+<div class="row"><span class="label">Algorithm achieves</span><span class="value">T = tᵥm(p−1)</span></div>
+<div class="note" style="color:#4FC3F7; font-weight:bold; font-style:normal;">Lower bound = Upper bound → tᵥm(p−1) is optimal when tₛ=0</div>
 </div>
 <div class="section">
 <div class="section-title">Scatter/Gather</div>
