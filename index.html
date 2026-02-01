@@ -1332,22 +1332,46 @@ p · T_comp = p · Θ(n^ω / p^((ω-1)/2))
 <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log⁴p)</span></div>
 <div class="note"><b>Why log²p comm:</b> Network has log p stages, stage k has k steps → Σk = log p(log p+1)/2 ≈ log²p/2</div>
 <div class="note">n=p case: Tp = log²n · (tc + ts + tw)</div>
-<div class="section-title" style="margin-top:10px;">Why k-dim Hypercube for 2^k Merge</div>
-<div class="note">• Bitonic merge of 2^k needs k compare steps</div>
-<div class="note">• Step i: compare at distance 2^(k-i)</div>
-<div class="note">• Distance 2^j in sequence = dim j in hypercube</div>
-<div class="note">• k-cube: exactly k dimensions available</div>
-<div class="note highlight">• Each merge step uses one dimension</div>
-<div class="section-title" style="margin-top:10px;">XOR Partner &amp; Subcube Proof</div>
-<div class="note highlight">Stage j: partner = label XOR 2ʲ</div>
-<div class="note">• XOR 2ʲ flips bit j → hypercube dim j</div>
-<div class="note">• For merge(2ᵏ): only bits 0..k-1 vary</div>
-<div class="note">• Higher bits FIXED → k-dim subcube!</div>
-<div class="formula">Subcube = nodes with same high (d-k) bits</div>
-<div class="section-title" style="margin-top:10px;">Subcube Mapping</div>
-<div class="note">• Element i → node binary(i)</div>
-<div class="note">• 2^k elements → k-dim subcube</div>
-<div class="note">• Subcube = nodes sharing (d-k) fixed bits</div>
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q1 [5 pts] Why k-dim Hypercube for 2^k Merge</div>
+
+<div class="section-title" style="margin-top:10px;">Bitonic Merge Structure</div>
+<div class="note">A bitonic merge of 2^k elements has k stages:</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Stage 1: compare at distance 2^(k-1)
+Stage 2: compare at distance 2^(k-2)
+...
+Stage k: compare at distance 2^0 = 1
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Hypercube Dimension Mapping</div>
+<div class="note">In k-dim hypercube with 2^k processors:</div>
+<div class="note">• Each processor has k-bit binary ID</div>
+<div class="note">• Flipping bit ℓ connects procs at distance 2^ℓ</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Example k=3 (8 processors):
+Dim 0 (bit 0): distance 2⁰=1 → (000,001), (010,011)...
+Dim 1 (bit 1): distance 2¹=2 → (000,010), (001,011)...
+Dim 2 (bit 2): distance 2²=4 → (000,100), (001,101)...
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Stage-to-Dimension Mapping</div>
+<div class="row"><span class="label">Merge stage s</span><span class="value">uses dimension (k-s)</span></div>
+<div class="row"><span class="label">Compare dist 2^(k-s)</span><span class="value">= flip bit (k-s)</span></div>
+<div class="note highlight">Each of k stages uses exactly ONE hypercube dimension!</div>
+
+<div class="section-title" style="margin-top:10px;">Why Separate Hypercubes</div>
+<div class="note">At level ℓ of bitonic sort:</div>
+<div class="note">• 2^(n-ℓ) separate bitonic sequences, each size 2^ℓ</div>
+<div class="note">• Each sequence needs ℓ-dim sub-hypercube</div>
+<div class="note">• k-cube partitions into 2^(k-ℓ) disjoint ℓ-cubes</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Example: 8-proc (3D) hypercube splits into:
+• 2 separate 2D cubes (merge two size-4 seqs)
+• 4 separate 1D cubes (merge four size-2 seqs)
+</pre></div>
+
+<div class="formula highlight">Bitonic merge of 2^k elements ⟺ k-dimensional hypercube</div>
+<div class="note"><b>Reason:</b> k merge stages need distances 2^(k-1),...,2^0, each = one hypercube dimension. k stages → k dimensions.</div>
 <div class="section-title" style="margin-top:10px;">p = n/2 Variant</div>
 <div class="note highlight">Each proc holds 2 elements</div>
 <div class="note">• First: local sort the 2-item pair</div>
