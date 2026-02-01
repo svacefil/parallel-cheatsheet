@@ -1433,13 +1433,36 @@ Example: 8-proc (3D) hypercube splits into:
 <div class="note"><b>Reason:</b> k merge stages need distances 2^(k-1),...,2^0, each = one hypercube dimension. k stages → k dimensions.</div>
 
 <div class="section-title" style="margin-top:10px; color:#64B5F6;">Q2 [3 pts] p = n/2 Modification</div>
-<div class="note highlight">Each proc holds 2 elements</div>
-<div class="note">• First: local sort the 2-item pair</div>
-<div class="note">• Then: run same stages with m=2</div>
-<div class="note">• After exchange: local sort 2 elements</div>
-<div class="note">• Message size = 2 (block size)</div>
-<div class="formula">Tₚ = 2log²n + log(n/2)·(tₛ + 2tᵥ) + O(1)</div>
-<div class="note">General p=n/2ᵏ: local sort 2ᵏ, msg size 2ᵏ</div>
+
+<div class="section-title" style="margin-top:10px;">Setup</div>
+<div class="row"><span class="label">Keys to sort</span><span class="value">n</span></div>
+<div class="row"><span class="label">Processors</span><span class="value">p = n/2</span></div>
+<div class="row"><span class="label">Keys per proc</span><span class="value highlight">2</span></div>
+
+<div class="section-title" style="margin-top:10px;">Algorithm Modification</div>
+<div class="note"><b>Step 1: Local Sort</b> — Each proc locally sorts its 2 keys</div>
+<div class="note"><b>Step 2: Compare-Split</b> — Replace compare-exchange with compare-split on 2-key blocks</div>
+
+<div class="section-title" style="margin-top:10px;">Compare-Split Operation</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+When network calls for comparing Pᵢ and Pⱼ:
+1. Exchange: both procs send 2-key blocks
+2. Merge: each proc now has 4 keys
+3. Split: one keeps smallest 2, other keeps largest 2
+
+Before:  Pᵢ: [3, 7]    Pⱼ: [2, 5]
+         ↓ exchange ↓
+Merge:   {2, 3, 5, 7}
+After:   Pᵢ: [2, 3]    Pⱼ: [5, 7]
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Key Points (3 marks)</div>
+<div class="note highlight">1. Each processor holds 2 keys instead of 1</div>
+<div class="note highlight">2. Local sort first — each proc sorts its 2 keys</div>
+<div class="note highlight">3. Compare-split replaces compare-exchange — exchange, merge 4, keep 2</div>
+
+<div class="row" style="margin-top:8px;"><span class="label">Network depth</span><span class="value">Same as p-proc bitonic</span></div>
+<div class="row"><span class="label">Work per comparator</span><span class="value">O(1) — merge/split 4 keys</span></div>
 
 <div class="section-title" style="margin-top:10px;">Worked exam example: n=8, p=4, decreasing</div>
 <div class="note">
@@ -2126,24 +2149,36 @@ If p &gt; n, some processors idle ⇒ E drops ≈ n/p.
 <div class="note highlight">State which baseline W you're using!</div>
 </div>
 <div class="section" id="apspmem" style="display:none;">
-<div class="section-title">APSP Memory Comparison (at pₘₐₓ) [3 pts]</div>
+<div class="section-title">APSP Memory Comparison [4 pts]</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> Compute total memory for APSP variants at max processors (graph size n): (a) Dijkstra source-partition, (b) Dijkstra source-parallel, (c) Floyd.</div>
-<div class="note">Input: adj matrix G=Θ(n²), Output: D=Θ(n²)</div>
+<div class="note">Graph size: n vertices (n×n adjacency matrix)</div>
+
+<div class="section-title" style="margin-top:10px;">(a) Dijkstra Source-Partitioned</div>
+<div class="row"><span class="label">Approach</span><span class="value">Each proc solves Dijkstra from one source</span></div>
+<div class="row"><span class="label">Max procs</span><span class="value">p = n (one per source)</span></div>
+<div class="row"><span class="label">Memory/proc</span><span class="value highlight">Θ(n²) — full adj matrix needed</span></div>
+<div class="formula highlight">Total = n × Θ(n²) = Θ(n³)</div>
+
+<div class="section-title" style="margin-top:10px;">(b) Dijkstra Source-Parallel</div>
+<div class="row"><span class="label">Approach</span><span class="value">p=n procs cooperate on one source at a time</span></div>
+<div class="row"><span class="label">Max procs</span><span class="value">p = n (working together)</span></div>
+<div class="row"><span class="label">Memory/proc</span><span class="value highlight">Θ(n) — one row of adj matrix</span></div>
+<div class="formula highlight">Total = n × Θ(n) = Θ(n²)</div>
+
+<div class="section-title" style="margin-top:10px;">(c) Floyd-Warshall</div>
+<div class="row"><span class="label">Approach</span><span class="value">Iteratively update distance matrix D[i][j]</span></div>
+<div class="row"><span class="label">Max procs</span><span class="value">p = n² (one per matrix entry)</span></div>
+<div class="row"><span class="label">Memory/proc</span><span class="value highlight">O(1) — small block</span></div>
+<div class="formula highlight">Total = Θ(n²)</div>
+
+<div class="section-title" style="margin-top:10px;">Summary</div>
 <table>
-<tr><th>Variant</th><th>pₘₐₓ</th><th>Mem/proc</th><th>Total</th></tr>
-<tr><td>Dijkstra S-Part</td><td class="highlight">n</td><td>Θ(n²)</td><td class="highlight">Θ(n³)</td></tr>
-<tr><td>Dijkstra S-Par</td><td class="highlight">n</td><td>Θ(n)</td><td>Θ(n²)</td></tr>
-<tr><td>Floyd 2D</td><td class="highlight">n²</td><td>Θ(1)</td><td>Θ(n²)</td></tr>
+<tr><th>Algorithm</th><th>Max p</th><th>Mem/proc</th><th>Total</th></tr>
+<tr><td>(a) Dijkstra S-Part</td><td>n</td><td>Θ(n²)</td><td class="highlight">Θ(n³)</td></tr>
+<tr><td>(b) Dijkstra S-Par</td><td>n</td><td>Θ(n)</td><td>Θ(n²)</td></tr>
+<tr><td>(c) Floyd</td><td>n²</td><td>O(1)</td><td>Θ(n²)</td></tr>
 </table>
-<div class="section-title" style="margin-top:10px;">Why These Totals?</div>
-<div class="note highlight">Dijkstra S-Part: G REPLICATED on each!</div>
-<div class="note">• p procs × n² adj = Θ(n·n²) = Θ(n³)</div>
-<div class="note">Dijkstra S-Par: G DISTRIBUTED by rows</div>
-<div class="note">• G: Θ(n²), D: Θ(n²) → Total Θ(n²)</div>
-<div class="note highlight">Floyd 2D: everything DISTRIBUTED</div>
-<div class="note">• G,D both blocked → Total Θ(n²)</div>
-<div class="note highlight">Floyd most memory-efficient at max p!</div>
-<div class="note">(Shared memory: S-Part also Θ(n²))</div>
+<div class="note" style="margin-top:8px;">Key: S-Part replicates full matrix → Θ(n³). S-Par & Floyd distribute → Θ(n²).</div>
 </div>
 
 <div class="section" id="luby" style="display:none;">
