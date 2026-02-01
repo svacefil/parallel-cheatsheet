@@ -1320,6 +1320,7 @@ p · T_comp = p · Θ(n^ω / p^((ω-1)/2))
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [12 pts] p&lt;n on hypercube. Derive Tₚ, max cost-efficient procs, isoefficiency. Describe meaning of each term, message size, comm type.</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [4 pts] Sequence [2,5,0,4]: illustrate all steps, draw network, show comparator outputs. #procs? Tₚ?</div>
 
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q4 [12 pts] p&lt;n Hypercube Derivation</div>
 <div class="row"><span class="label">W</span><span class="value">n log²n</span></div>
 <div class="row"><span class="label">Why?</span><span class="value">log n stages × (1+2+...+log n) steps</span></div>
 <div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
@@ -1331,7 +1332,10 @@ p · T_comp = p · Θ(n^ω / p^((ω-1)/2))
 <div class="formula highlight">Tₚ = nlog²n/p + log²p(tₛ + n/p·tᵥ)</div>
 <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log⁴p)</span></div>
 <div class="note"><b>Why log²p comm:</b> Network has log p stages, stage k has k steps → Σk = log p(log p+1)/2 ≈ log²p/2</div>
-<div class="note">n=p case: Tp = log²n · (tc + ts + tw)</div>
+
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q3 [8 pts] n=p Case Runtime</div>
+<div class="formula highlight">Tₚ = log²n · (tᶜ + tₛ + tᵥ)</div>
+<div class="note">Each of log²n steps: 1 compare (tᶜ) + 1 comm (tₛ+tᵥ)</div>
 <div class="section-title" style="margin-top:10px; color:#64B5F6;">Q1 [5 pts] Why k-dim Hypercube for 2^k Merge</div>
 
 <div class="section-title" style="margin-top:10px;">Bitonic Merge Structure</div>
@@ -1372,7 +1376,8 @@ Example: 8-proc (3D) hypercube splits into:
 
 <div class="formula highlight">Bitonic merge of 2^k elements ⟺ k-dimensional hypercube</div>
 <div class="note"><b>Reason:</b> k merge stages need distances 2^(k-1),...,2^0, each = one hypercube dimension. k stages → k dimensions.</div>
-<div class="section-title" style="margin-top:10px;">p = n/2 Variant</div>
+
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q2 [3 pts] p = n/2 Modification</div>
 <div class="note highlight">Each proc holds 2 elements</div>
 <div class="note">• First: local sort the 2-item pair</div>
 <div class="note">• Then: run same stages with m=2</div>
@@ -1397,7 +1402,7 @@ After2:  P0[5,4]  P1[7,6]  P2[3,2]  P3[1,0]
 After3:  P0[7,6]  P1[5,4]  P2[3,2]  P3[1,0]
 </pre></div>
 
-<div class="section-title" style="margin-top:10px;">Worked Example: [2,5,0,4] (n=4)</div>
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q5 [4 pts] Worked Example: [2,5,0,4] (n=4)</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
 Bitonic Sorting Network (n=4):
 
