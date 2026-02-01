@@ -706,30 +706,50 @@ Cost > Work → NOT cost-optimal!
 </div>
 
 <div class="section">
-<div class="section-title">Prefix Sum Cost-Optimal (p&lt;n) — Answer for [8 pts]</div>
+<div class="section-title">Prefix Sum Cost-Optimal (p&lt;n) [8 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Design cost-optimal prefix sums: n numbers, p procs (p&lt;n). Derive Tₚ, S, E, C, isoefficiency W. tₐdd=1, tcomm=10.</div>
+
+<div class="section-title" style="margin-top:10px;">Algorithm (3 Phases)</div>
+<div class="note">1. <b>Local prefix:</b> Each proc computes prefix sums on n/p elements</div>
+<div class="note">2. <b>Global prefix:</b> Recursive doubling on p block totals</div>
+<div class="note">3. <b>Update:</b> Add block offset to all local elements</div>
+
+<div class="section-title" style="margin-top:10px;">Tₚ Derivation</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
-Given: n numbers, p procs, tₐdd = 1, tcomm = 10
+Phase 1: n/p additions           → n/p
+Phase 2: log₂p steps × (10 + 1)  → 11 log₂p
+Phase 3: n/p additions           → n/p
+─────────────────────────────────────────
+<span style="color:#4FC3F7;font-weight:bold;">Tₚ = 2n/p + 11 log₂p</span>
+</pre></div>
 
-Phase 1: Local prefix of n/p elements
-  T₁ = (n/p - 1) · 1 ≈ n/p
+<div class="section-title" style="margin-top:10px;">Summary</div>
+<div class="row"><span class="label">T₁</span><span class="value">n</span></div>
+<div class="row"><span class="label">Tₚ</span><span class="value highlight">2n/p + 11 log₂p</span></div>
+<div class="row"><span class="label">S</span><span class="value highlight">np / (2n + 11p log₂p)</span></div>
+<div class="row"><span class="label">E</span><span class="value highlight">1 / (2 + 11p log₂p / n)</span></div>
+<div class="row"><span class="label">C</span><span class="value">2n + 11p log₂p</span></div>
+<div class="row"><span class="label">Isoeff W(p)</span><span class="value highlight">Θ(p log p)</span></div>
 
-Phase 2: Parallel prefix of p sums
-  T₂ = log p · (10 + 1) = 11 log p
+<div class="section-title" style="margin-top:10px;">Derivations</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+<b>Speedup:</b>
+S = T₁/Tₚ = n / (2n/p + 11 log p)
+  = np / (2n + 11p log p)
 
-Phase 3: Add offset to local elements
-  T₃ = (n/p) · 1 = n/p
+<b>Efficiency:</b>
+E = S/p = 1 / (2 + 11p log p / n)
 
-Tₚ = 2n/p + 11 log p
+<b>Cost:</b>
+C = p·Tₚ = 2n + 11p log p
 
-S = (n-1) / (2n/p + 11 log p) ≈ np / (2n + 11p log p)
+<b>Cost-optimal condition:</b>
+C = Θ(n) requires 11p log p = O(n)
+→ <span style="color:#4FC3F7;font-weight:bold;">p = O(n / log n)</span>
 
-E = S/p = n / (2n + 11p log p)
-
-Cost = p · Tₚ = 2n + 11p log p
-
-Cost-optimal when: p log p = O(n) → p = O(n/log n)
-
-Isoefficiency: W = Θ(p log p)
+<b>Isoefficiency:</b>
+E = Θ(1) requires p log p / n = Θ(1)
+→ <span style="color:#4FC3F7;font-weight:bold;">W(p) = Θ(p log p)</span>
 </pre></div>
 </div>
 <div class="section"><div class="section-title">Scatter Optimality on Linear Array (tₛ=0) [7 pts]</div>
