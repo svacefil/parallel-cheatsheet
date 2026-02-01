@@ -1562,24 +1562,6 @@ Position:  0   1   2   3
 <div class="row"><span class="label">Tₚ (n² procs)</span><span class="value highlight">O(log n)</span></div>
 <div class="row"><span class="label">Tₚ (n procs)</span><span class="value">O(n)</span></div>
 <div class="note">With n² procs: all n(n-1)=12 comparisons in O(1), reduction O(log n)</div>
-
-<div class="section-title" style="margin-top:10px;">Speedup S and Efficiency E</div>
-<div class="note">Sequential work for enumeration sort is W = Θ(n²) comparisons.</div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
-T_p = Θ(n²/p + 2(√p-1)tₛ + n·tᵥ)
-
-Term meanings:
-• n²/p     : each proc does n²/p comparisons
-• 2(√p-1)tₛ: startup for all-to-all on √p×√p mesh
-• n·tᵥ     : total data transfer (each element broadcast)
-
-Speedup:    S = T_s / T_p   with T_s = Θ(n²)
-Efficiency: E = S/p = T_s / (p·T_p)
-</pre></div>
-<div class="note">
-          If n is large so that n²/p dominates communication, then S≈p and E≈1.
-          If p grows too fast, the mesh startup term 2√p·tₛ starts to dominate.
-        </div>
 </div>
 <div class="section" id="quicksort" style="display:none;"><div class="section-title">Parallel Quicksort (shared-address space) [12 pts]</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> Parallel quicksort, shared-address-space, p procs, n elements. Derive asymptotic Tₚ and isoefficiency. Identify which operations determine scalability. Describe meaning of each term.</div>
