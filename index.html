@@ -1872,20 +1872,51 @@ Weights return UP ↑
 <div class="section" id="prim">
 <div class="section-title">Prim's MST (Hypercube) [5 pts]</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> Parallel Prim's MST. Weighted adj matrix, n vertices. Derive asymptotic Tₚ, S, E.</div>
-<div class="row"><span class="label">W</span><span class="value">n²</span></div>
-<div class="row"><span class="label">Why?</span><span class="value">n iter × n edge checks</span></div>
-<div class="row"><span class="label">Topo</span><span class="value">Hypercube</span></div>
-<div class="row"><span class="label">Op 1</span><span class="value">All-to-one reduce</span></div>
-<div class="row"><span class="label">Op 2</span><span class="value">One-to-all broadcast</span></div>
-<div class="row"><span class="label">m</span><span class="value">O(1) - just vertex</span></div>
-<div class="row"><span class="label">#Iter</span><span class="value">n</span></div>
-<div class="row"><span class="label">Tcomp</span><span class="value comp">n²/p</span></div>
-<div class="row"><span class="label">Tcomm</span><span class="value comm">n·logp·(tₛ+tᵥ)</span></div>
-<div class="formula">Tₚ = n²/p + n·logp·(tₛ+tᵥ)</div>
-<div class="formula">E = 1/(1 + p·logp·(tₛ+tᵥ)/n)</div>
-<div class="note">If (tₛ+tᵥ)=1: E = 1/(1 + p logp/n)</div>
-<div class="row"><span class="label">Cost-opt</span><span class="value highlight">p = O(n/log n)</span></div>
-<div class="row"><span class="label">Memory/proc</span><span class="value">n²/p + n</span></div>
+
+<div class="section-title" style="margin-top:10px;">Setup</div>
+<div class="row"><span class="label">Input</span><span class="value">n×n weighted adj matrix</span></div>
+<div class="row"><span class="label">Distribution</span><span class="value">n/p rows per processor</span></div>
+<div class="row"><span class="label">Sequential W</span><span class="value highlight">Θ(n²)</span></div>
+
+<div class="section-title" style="margin-top:10px;">Per-Iteration Cost</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Each of (n-1) iterations:
+• Update keys for n/p local vertices: Θ(n/p)
+• Find local minimum among n/p:      Θ(n/p)
+• Global reduce (find min across p): Θ(log p)
+• Broadcast selected vertex:         Θ(log p)
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Parallel Runtime</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Tₚ = n × [n/p + (tₛ+tᵥ)log p]
+
+   = <span style="color:#4FC3F7;font-weight:bold;">Θ(n²/p) + Θ(n log p)</span>
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Speedup</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+S = T₁/Tₚ = n² / (n²/p + n log p)
+
+  = n² / [n(n/p + log p)]
+
+  = n / (n/p + log p)
+
+  = <span style="color:#4FC3F7;font-weight:bold;">p / (1 + p log p / n)</span>
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Efficiency</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+E = S/p = <span style="color:#4FC3F7;font-weight:bold;">1 / (1 + p log p / n)</span>
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Summary</div>
+<div class="row"><span class="label">T₁</span><span class="value">Θ(n²)</span></div>
+<div class="row"><span class="label">Tₚ</span><span class="value highlight">Θ(n²/p) + Θ(n log p)</span></div>
+<div class="row"><span class="label">S</span><span class="value highlight">p / (1 + p log p / n)</span></div>
+<div class="row"><span class="label">E</span><span class="value highlight">1 / (1 + p log p / n)</span></div>
+<div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n / log n)</span></div>
+<div class="note">For E→1: need n >> p log p, i.e., n = Ω(p log p)</div>
 <div class="section-title" style="margin-top:10px;">Prim's MST (√p×√p Mesh) [12 pts]</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> Prim's MST on mesh. Derive Tₚ, isoefficiency, cost-opt upper bound. Define each term, specify message size. Memory per proc?</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] Given E = 1/(1 + p log p / n), write condition for cost-optimality. Explain why.</div>
