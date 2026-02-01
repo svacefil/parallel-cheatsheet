@@ -1916,7 +1916,36 @@ E = S/p = <span style="color:#4FC3F7;font-weight:bold;">1 / (1 + p log p / n)</s
 <div class="row"><span class="label">S</span><span class="value highlight">p / (1 + p log p / n)</span></div>
 <div class="row"><span class="label">E</span><span class="value highlight">1 / (1 + p log p / n)</span></div>
 <div class="row"><span class="label">Cost-opt</span><span class="value">p = O(n / log n)</span></div>
-<div class="note">For E→1: need n >> p log p, i.e., n = Ω(p log p)</div>
+
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Cost-Optimality Condition [5 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Given E = 1/(1 + p log p / n), write condition for cost-optimality. Explain why.</div>
+
+<div class="section-title" style="margin-top:10px;">Requirement</div>
+<div class="note">Cost-optimal when Cost = p·Tₚ = Θ(T₁), i.e., E = Θ(1)</div>
+
+<div class="section-title" style="margin-top:10px;">Derivation</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+For E = 1/(1 + p log p / n) = Θ(1):
+
+Denominator must be Θ(1), so:
+  p log p / n = O(1)
+
+Rearranging:
+  p log p = O(n)
+
+Equivalently:
+  <span style="color:#4FC3F7;font-weight:bold;">n = Ω(p log p)</span>
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Why This Works</div>
+<div class="row"><span class="label">n >> p log p</span><span class="value">E → 1 (excellent)</span></div>
+<div class="row"><span class="label">n = Θ(p log p)</span><span class="value">E = Θ(1) (cost-optimal)</span></div>
+<div class="row"><span class="label">n << p log p</span><span class="value">E → 0 (NOT cost-optimal)</span></div>
+
+<div class="note" style="margin-top:8px;"><b>Interpretation:</b> p log p = communication overhead (global reductions). n = problem size. For cost-optimality, problem must be large enough so communication doesn't dominate.</div>
+
+<div class="formula highlight" style="font-size:14px;">Answer: n = Ω(p log p)</div>
+
 <div class="section-title" style="margin-top:10px;">Prim's MST (√p×√p Mesh) [12 pts]</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> Prim's MST on mesh. Derive Tₚ, isoefficiency, cost-opt upper bound. Define each term, specify message size. Memory per proc?</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] Given E = 1/(1 + p log p / n), write condition for cost-optimality. Explain why.</div>
