@@ -662,27 +662,45 @@ T = Σ(i=0 to d-1) tᵥ(2^i × m)
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [7 pts] Prefix sums on hypercube, n/p &gt; 1. Give exact Tₚ. Describe meaning of each term. Use tₐdd, tₛ.</div>
 <div class="note" style="color:#FF8A65;"><b>Q:</b> [5 pts] Give hypercube algorithm for prefix sums (n/p &gt; 1). Derive exact Tₚ using tₐdd, tₛ.</div>
 
-<div class="row"><span class="label">Phase 1</span><span class="value">Local prefix: (n/p-1)·tₐdd</span></div>
-<div class="row"><span class="label">Phase 2</span><span class="value">Parallel: logp·(tₛ+tₐdd)</span></div>
-<div class="row"><span class="label">Phase 3</span><span class="value">Update: (n/p)·tₐdd</span></div>
-<div class="formula">Total: (2n/p-1)tₐdd + logp(tₛ+tₐdd)</div>
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q3/Q4 [7+5 pts] Hypercube Prefix Sums (n/p > 1)</div>
 
-<div class="section-title" style="margin-top:10px;">Exact time breakdown (matches exam wording)</div>
-<div class="note">
-          Assumptions: p=2^d hypercube, each processor holds <span class="highlight">n/p</span> numbers (n/p integer &gt; 1).  
-          Communication per step is a <span class="highlight">unit-length</span> message (one number).  
-          Notation mapping: exam uses t_add (add), t_s (send 1 number).
-        </div>
-<div class="formula"><pre style="margin:0; white-space:pre-wrap;">
-Phase A (local prefix):      (n/p - 1) · t_add
-Phase B (cube scan of sums): log2(p) · ( t_s + t_add )
-Phase C (offset add):        (n/p) · t_add
-TOTAL: (2n/p - 1)·t_add + log2(p)·(t_s + t_add)
+<div class="section-title" style="margin-top:10px;">Setup</div>
+<div class="row"><span class="label">Processors</span><span class="value">p = 2^d hypercube</span></div>
+<div class="row"><span class="label">Data per proc</span><span class="value">n/p numbers</span></div>
+<div class="row"><span class="label">tₐdd</span><span class="value">time to add two numbers</span></div>
+<div class="row"><span class="label">tₛ</span><span class="value">time to send one number</span></div>
+
+<div class="section-title" style="margin-top:10px;">Algorithm (3 Phases)</div>
+<div class="note">1. <b>Local prefix:</b> Each proc computes prefix sums on n/p elements</div>
+<div class="note">2. <b>Global prefix:</b> Recursive doubling on p block totals over hypercube</div>
+<div class="note">3. <b>Offset update:</b> Add offset to all local elements</div>
+
+<div class="section-title" style="margin-top:10px;">Exact Expression</div>
+<div class="formula highlight" style="font-size:13px;">Tₚ = (2n/p − 1)tₐdd + (tₛ + tₐdd)log₂p</div>
+
+<div class="section-title" style="margin-top:10px;">Meaning of Each Term</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Term                    Description
+─────────────────────────────────────────────────────
+(n/p − 1)tₐdd          Phase 1: Local prefix (n/p-1 adds)
+(n/p)tₐdd              Phase 3: Offset updates (n/p adds)
+<span style="color:#4FC3F7;">(2n/p − 1)tₐdd</span>         Combined local computation
+
+tₛ·log₂p               Communication: log₂p messages
+tₐdd·log₂p             Global additions: log₂p adds
+<span style="color:#4FC3F7;">(tₛ + tₐdd)log₂p</span>       Phase 2: Global prefix cost
 </pre></div>
-<div class="note">
-          Meaning: Phase B does <span class="highlight">log2(p)</span> neighbor exchanges (dimension by dimension).  
-          Each step sends one partial sum and adds it (hence t_s + t_add).
-        </div>
+
+<div class="section-title" style="margin-top:10px;">Derivation</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Phase  Operation                              Time
+─────────────────────────────────────────────────────
+  1    Local prefix: (n/p-1) additions       (n/p−1)·tₐdd
+  2    Global: log₂p steps × (send + add)    log₂p·(tₛ+tₐdd)
+  3    Offset update: n/p additions          (n/p)·tₐdd
+─────────────────────────────────────────────────────
+Total: <span style="color:#4FC3F7;font-weight:bold;">(2n/p − 1)tₐdd + (tₛ + tₐdd)log₂p</span>
+</pre></div>
 </div>
 <div class="section">
 <div class="section-title">Prefix Sum (p=n) [8 pts]</div>
