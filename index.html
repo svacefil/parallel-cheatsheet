@@ -685,24 +685,44 @@ TOTAL: (2n/p - 1)·t_add + log2(p)·(t_s + t_add)
         </div>
 </div>
 <div class="section">
-<div class="section-title">Prefix Sum (p=n) — Answer for [8 pts]</div>
+<div class="section-title">Prefix Sum (p=n) [8 pts]</div>
+<div class="note" style="color:#FF8A65;"><b>Q:</b> Prefix sums of n numbers on n procs. Tₚ, S, E? tₐdd=1, tcomm=10. Cost-optimal?</div>
+
+<div class="section-title" style="margin-top:10px;">Algorithm: Recursive Doubling</div>
+<div class="note">Step k (k=0,1,...,log₂n-1): Proc i receives from proc (i-2^k), adds to sum</div>
+<div class="note">Total steps: log₂n. Each step: 1 comm (10) + 1 add (1) = 11</div>
+
+<div class="section-title" style="margin-top:10px;">Derivations</div>
 <div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
-Given: tₐdd = 1, tcomm = 10
+<b>Parallel Runtime:</b>
+Tₚ = (log₂n) × (10 + 1) = <span style="color:#4FC3F7;font-weight:bold;">11 log₂n</span>
 
-Algorithm: log n parallel steps
-Each step: 1 comm + 1 add
+<b>Sequential:</b>
+T₁ = n - 1 ≈ n
 
-Tₚ = log n · (tcomm + tₐdd) = log n · (10 + 1) = 11 log n
+<b>Speedup:</b>
+S = T₁/Tₚ = n / (11 log₂n) = <span style="color:#4FC3F7;font-weight:bold;">n / (11 log₂n)</span>
 
-Sequential: W = n-1 ≈ n additions
-S = W/Tₚ = n / (11 log n)
+<b>Efficiency:</b>
+E = S/p = S/n = <span style="color:#4FC3F7;font-weight:bold;">1 / (11 log₂n)</span>
 
-E = S/n = 1 / (11 log n)
-
-Cost = p·Tₚ = n · 11 log n = O(n log n)
-Work = O(n)
-Cost > Work → NOT cost-optimal!
+<b>Cost:</b>
+C = p·Tₚ = n × 11 log₂n = <span style="color:#4FC3F7;font-weight:bold;">11n log₂n</span>
 </pre></div>
+
+<div class="section-title" style="margin-top:10px;">Cost-Optimality?</div>
+<div class="row"><span class="label">Sequential work</span><span class="value">Θ(n)</span></div>
+<div class="row"><span class="label">Parallel cost</span><span class="value">Θ(n log n)</span></div>
+<div class="formula highlight">C = Θ(n log n) ≠ Θ(n) → NOT cost-optimal!</div>
+<div class="note">Efficiency E = 1/(11 log n) decreases as n grows → poor scalability</div>
+
+<div class="section-title" style="margin-top:10px;">Summary</div>
+<div class="row"><span class="label">T₁</span><span class="value">n</span></div>
+<div class="row"><span class="label">Tₚ</span><span class="value highlight">11 log₂n</span></div>
+<div class="row"><span class="label">S</span><span class="value highlight">n / (11 log₂n)</span></div>
+<div class="row"><span class="label">E</span><span class="value highlight">1 / (11 log₂n)</span></div>
+<div class="row"><span class="label">C</span><span class="value">11n log₂n</span></div>
+<div class="row"><span class="label">Cost-optimal?</span><span class="value" style="color:#FF6B6B;">NO</span></div>
 </div>
 
 <div class="section">
