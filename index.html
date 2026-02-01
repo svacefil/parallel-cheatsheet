@@ -1388,9 +1388,44 @@ p · T_comp = p · Θ(n^ω / p^((ω-1)/2))
 <div class="row"><span class="label">Isoeff</span><span class="value highlight">O(p log⁴p)</span></div>
 <div class="note"><b>Why log²p comm:</b> Network has log p stages, stage k has k steps → Σk = log p(log p+1)/2 ≈ log²p/2</div>
 
-<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q3 [8 pts] n=p Case Runtime</div>
-<div class="formula highlight">Tₚ = log²n · (tᶜ + tₛ + tᵥ)</div>
-<div class="note">Each of log²n steps: 1 compare (tᶜ) + 1 comm (tₛ+tᵥ)</div>
+<div class="section-title" style="margin-top:10px; color:#64B5F6;">Q3 [8 pts] n=p Case Runtime Derivation</div>
+
+<div class="section-title" style="margin-top:10px;">Setup</div>
+<div class="row"><span class="label">Keys</span><span class="value">n</span></div>
+<div class="row"><span class="label">Processors</span><span class="value">p = n (one key per proc)</span></div>
+<div class="row"><span class="label">Topology</span><span class="value">Hypercube</span></div>
+
+<div class="section-title" style="margin-top:10px;">Total Compare-Exchange Steps</div>
+<div class="note">Stage k (merging sequences of size 2^k) requires k steps.</div>
+<div class="formula"><pre style="margin:0; white-space:pre-wrap; font-family:monospace; font-size:11px;">
+Total steps = Σ(k=1 to log₂p) k = 1+2+3+...+log₂p
+
+Using sum formula: Σk = m(m+1)/2
+
+D = <span style="color:#4FC3F7;font-weight:bold;">log₂p · (log₂p + 1) / 2</span>
+</pre></div>
+
+<div class="section-title" style="margin-top:10px;">Cost Per Step</div>
+<div class="note">Each step: send 1 key + receive + compare</div>
+<div class="formula">T_step = tₛ + tᵥ + tᶜ</div>
+
+<div class="section-title" style="margin-top:10px;">Total Runtime</div>
+<div class="formula highlight" style="font-size:13px;">Tₚ = [log₂p · (log₂p + 1) / 2] · (tₛ + tᵥ + tᶜ)</div>
+
+<div class="section-title" style="margin-top:10px;">Simplified</div>
+<div class="row"><span class="label">Let d = log₂p</span><span class="value">Tₚ = d(d+1)/2 · (tₛ+tᵥ+tᶜ)</span></div>
+<div class="row"><span class="label">Asymptotic</span><span class="value highlight">Tₚ = Θ(log²n)</span></div>
+
+<div class="section-title" style="margin-top:10px;">Example: n=p=16</div>
+<div class="note">d = log₂16 = 4, D = 4×5/2 = 10 steps</div>
+<div class="note">If tₛ=10, tᵥ=1, tᶜ=1: Tₚ = 10 × 12 = 120</div>
+
+<div class="section-title" style="margin-top:10px;">Term Meanings</div>
+<div class="row"><span class="label">log₂p</span><span class="value"># of bitonic merge stages</span></div>
+<div class="row"><span class="label">d(d+1)/2</span><span class="value">Total compare-exchange steps</span></div>
+<div class="row"><span class="label">tₛ</span><span class="value">Message startup time</span></div>
+<div class="row"><span class="label">tᵥ</span><span class="value">Per-word transfer (1 key)</span></div>
+<div class="row"><span class="label">tᶜ</span><span class="value">Comparison time</span></div>
 <div class="section-title" style="margin-top:10px; color:#64B5F6;">Q1 [5 pts] Why k-dim Hypercube for 2^k Merge</div>
 
 <div class="section-title" style="margin-top:10px;">Bitonic Merge Structure</div>
